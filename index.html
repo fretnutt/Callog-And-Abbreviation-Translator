@@ -5,38 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Abbreviation Translator</title>
     <style>
-        body {
-            font-family: sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        .container {
-            display: flex;
-            gap: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .box {
-            flex: 1;
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; color: #333; }
+        .container { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
+        .box { flex: 1; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
+        textarea { width: 100%; height: 150px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; resize: vertical; }
+        h1, h2 { color: #0056b3; margin-top: 0; }
+        #abbreviationsContainer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; }
+        
+        .section {
             background-color: #fff;
-            padding: 20px;
             border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        textarea {
-            width: 100%;
-            height: 300px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 16px;
-            resize: vertical;
-        }
-        h2 {
+
+        .section-title {
+            font-weight: bold;
             color: #0056b3;
-            margin-top: 0;
+            font-size: 1.2em;
+            margin: 0;
+            cursor: pointer; /* Indicates it's clickable */
+            position: relative;
+            padding-right: 20px;
         }
+
+        /* Triangle arrow for collapsible sections */
+        .section-title::after {
+            content: '▶';
+            position: absolute;
+            right: 5px;
+            font-size: 0.8em;
+            transition: transform 0.2s;
+        }
+
+        .section-title.active::after {
+            transform: rotate(90deg);
+        }
+        
+        .section-list {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 10px 0 0 0;
+            font-size: 14px;
+            display: none; /* Hide the list by default */
+        }
+        
+        .section-list.active {
+            display: block; /* Show the list when active */
+            column-count: 3;
+            column-gap: 20px;
+        }
+
+        .section-list li {
+            margin-bottom: 4px;
+        }
+
+        @media (max-width: 900px) { .section-list.active { column-count: 2; } }
+        @media (max-width: 600px) { .container { flex-direction: column; } .section-list.active { column-count: 1; } }
     </style>
 </head>
 <body>
@@ -51,183 +77,74 @@
             <textarea id="translatedText" readonly></textarea>
         </div>
     </div>
+    <div id="abbreviationsContainer">
+        <h2>Available Abbreviations</h2>
+        <div id="abbreviationsList"></div>
+    </div>
 
     <script>
-        const abbreviations = {
-            // People & Roles (all lowercase keys for consistent lookup)
-            "cem": "Customer Experience Manager",
-            "cx": "Customer",
-            "mfr": "manufacturer",
-            "oa": "Owning Advisor",
-            "rfl": "Regional Field Liason",
-            "svcmgr": "Service Manager",
-            "techn": "Service Technician",
-            // Places & Departments
-            "dpt": "Department",
-            "bac": "GM Dealer/BAC",
-            "cadt": "Cadillac Customer Care Team",
-            "div": "GM Divisional Office",
-            "dlr": "GM Dealer",
-            "pd": "Part Delay Team",
-            "3rdp": "Independent Dealer/Supplier/Auto Mechanic",
-            // Vehicles & Parts
-            "cad": "Cadillac",
-            "con": "control",
-            "dic": "Driver Information Cluster (speedometer,etc)",
-            "eng": "Engine",
-            "ivi": "In-Vehicle Infotainment Display (front display above console)",
-            "pv": "Purge Valve",
-            "rbc": "Rear Back-Up Camera/Display",
-            "rsd": "Rear Screen Display",
-            "subu": "Suburban",
-            "chev" : "Chevrolet",
-            "bui": "Buick",
-            "silv": "Silverado",
-            "trans": "Transmission",
-            "vb": "Valve Body",
-            "veh": "vehicle",
-            // Documents & Identifiers
-            "calllog": "Case Information",
-            "cd": "Call Details",
-            "cn": "Case Number:",
-            "cof": "Cause Of Failure",
-            "cs": "Customer Service Request",
-            "ct": "Call Type (IBCC/OBCC):",
-            "del": "Delivery Type",
-            "dn": "Dealer Name:",
-            "doc": "Documentation/s",
-            "em": "Email",
-            "esis": "ESIS Product Allegation",
-            "eta": "Estimated Time Of Arrival/Repair",
-            "fi": "Final Invoice",
-            "mile": "Vehicle Mileage:",
-            "o": "Outcome:",
-            "olc": "Owner's Loyalty Certificate",
-            "om": "Owner's Manual",
-            "pdf": "PDF Document",
-            "r": "Reason:",
-            "sr": "Service Request",
-            "sym": "Symptoms:",
-            "vin": "Vehicle V.I.N.",
-            // Concepts & Coverages
-            "b2b": "Bumper To Bumper Coverage",
-            "c/a": "GM Cost Assistance",
-            "cafa": "Catastrophic Failure",
-            "ccl": "Extra Component Coverage Goodwill",
-            "cct": "Onstar Connections",
-            "extw": "Extended Vehicle Warranty from an Independent Provider.",
-            "fleet": "Envolve/Fleet",
-            "iss": "issue",
-            "ons": "Onstar",
-            "oop": "Out of Pocket Customer Pay",
-            "pwt": "Powertrain Coverage",
-            "rec": "recall",
-            "reim": "Reimbursement",
-            "sc": "Special Coverage",
-            "vpr": "Vehicle Payment Reimbursement",
-            // Actions
-            "acc": "Accelerate",
-            "acco": "Accomodate/tion",
-            "ass": "Assisting",
-            "cpii": "I confirmed the customer Personal Identification Information & Contact info.",
-            "cxok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.",
-            "cxrfip": "The Customer Requested Information & I Provided:",
-            "cxsd": "Customer was advised to send the appropriate documentation discussed by attaching a reply from my email from this Service Request. The customer understood and agreed.",
-            "eca": "Customer was educated on GM Cost Assistance policy at GM Dealer of Customer Care.",
-            "edu": "I educated the customer",
-            "f/u": "Follow-Up",
-            "fai": "Failed",
-            "goo": "Googled and found forums alleging known issues",
-            "ldvm": "I left a detailed voicemail on customer preferred contact phone number.",
-            "lvm": "Left Voicemail",
-            "mc": "I made contact with the customer",
-            "mtc": "Move To Close Case",
-            "oacd": "I offered the customer an appointment with a Certified GM Dealer and the customer declined.",
-            "oaxfer": "The owning advisor was available in OMNI, so advised the customer of this and successfully transferred the customer to their owning advisor.",
-            "pc#": "I provided the customer with their case number.",
-            "poa": "I provided the customer with their Owning Advisor's First name only.",
-            "pr": "Customer will call back post-repair",
-            "rep": "Repair/s",
-            "repa": "repair",
-            "reverb": "Customer was made aware of the recall in questions and the recall summary verbiage.",
-            "rfi": "Request For Information",
-            "sch": "Schedule",
-            "ser": "service",
-            "t/s": "Troubleshoot/ing",
-            "xfer": "I referred customer or customer requested being transferred to:",
-            "xfersu": "The customer's advisor was available to transfer the call as requested. The transfer has been completed. Nothing more is needed.",
-            // Processes
-            "appt": "Appointment",
-            "bac xfer": "BAC Transfer (caller was transferred from another department)",
-            "bb": "Repurchase/Buyback",
-            "ctp": "Courtesy Transportation Program",
-            "dr": "Delayed Repair",
-            "liveesc": "The customer requested escalation to supervisor, manager, or next level authority...",
-            "mrp": "General Motors My Rewards Points Program",
-            "prd": "Post-Repair Discussion About Potential Compensation/Reimbursement.",
-            "reg": "Advised customer of regional escalation with Senior Advisor will follow up within 48hrs. Sent to CAC Queue:",
-            "rsa": "General Motors Roadside Warranty Assistance",
-            "tlesc": "Manager Escalation Follow-Up Phone Call within 2 business days.",
-            "utc1": "Unable to Contact 1st Attempt-LVM? Sent UTC email to customer.",
-            "utc2": "Unable to Contact 2nd Attempt-LVM? Sent UTC email to customer.",
-            "utc3": "Unable to Contact 3rd and Final Attempt-LVM?",
-            // Statements & Communications
-            "adv": "I stated",
-            "bbb": "Better Business Bureau verbiage",
-            "bbd": "I advised to the customer that their repurchase request was carefully reviewed and denied...",
-            "bttc": "Best Time To Contact",
-            "cc": "The customer stated they were concerned.",
-            "cec": "The customer is expecting compensation",
-            "cnd": "Could Not Duplicate",
-            "cri": "The Customer Resides In",
-            "cs": "Customer States",
-            "cw": "Customer wants",
-            "cxbr": "Advised customer their request is being reviewed",
-            "cxe": "The customer expects or is expecting",
-            "dlrcomp": "Customer was advised their complaint will be submitted to all of General Motors and their Dealer...",
-            "dlrl": "Dealer did provide a loaner",
-            "dlrnl": "Dealer did not provide a loaner",
-            "na": "Internal: I was not able to find anything I could assist the customer with during this phone call.",
-            "nf": "Customer requested nothing further",
-            "norental": "I advised that the New Vehicle Manufacturer Warranty...does not extend to cover...rental or loaner vehicles...",
-            "oaexp": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.",
-            "pgm1": "I let the customer know their request is Awaiting executive approval",
-            "pns": "Phone Not In Service",
-            "rbr": "I wanted to let the customer know their request is being reviewed.",
-            "tpd": "The Part Delayed is",
-            "wint": "I advised the customer that when the GM Dealer referred him to Customer Care...we will submit his complaint..."
-        };
+    document.addEventListener('DOMContentLoaded', function() {
+        const masterList = [
+            { section: "People & Roles", terms: { "cem": "Customer Experience Manager", "cx": "Customer", "mfr": "manufacturer", "oa": "Owning Advisor", "rfl": "Regional Field Liason", "svcmgr": "Service Manager", "techn": "Service Technician" } },
+            { section: "Places & Departments", terms: { "dpt": "Department", "bac": "GM Dealer/BAC", "cadt": "Cadillac Customer Care Team", "div": "GM Divisional Office", "dlr": "GM Dealer", "pd": "Part Delay Team", "3rdp": "Independent Dealer/Supplier/Auto Mechanic" } },
+            { section: "Vehicles & Parts", terms: { "chev": "Chevrolet", "bui": "Buick", "silv": "Silverado", "cad": "Cadillac", "con": "control", "dic": "Driver Information Cluster (speedometer,etc)", "eng": "Engine", "ivi": "In-Vehicle Infotainment Display (front display above console)", "pv": "Purge Valve", "rbc": "Rear Back-Up Camera/Display", "rsd": "Rear Screen Display", "subu": "Suburban", "trans": "Transmission", "vb": "Valve Body", "veh": "vehicle" } },
+            { section: "Documents & Identifiers", terms: { "calllog": "Case Information", "cd": "Call Details", "cn": "Case Number:", "cof": "Cause Of Failure", "cs": "Customer Service Request", "ct": "Call Type (IBCC/OBCC):", "del": "Delivery Type", "dn": "Dealer Name:", "doc": "Documentation/s", "em": "Email", "esis": "ESIS Product Allegation", "eta": "Estimated Time Of Arrival/Repair", "fi": "Final Invoice", "mile": "Vehicle Mileage:", "o": "Outcome:", "olc": "Owner's Loyalty Certificate", "om": "Owner's Manual", "pdf": "PDF Document", "r": "Reason:", "sr": "Service Request", "sym": "Symptoms:", "vin": "Vehicle V.I.N." } },
+            { section: "Concepts & Coverages", terms: { "b2b": "Bumper To Bumper Coverage", "c/a": "GM Cost Assistance", "cafa": "Catastrophic Failure", "ccl": "Extra Component Coverage Goodwill", "cct": "Onstar Connections", "extw": "Extended Vehicle Warranty from an Independent Provider.", "fleet": "Envolve/Fleet", "iss": "issue", "ons": "Onstar", "oop": "Out of Pocket Customer Pay", "pwt": "Powertrain Coverage", "rec": "recall", "reim": "Reimbursement", "sc": "Special Coverage", "vpr": "Vehicle Payment Reimbursement" } },
+            { section: "Actions", terms: { "acc": "Accelerate", "acco": "Accomodate/tion", "ass": "Assisting", "cpii": "I confirmed the customer Personal Identification Information & Contact info.", "cxok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.", "cxrfip": "The Customer Requested Information & I Provided:", "cxsd": "Customer was advised to send the appropriate documentation discussed by attaching a reply from my email from this Service Request. The customer understood and agreed.", "eca": "Customer was educated on GM Cost Assistance policy at GM Dealer of Customer Care.", "edu": "I educated the customer", "f/u": "Follow-Up", "fai": "Failed", "goo": "Googled and found forums alleging known issues", "ldvm": "I left a detailed voicemail on customer preferred contact phone number.", "lvm": "Left Voicemail", "mc": "I made contact with the customer", "mtc": "Move To Close Case", "oacd": "I offered the customer an appointment with a Certified GM Dealer and the customer declined.", "oaxfer": "The owning advisor was available in OMNI, so advised the customer of this and successfully transferred the customer to their owning advisor.", "pc#": "I provided the customer with their case number.", "poa": "I provided the customer with their Owning Advisor's First name only.", "pr": "Customer will call back post-repair", "rep": "Repair/s", "repa": "repair", "reverb": "Customer was made aware of the recall in questions and the recall summary verbiage.", "rfi": "Request For Information", "sch": "Schedule", "ser": "service", "t/s": "Troubleshoot/ing", "xfer": "I referred customer or customer requested being transferred to:", "xfersu": "The customer's advisor was available to transfer the call as requested. The transfer has been completed. Nothing more is needed." } },
+            { section: "Processes", terms: { "appt": "Appointment", "bac xfer": "BAC Transfer (caller was transferred from another department)", "bb": "Repurchase/Buyback", "ctp": "Courtesy Transportation Program", "dr": "Delayed Repair", "liveesc": "The customer requested escalation to supervisor, manager, or next level authority...", "mrp": "General Motors My Rewards Points Program", "prd": "Post-Repair Discussion About Potential Compensation/Reimbursement.", "reg": "Advised customer of regional escalation with Senior Advisor will follow up within 48hrs. Sent to CAC Queue:", "rsa": "General Motors Roadside Warranty Assistance", "tlesc": "Manager Escalation Follow-Up Phone Call within 2 business days.", "utc1": "Unable to Contact 1st Attempt-LVM? Sent UTC email to customer.", "utc2": "Unable to Contact 2nd Attempt-LVM? Sent UTC email to customer.", "utc3": "Unable to Contact 3rd and Final Attempt-LVM?" } },
+            { section: "Statements & Communications", terms: { "adv": "I stated", "bbb": "Better Business Bureau verbiage", "bbd": "I advised to the customer that their repurchase request was carefully reviewed and denied...", "bttc": "Best Time To Contact", "cc": "The customer stated they were concerned.", "cec": "The customer is expecting compensation", "cnd": "Could Not Duplicate", "cri": "The Customer Resides In", "cs": "Customer States", "cw": "Customer wants", "cxbr": "Advised customer their request is being reviewed", "cxe": "The customer expects or is expecting", "dlrcomp": "Customer was advised their complaint will be submitted to all of General Motors and their Dealer...", "dlrl": "Dealer did provide a loaner", "dlrnl": "Dealer did not provide a loaner", "na": "Internal: I was not able to find anything I could assist the customer with during this phone call.", "nf": "Customer requested nothing further", "norental": "I advised that the New Vehicle Manufacturer Warranty...does not extend to cover...rental or loaner vehicles...", "oaexp": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "pgm1": "I let the customer know their request is Awaiting executive approval", "pns": "Phone Not In Service", "rbr": "I wanted to let the customer know their request is being reviewed.", "tpd": "The Part Delayed is", "wint": "I advised the customer that when the GM Dealer referred him to Customer Care...we will submit his complaint..." } }
+        ];
 
         const inputText = document.getElementById('inputText');
         const translatedText = document.getElementById('translatedText');
+        const abbreviationsListDiv = document.getElementById('abbreviationsList');
+        
+        const lookupAbbreviations = masterList.reduce((acc, section) => ({ ...acc, ...section.terms }), {});
 
         function performTranslation() {
             const currentText = inputText.value;
-            // This regex splits by any sequence of non-word characters (spaces, punctuation)
-            // and captures them, so they can be re-inserted.
-            const parts = currentText.split(/(\W+)/); // Keeps delimiters (spaces, punctuation) in the array
-
-            let translatedParts = parts.map(part => {
-                // If the part is just whitespace or punctuation, return it as is.
-                if (part.trim() === '') {
-                    return part;
-                }
-                // Check if the lowercase version of the part is an abbreviation.
+            const parts = currentText.split(/(\W+)/);
+            const translatedParts = parts.map(part => {
                 const lowerPart = part.toLowerCase();
-                if (abbreviations.hasOwnProperty(lowerPart)) {
-                    return abbreviations[lowerPart];
-                }
-                // If it's not an abbreviation, return the original part.
-                return part;
+                return lookupAbbreviations.hasOwnProperty(lowerPart) ? lookupAbbreviations[lowerPart] : part;
             });
-
             translatedText.value = translatedParts.join('');
         }
 
-        inputText.addEventListener('input', performTranslation);
+        function populateAbbreviationsList() {
+            abbreviationsListDiv.innerHTML = '';
+            masterList.forEach(section => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = section.section;
+                
+                const list = document.createElement('ul');
+                list.className = 'section-list';
+                for (const term in section.terms) {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<strong>${term}</strong>: ${section.terms[term]}`;
+                    list.appendChild(listItem);
+                }
 
-        // This line ensures that if you paste text immediately, it translates.
+                // ** NEW CLICK LOGIC **
+                title.addEventListener('click', () => {
+                    title.classList.toggle('active');
+                    list.classList.toggle('active');
+                });
+                
+                sectionDiv.appendChild(title);
+                sectionDiv.appendChild(list);
+                abbreviationsListDiv.appendChild(sectionDiv);
+            });
+        }
+
+        inputText.addEventListener('input', performTranslation);
+        populateAbbreviationsList();
         performTranslation();
+    });
     </script>
 </body>
 </html>
