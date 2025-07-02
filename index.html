@@ -18,7 +18,7 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        #toggleAllBtn, #translateBtn {
+        #toggleAllBtn {
             padding: 8px 12px;
             border: 1px solid #0056b3;
             background-color: #007bff;
@@ -26,11 +26,8 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #toggleAllBtn:hover, #translateBtn:hover {
+        #toggleAllBtn:hover {
             background-color: #0056b3;
-        }
-        #translateBtn {
-            margin-top: 10px;
         }
         
         .section {
@@ -146,11 +143,10 @@
         <div class="box">
             <h2>Enter Text Here:</h2>
             <textarea id="inputText" placeholder="Start typing... for example: cst my veh has an iss with the eng"></textarea>
-            <button id="translateBtn">Translate</button>
         </div>
         <div class="box">
             <h2>Translated Text:</h2>
-            <textarea id="translatedText"></textarea>
+            <textarea id="translatedText" readonly></textarea>
         </div>
     </div>
     <div id="abbreviationsContainer">
@@ -166,7 +162,7 @@
         const masterList = [
             {
                 main_section: "Customer Statements",
-                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase...", "cce": "The customer is expecting compensation", "cdl": "The Customer Wants To Know How We Can Help With Their Delayed Repair", "cdq": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall...", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cud": "Customer Wants an Update", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "cuo": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "cwa": "Customer wants" } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cadc": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent...", "cdh": "Dealer is not being honest.", "csnr": "Something not right." } }, { title: "Reports & General", terms: { "cst": "The Customer Stated", "cca": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation...", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer...", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage..." } } ]
+                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase. I Advised the Customer That I Would Submit Their Request to the Applicable Internal Only Department For Review. That This Could Take up to 5 Business Days. And to Expect No Reason Provided Along with an Approval or Denial.", "cce": "The customer is expecting compensation", "cdl": "The Customer Wants To Know How We Can Help With Their Delayed Repair", "cdq": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall. I provided the customer with the recall summary and verbiage.", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cud": "Customer Wants an Update", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "cuo": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "cwa": "Customer wants" } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cadc": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent. Customer Repeatedly Exhibited Offensive Language. I Warned Them of Required Civility and Decorum more than once, of Which The Customer Refused to Abide. So I Advised the Customer Since They Refused This Warning and Requirement, I Would Disconnect the Call. And I Disconnected the Call because the Customer repeatedly used language that offended me.", "cdh": "Dealer is not being honest.", "csnr": "Something not right." } }, { title: "Reports & General", terms: { "cst": "The Customer Stated", "cca": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation. I advised to the customer I will forward their accusation/allegation to the dealer of complaint. And any further actions would need to be with customer and dealer.", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage they feel is applicable." } } ]
             },
             {
                 main_section: "Vehicles & Parts",
@@ -201,11 +197,7 @@
             },
             {
                 main_section: "Agent Statements & Communications",
-                sub_sections: [
-                    { title: "Advising", terms: { "iac": "I advised the Customer", "idg": "I advised to Customer that Dealer determines from diagnosis...", "idi": "I advised the customer that since GM Dealer's are independent...", "idh": "I advised the customer I will contact their dealer...", "idb": "I advised to the customer that their repurchase request was carefully reviewed and denied...", "idr": "I advised the customer that when the GM Dealer referred him to Customer Care...", "iib": "I advised the customer that in addition to the standard eligibility criteria...", "icdn": "The Customer Was Advised of Documents Needed...", "ice": "I let the customer know their request is Awaiting executive approval", "idc": "Customer was advised their complaint will be submitted...", "isc": "I advised customer about Special Coverages...", "iwr": "I advised that the New Vehicle Manufacturer Warranty...", "ica": "I have sent your allegation/s to the General Motors Dealer you complained about...", "irr": "Advised customer their request is being reviewed" } },
-                    { title: "Actions Logged", terms: { "pde": "I confirmed customer request related to a part eligible...", "itr": "I attempted troubleshooting recommendations...", "imc": "I made contact with the customer", "ied": "I educated the customer", "idv": "I left a detailed voicemail...", "ivm": "Left Voicemail", "ipii": "I confirmed the customer Personal Identification Information...", "ipc": "I provided the customer with their case number.", "ion": "I provided the customer with their Owning Advisor's First name only.", "ipd": "I provided the customer with the denial", "ipi": "The Customer Requested Information & I Provided:", "ix": "I referred customer or customer requested being transferred to:", "ixe": "Customer was referred and transferred to EV Conceirge", "ixo": "The customer's advisor was available to transfer...", "ixr": "I offered transfer to Roadside. Customer accepted.", "aot": "The owning advisor was available in OMNI...", "cdo": "Customer was advised to send the appropriate documentation...", "eca": "Customer was educated on GM Cost Assistance policy...", "icr": "Customer was made aware of the recall...", "ide": "I de-escalated the customer who was angry" } },
-                    { title: "Internal & General", terms: { "ina": "Internal: I was not able to find anything I could assist...", "ivia": "Vehicle is a" } }
-                ]
+                sub_sections: [ { title: "Advising", terms: { "iac": "I advised the Customer", "idg": "I advised to Customer that Dealer determines from diagnosis...", "idi": "I advised the customer that since GM Dealer's are independent...", "idh": "I advised the customer I will contact their dealer...", "idb": "I advised to the customer that their repurchase request was carefully reviewed and denied...", "idr": "I advised the customer that when the GM Dealer referred him to Customer Care...", "iib": "I advised the customer that in addition to the standard eligibility criteria...", "icdn": "The Customer Was Advised of Documents Needed...", "ice": "I let the customer know their request is Awaiting executive approval", "idc": "Customer was advised their complaint will be submitted...", "isc": "I advised customer about Special Coverages...", "iwr": "I advised that the New Vehicle Manufacturer Warranty...", "ica": "I have sent your allegation/s to the General Motors Dealer you complained about...", "irr": "Advised customer their request is being reviewed" } }, { title: "Actions Logged", terms: { "pde": "I confirmed customer request related to a part eligible...", "itr": "I attempted troubleshooting recommendations...", "imc": "I made contact with the customer", "ied": "I educated the customer", "idv": "I left a detailed voicemail...", "ivm": "Left Voicemail", "ipii": "I confirmed the customer Personal Identification Information...", "ipc": "I provided the customer with their case number.", "ion": "I provided the customer with their Owning Advisor's First name only.", "ipd": "I provided the customer with the denial", "ipi": "The Customer Requested Information & I Provided:", "ix": "I referred customer or customer requested being transferred to:", "ixe": "Customer was referred and transferred to EV Conceirge", "ixo": "The customer's advisor was available to transfer...", "ixr": "I offered transfer to Roadside. Customer accepted.", "aot": "The owning advisor was available in OMNI...", "cdo": "Customer was advised to send the appropriate documentation...", "eca": "Customer was educated on GM Cost Assistance policy...", "icr": "Customer was made aware of the recall...", "ide": "I de-escalated the customer who was angry" } }, { title: "Internal & General", terms: { "ino": "Internal: I was not able to find anything I could assist...", "ivia": "Vehicle is a" } } ]
             },
             {
                 main_section: "Places & Departments",
@@ -213,7 +205,7 @@
             },
             {
                 main_section: "People & Roles",
-                sub_sections: [ { title: "Dealer Roles", terms: { "ds": "Dealer Sales Manager", "dsm": "Service Manager", "dlrsa": "GM Sales at Dealer", "tech": "Service Technician" } }, { title: "Corporate & Field", terms: { "cem": "Customer Experience Manager", "fse": "Field Service Engineer (Dealer Invite Only)", "rfl": "Regional Field Liason" } }, { title: "General", terms: { "cx": "Customer", "mfr": "manufacturer", "oa": "Owning Advisor" } } ]
+                sub_sections: [ { title: "Dealer Roles", terms: { "ds": "Dealer Sales Manager", "dms": "Service Manager", "dlrsa": "GM Sales at Dealer", "tech": "Service Technician" } }, { title: "Corporate & Field", terms: { "cem": "Customer Experience Manager", "fse": "Field Service Engineer (Dealer Invite Only)", "rfl": "Regional Field Liason" } }, { title: "General", terms: { "cx": "Customer", "mfr": "manufacturer", "oa": "Owning Advisor" } } ]
             },
             {
                 main_section: "Goodwill & Compensation Checklists",
@@ -347,17 +339,11 @@
             });
         }
 
-        // --- CHANGE: Add event listener for the new Translate button ---
-        const translateBtn = document.getElementById('translateBtn');
-        if(translateBtn) {
-            translateBtn.addEventListener('click', performTranslation);
-        }
-        // --- END CHANGE ---
-
+        inputText.addEventListener('input', performTranslation);
+        
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
-        performTranslation(); // Initial translation on load
     });
     </script>
 </body>
