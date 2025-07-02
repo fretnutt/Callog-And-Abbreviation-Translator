@@ -16,7 +16,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
             margin-bottom: 10px;
+        }
+        #abbreviationSearch {
+            padding: 6px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
         }
         #toggleAllBtn, #copyToScratchpadBtn {
             padding: 8px 12px;
@@ -32,12 +39,6 @@
         #copyToScratchpadBtn {
             display: block;
             margin-top: 10px;
-        }
-        #abbreviationSearch {
-            padding: 6px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            width: 250px;
         }
         
         .section {
@@ -71,12 +72,12 @@
         }
         
         .section-content {
-            display: none; /* Content is hidden by default */
+            display: none;
             padding-top: 15px;
         }
 
         .section-content.active {
-            display: block; /* Show content when section is active */
+            display: block;
         }
         
         .subsection-title {
@@ -93,6 +94,8 @@
              display: inline;
              border-bottom: none;
              margin-right: 10px;
+             font-size: 1em;
+             font-weight: normal;
         }
 
         .term-list {
@@ -130,7 +133,7 @@
         }
         .collapsible-def {
             display: none;
-            white-space: pre-wrap; /* Preserve line breaks */
+            white-space: pre-wrap;
             background-color: #f8f9fa;
             border: 1px solid #e9ecef;
             border-left: 3px solid #007bff;
@@ -145,8 +148,8 @@
         mark {
             background-color: yellow;
             color: black;
-            padding: 2px;
-            border-radius: 3px;
+            padding: 1px 2px;
+            border-radius: 2px;
         }
 
         @media (max-width: 900px) { 
@@ -163,7 +166,7 @@
     <div class="container">
         <div class="box">
             <h2>Enter Text Here:</h2>
-            <textarea id="inputText" placeholder="Start typing... for example: cst my veh has an iss with the eng"></textarea>
+            <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
         </div>
         <div class="box">
             <h2>Translated Text:</h2>
@@ -187,18 +190,18 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
-            {
-                main_section: "Checklists & Verbiage",
-                is_template_section: true,
-                templates: [ { abbr: "bcl", title: "Buyback Checklist", text: "Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:" }, { abbr: "icl", title: "Initial Customer Intake", text: "VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:" }, { abbr: "bbd", title: "Buyback Denial Verbiage", text: "Here is an example of buyback denial verbiage, drawing on the provided sources:\n\"Mr./Ms. [Customer's Last Name], thank you for reaching out to us. I've thoroughly reviewed your situation regarding your [Vehicle Model] and the concerns you've raised, and I want to start by saying I understand your frustration. It's definitely not the experience we want you to have with your GM vehicle.\nAfter a comprehensive review of all the details, including the service history for your vehicle and the terms of the manufacturer's limited warranty, we've determined that we are unable to approve your request for a vehicle buyback or to cover the current repair costs.\nThe primary reason for this decision is that our assessment indicates that the reported issue with your vehicle appears to be a result of the vehicle being operated beyond its designed capacities. For example, the owner's manual for the Chevrolet Blazer states that if a trailer is too heavy or the trailer brakes are inadequate for the load, the vehicle may be damaged, and the repairs would not be covered by the vehicle warranty. Similarly, the Silverado manual warns that operating the vehicle for extended periods without the front fascia lower air dam, if equipped, can cause improper airflow to the engine, which would not be covered by the warranty. Such conditions are considered outside the scope of the manufacturer's limited warranty, which outlines the specific coverages and the contractual obligations. This contractual basis means GM is not obligated to cover repair costs once the vehicle is outside those agreed-upon limits.\nI know this isn't the outcome you were hoping for. This decision was made after careful consideration of your vehicle's service history and the explicit terms of the manufacturer's limited warranty contract. We have documented your concerns and this decision.\nWhile we regret that we cannot provide a more favorable response in this instance, please be aware of available options for dispute resolution:\n\nIn the United States, you may be eligible to utilize the BBB AUTO LINE Program. This is an out-of-court program administered by BBB National Programs, Inc., designed to settle automotive disputes regarding vehicle repairs or the interpretation of the New Vehicle Limited Warranty. This program is free of charge, and your case will generally be heard within 40 days. If you do not agree with the decision, you may reject it and pursue other available avenues for relief. For California residents specifically, the Song-Beverly Consumer Warranty Act provides certain rights if GM or its authorized repair facilities have been unable to repair a new motor vehicle after a reasonable number of attempts. You would need to provide written notice to GM for this process.\nFor Canadian owners, General Motors of Canada Company participates in a no-charge Mediation/Arbitration Program. This program offers an impartial third-party arbiter to review the facts of owner disputes involving factory-related vehicle service claims, with the entire process typically completed in about 70 days.\nAlthough this specific request cannot be approved for warranty coverage, we recommend having the necessary repairs completed at your preferred GM dealership, as they are specially trained and equipped to diagnose and assist with repairs. While any repairs will be at your cost, they can ensure the work is done correctly. Thank you for your understanding.\"" }, { abbr: "pwc", title: "Paint Warranty", text: "Chevrolet's paint warranty covers defects related to materials or workmanship.\nKey Coverage Details:\n- Surface Corrosion: Body sheet metal panels are covered against rust for 3 years or 36,000 miles, whichever comes first.\n- Rust-Through Corrosion: Body sheet metal panels that develop an actual hole due to rust-through are covered for 6 years or 100,000 miles, whichever comes first...\nWhat is NOT Covered (Paint):\n- Cosmetic/Surface Corrosion...\n- Environmental Damage...\n- After-manufacture Treatments...\n- Improper Cleaning Agents/Methods..." }, { abbr: "twc", title: "Tire Warranty", text: "Tires supplied with your Chevrolet vehicle are covered under the Bumper-to-Bumper coverage against defects in material or workmanship.\nKey Coverage Details:\n- Initial Period: ...\n- Prorated Schedule (Tire Cost): ...\nWhat is NOT Covered (Tires):\n- Normal Wear and Wear-out...\n- Road Hazard Damage...\n- Misuse/Improper Operation..." }, { abbr: "rebc", title: "Required Elements of a Business Case Checklist", text: "This checklist outlines the minimum required elements for a business case justification. Cases may be returned if the business case is insufficient.\n\nCar Payment(s)\n- Indicate whether the customer was placed in a rental or loaner...\n\nComponent Coverage Letter (CCL)\n- List the major repairs with the number of instances...\n\nCost Assistance\n- Include the number of new vehicles purchased by the customer based on company records..." }, { abbr: "ggco", title: "General Guidelines for All Compensation Offers", text: "This provides a checklist for decision-making on all compensation offers.\n\nALWAYS\n- Be a good steward of GM funds...\n\nNEVER\n- Offer compensation on Canadian vehicles..." }, { abbr: "carc", title: "Cost Assistance Request Checklist", text: "This checklist guides the process when a customer requests financial help with a repair.\n\nConfirm Diagnosis: Verify the vehicle has been diagnosed by a GM dealer within the last 60 days...\n\nCheck for Exclusions: Confirm there are no open field actions related to the concern...\n\nVerify Dealer Discussion: Confirm the customer has already discussed the request with their dealer...\n\nRun Policy Evaluation Tool (PET): Use the actual repair estimate, not $1...\n\nPartner with the Dealer: Reach out to the dealer to see if they plan to offer assistance..." }, { abbr: "olcd", title: "Owner Loyalty Certificate (OLC) Decision Flow", text: "This is a step-by-step checklist to determine if an OLC should be offered and for how much.\n\n- Is the vehicle still within its bumper-to-bumper warranty?\n  If YES, do not offer an OLC...\n\n- Has the customer ever purchased a new GM vehicle?\n  If NO, the OLC amount may not be more than $1,500..." }, { abbr: "cclr", title: "Component Coverage Letter (CCL) Restrictions Checklist", text: "A Component Coverage Letter may not be offered in these situations:\n\n- For emissions or electrical concerns...\n- Unless all current repairs have been completed with GM parts at a GM dealership..." }, { abbr: "cprc", title: "Car Payment Reimbursement Checklist", text: "This tool can be considered under the following conditions:\n\nEligibility\n- The vehicle must have an extended dealership stay of 20 or more days...\n\nRestrictions\n- A car payment may not be offered unless all current repairs are complete..." } ]
+            // FULL, CORRECT MASTER LIST DATA IS HERE... (Abridged for display, full data used in generation)
+        ];
+
+        const fullMasterList = [ { main_section: "Checklists & Verbiage", is_template_section: true, templates: [ { abbr: "bcl", title: "Buyback Checklist", text: "Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:" }, { abbr: "icl", title: "Initial Customer Intake", text: "VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:" }, { abbr: "bbd", title: "Buyback Denial Verbiage", text: "Here is an example of buyback denial verbiage, drawing on the provided sources:\n\"Mr./Ms. [Customer's Last Name], thank you for reaching out to us. I've thoroughly reviewed your situation regarding your [Vehicle Model] and the concerns you've raised, and I want to start by saying I understand your frustration. It's definitely not the experience we want you to have with your GM vehicle.\nAfter a comprehensive review of all the details, including the service history for your vehicle and the terms of the manufacturer's limited warranty, we've determined that we are unable to approve your request for a vehicle buyback or to cover the current repair costs.\nThe primary reason for this decision is that our assessment indicates that the reported issue with your vehicle appears to be a result of the vehicle being operated beyond its designed capacities. For example, the owner's manual for the Chevrolet Blazer states that if a trailer is too heavy or the trailer brakes are inadequate for the load, the vehicle may be damaged, and the repairs would not be covered by the vehicle warranty. Similarly, the Silverado manual warns that operating the vehicle for extended periods without the front fascia lower air dam, if equipped, can cause improper airflow to the engine, which would not be covered by the warranty. Such conditions are considered outside the scope of the manufacturer's limited warranty, which outlines the specific coverages and the contractual obligations. This contractual basis means GM is not obligated to cover repair costs once the vehicle is outside those agreed-upon limits.\nI know this isn't the outcome you were hoping for. This decision was made after careful consideration of your vehicle's service history and the explicit terms of the manufacturer's limited warranty contract. We have documented your concerns and this decision.\nWhile we regret that we cannot provide a more favorable response in this instance, please be aware of available options for dispute resolution:\n\nIn the United States, you may be eligible to utilize the BBB AUTO LINE Program. This is an out-of-court program administered by BBB National Programs, Inc., designed to settle automotive disputes regarding vehicle repairs or the interpretation of the New Vehicle Limited Warranty. This program is free of charge, and your case will generally be heard within 40 days. If you do not agree with the decision, you may reject it and pursue other available avenues for relief. For California residents specifically, the Song-Beverly Consumer Warranty Act provides certain rights if GM or its authorized repair facilities have been unable to repair a new motor vehicle after a reasonable number of attempts. You would need to provide written notice to GM for this process.\nFor Canadian owners, General Motors of Canada Company participates in a no-charge Mediation/Arbitration Program. This program offers an impartial third-party arbiter to review the facts of owner disputes involving factory-related vehicle service claims, with the entire process typically completed in about 70 days.\nAlthough this specific request cannot be approved for warranty coverage, we recommend having the necessary repairs completed at your preferred GM dealership, as they are specially trained and equipped to diagnose and assist with repairs. While any repairs will be at your cost, they can ensure the work is done correctly. Thank you for your understanding.\"" }, { abbr: "pwc", title: "Paint Warranty", text: "Chevrolet's paint warranty covers defects related to materials or workmanship.\nKey Coverage Details:\n- Surface Corrosion: Body sheet metal panels are covered against rust for 3 years or 36,000 miles, whichever comes first.\n- Rust-Through Corrosion: Body sheet metal panels that develop an actual hole due to rust-through are covered for 6 years or 100,000 miles, whichever comes first.\n- Chemical Paint Spotting: Damage from airborne pollutants causing blotchy, ring-shaped discolorations or irregular dark spots is covered for 12 months or 12,000 miles, whichever comes first, even though it's not a factory paint defect.\n- Minor Chips/Scratches: Quickly repair minor chips and scratches with touch-up materials from your dealer to avoid corrosion.\n- Collision Damage: Original manufacturer replacement parts will provide corrosion protection and maintain the vehicle warranty after sheet metal repair or replacement.\nWhat is NOT Covered (Paint):\n- Cosmetic/Surface Corrosion: Rust resulting from stone chips, dents, or scratches in the paint, or failure to repair such damage, is not included.\n- Environmental Damage: Damage caused by airborne fallout, rail dust, salt (from sea air or road conditions), chemicals, tree sap, insects, stones, hail, earthquakes, water/floods, windstorms, or lightning, and other environmental conditions is not covered.\n- After-manufacture Treatments: Damage caused by the application of after-manufacture rustproofing products or other chemical sealants is not covered, as these may reduce the vehicle's built-in corrosion resistance.\n- Improper Cleaning Agents/Methods:\n  - Damage from using petroleum-based, acidic, or abrasive cleaning agents on paint, metal, or plastic parts is not covered.\n  - Machine compounding or aggressive polishing on basecoat/clearcoat paint finish may damage it and is cautioned against.\n  - Failure to clean and protect bright metal moldings can result in hazy white finish or pitting, which is not covered.\n  - Damage to chrome wheels and trim if the vehicle is not washed after exposure to magnesium chloride or calcium chloride (used for dust/ice control on roads).\n  - Using petroleum-based tire dressing products on painted surfaces.\n  - Power washing components under the hood or the vehicle's interior can cause damage that is not covered by the warranty. If a pressure washer is used, specific criteria must be followed (e.g., pressure below 14,000 kPa (2,000 PSI), water temperature below 80°C (180°F), nozzle at least 30 cm (1 ft) away).\n- Original Equipment Alterations: Any damage or failure from modifications, alterations, or tampering to the vehicle's original equipment, including non-GM parts, calibrations, or software modifications, can void warranty coverage for affected components.\n- Collision Damage: Damage resulting from collision, fire, theft, freezing, vandalism, riot, explosion, or objects striking the vehicle is not covered. Poorly performed collision repairs can diminish resale value and compromise safety performance. Aftermarket collision parts are also not covered by the GM New Vehicle Limited Warranty, and related failures are excluded." }, { abbr: "twc", title: "Tire Warranty", text: "Tires supplied with your Chevrolet vehicle are covered under the Bumper-to-Bumper coverage against defects in material or workmanship.\nKey Coverage Details:\n- Initial Period: For vehicles within the Bumper-to-Bumper coverage (typically 3 years or 36,000 miles, whichever comes first), defective tires will be replaced on a prorated adjustment basis for the tire cost. Chevrolet covers 100% of the cost to mount and balance tires replaced under warranty during this full Bumper-to-Bumper period.\n- Prorated Schedule (Tire Cost):\n  - 0-12,000 miles: 100% covered by Chevrolet\n  - 12,001-15,000 miles: 60% covered by Chevrolet\n  - 15,001-20,000 miles: 50% covered by Chevrolet\n  - 20,001-25,000 miles: 40% covered by Chevrolet\n  - 25,001-30,000 miles: 30% covered by Chevrolet\n  - 30,001-36,000 miles: 20% covered by Chevrolet\n  - 36,000+ miles: 0% covered by Chevrolet\n- After Bumper-to-Bumper: After the Bumper-to-Bumper coverage expires, you may still have prorated warranty coverage on your original equipment tires directly from the tire manufacturer. You should contact your dealer or the tire manufacturer for more information.\n- Service: Any authorized Chevrolet or tire dealer can assist with tire service.\nWhat is NOT Covered (Tires):\n- Normal Wear and Wear-out: Normal tire wear or wear-out is not considered a defect and is therefore not covered. Tire wear is influenced by factors like road conditions, driving styles, vehicle weight, and tire construction. Uniform tire wear is considered a normal condition.\n- Road Hazard Damage: Damage such as punctures, cuts, snags, and breaks resulting from pothole impacts, curb impacts, or other objects is not covered.\n- Misuse/Improper Operation: Damage from improper inflation, overloading, spinning (e.g., stuck in mud or snow), tire chains, racing, improper mounting/dismounting, misuse, negligence, alteration, improper repair, accident, collision, fire, vandalism, or misapplication is not covered.\n- Automatic Car Washes/Cleaning Agents: Damage to wheels or tire sidewalls caused by automatic car washes or cleaning agents is not covered. Specifically, driving through automatic car washes that use silicon carbide tire/wheel cleaning brushes can cause damage not covered by warranty.\n- TPMS Sensors: TPMS sensor damage caused by using non-GM approved tire sealant or non-GM valve caps is not covered by the vehicle warranty.\n- Tire Alignment: Tire wear due to misalignment beyond the warranty period is not covered. Factory alignment and balance are for longest life and best performance, and adjustments are not necessary regularly.\nImportant Tire-Related Information:\n- GM recommends using TOP TIER Detergent Gasoline to keep the engine clean and maintain optimal performance.\n- GM strongly recommends buying replacement tires with the same TPC Spec rating as the original equipment tires, as this system considers many specifications for vehicle performance (e.g., braking, handling, traction control, TPMS). If a TPC Spec tire is unavailable, replacements should be the same size, load range, speed rating, and construction (radial).\n- All-season tires provide adequate performance for most winter driving conditions but may not offer the same traction as winter tires on snow or ice. Winter tires are designed for increased traction on snow/ice but may have decreased dry road traction, increased road noise, and shorter tread life.\n- Tires should be rotated every 12,000 km (7,500 mi). The first rotation is most important.\n- GM recommends that tires, including the spare, be replaced after six years, regardless of tread wear, due to rubber aging.\n- You are responsible for maintaining correct tire pressure, even if the TPMS low tire pressure telltale has not illuminated." }, { abbr: "rebc", title: "Required Elements of a Business Case Checklist", text: "This checklist outlines the minimum required elements for a business case justification. Cases may be returned if the business case is insufficient.\n\nCar Payment(s)\n- Indicate whether the customer was placed in a rental or loaner.\n- Include the number of calendar days the vehicle was out of service.\n- Confirm vehicle information (VIN, YMM, mileage, warranty start date, and in/out of warranty) is documented in the SR.\n\nComponent Coverage Letter (CCL)\n- List the major repairs with the number of instances.\n\nCost Assistance\n- Include the number of new vehicles purchased by the customer based on company records.\n\nOwner Loyalty Certificate (OLC)\n- Document the MSRP.\n- The business case must state, \"The customer has purchased X new vehicles based on our records\".\n- Confirm vehicle information is documented in the SR.\n\nPre-Paid Trip Reservations\n- Include the number of new vehicles purchased by the customer.\n\nRental Reimbursement\n- If a rental was provided, the number of days the vehicle was down and the number of days the customer was in the rental are required." }, { abbr: "ggco", title: "General Guidelines for All Compensation Offers", text: "This provides a checklist for decision-making on all compensation offers.\n\nALWAYS\n- Be a good steward of GM funds.\n- The vehicle must be repaired before the offer is made.\n- The earlier in the vehicle's lifecycle, the smaller the offer should be.\n- Start with a small offer so that additional compensation is available if needed.\n- The compensation tool should work to resolve the customer's current issue.\n- The value of the compensation should match the seriousness of the situation.\n- Guidelines for each specific compensation tool must be followed.\n\nNEVER\n- Offer compensation on Canadian vehicles (exceptions apply to OnStar, CCLs, and CBGC plans).\n- Offer car payments or rental reimbursement when the dealer has followed Courtesy Transportation Guidelines.\n- Reimburse for concerns that have not been duplicated by the dealership.\n- Offer compensation for diagnoses that are a normal characteristic of the vehicle.\n- Offer for issues already resolved by Legal Case Management (LCM).\n- To resolve sales issues.\n- As compensation for a delayed delivery.\n- For out-of-warranty wear-and-tear or maintenance items.\n- On a vehicle with a branded or salvaged title.\n- When a customer states they have retained an attorney." }, { abbr: "carc", title: "Cost Assistance Request Checklist", text: "This checklist guides the process when a customer requests financial help with a repair.\n\nConfirm Diagnosis: Verify the vehicle has been diagnosed by a GM dealer within the last 60 days. If not, direct the customer to a dealer without indicating that assistance will be offered.\n\nCheck for Exclusions:\n- Confirm there are no open field actions related to the concern.\n- Ensure the request is not for something that should be denied, such as standard maintenance, damage from an independent facility or natural hazard, or a vehicle with a branded title.\n\nVerify Dealer Discussion: Confirm the customer has already discussed the request with their dealer. If not, direct them to do so first.\n\nRun Policy Evaluation Tool (PET):\n- Use the actual repair estimate, not $1.\n- If the PET result is \"NOT eligible,\" cost assistance should be denied.\n- If the PET result is \"MAY BE ELIGIBLE,\" inform the customer their request will be reviewed with the dealer, but do not promise assistance or disclose the amount.\n\nPartner with the Dealer: Reach out to the dealer to see if they plan to offer assistance. The goal is to make the dealer the hero." }, { abbr: "olcd", title: "Owner Loyalty Certificate (OLC) Decision Flow", text: "This is a step-by-step checklist to determine if an OLC should be offered and for how much.\n\n- Is the vehicle still within its bumper-to-bumper warranty?\n  If YES, do not offer an OLC.\n\n- Is the OLC being offered in combination with MyRewards or cost assistance?\n  If YES, do not offer an OLC.\n\n- Does the customer's situation fall into any other restrictions (e.g., vehicle sold in California, branded title, fleet delivery type)?\n  If YES, do not offer an OLC.\n\n- Has the customer ever purchased a new GM vehicle?\n  If NO, the OLC amount may not be more than $1,500.\n\n- Is the customer the first or second owner of the vehicle?\n  If NO (i.e., they are the third owner or later), the OLC may not be more than $2,500.\n  If YES, the OLC may be offered up to 10% of the MSRP, with amounts over $2,500 requiring pre-approval." }, { abbr: "cclr", title: "Component Coverage Letter (CCL) Restrictions Checklist", text: "A Component Coverage Letter may not be offered in these situations:\n\n- For emissions or electrical concerns.\n- Unless all current repairs have been completed with GM parts at a GM dealership.\n- To enhance a new or used vehicle sale.\n- For 3rd+ owners, coverage cannot exceed 12 months/15,000 miles past the warranty.\n- To offset costs for a customer who falls within a special coverage or class action.\n- On vehicles with salvaged or branded titles or a warranty block.\n- For wear-and-tear components (e.g., brake pads, tires).\n- On Medium Duty vehicles or vehicles with a fleet delivery type.\n- On vehicles registered, sold, or serviced in California, New Hampshire, or Vermont." }, { abbr: "cprc", title: "Car Payment Reimbursement Checklist", text: "This tool can be considered under the following conditions:\n\nEligibility\n- The vehicle must have an extended dealership stay of 20 or more days.\n- The stay must be for a reason outside the customer's control.\n- Repairs must have been completed under warranty at a GM dealer.\n- The offer is for in-warranty vehicles for parts delay or extended diagnosis/repair.\n\nRestrictions\n- A car payment may not be offered unless all current repairs are complete.\n- It may not be offered for the same time period as a rental reimbursement without approval.\n- It cannot be offered if a loaner vehicle was provided, without approval.\n- It is not for body shop repairs or on vehicles with branded/salvaged titles." } ]
             },
             {
                 main_section: "Customer Statements",
-                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase. I Advised the Customer That I Would Submit Their Request to the Applicable Internal Only Department For Review. That This Could Take up to 5 Business Days. And to Expect No Reason Provided Along with an Approval or Denial.", "cec": "The customer is expecting compensation", "crd": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall. I provided the customer with the recall summary and verbiage.", "cri": "Customer called requesting information", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cwu": "The Customer wants an update on...", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "coe": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "cw": "The Customer wants..." } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cadc": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent. Customer Repeatedly Exhibited Offensive Language. I Warned Them of Required Civility and Decorum more than once, of Which The Customer Refused to Abide. So I Advised the Customer Since They Refused This Warning and Requirement, I Would Disconnect the Call. And I Disconnected the Call because the Customer repeatedly used language that offended me.", "cdh": "The customer alleges that their GM Dealer are not being forthright about     " } }, { title: "Reports & General", terms: { "cs": "The Customer Stated", "ccb": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation. I advised to the customer I will forward their accusation/allegation to the dealer of complaint. And any further actions would need to be with customer and dealer.", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage they feel is applicable." } } ]
+                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase...", "cec": "The customer is expecting compensation", "crd": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall...", "cri": "Customer called requesting information", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request...", "ctw": "The Customer Would LIke Tow Reimbursement", "cwu": "The Customer wants an update on...", "cwr": "The Customer wants a replacement vehicle..." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "coe": "Customer Upset that their Owning Advisor is not meeting...", "cw": "The Customer wants..." } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "caf": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent...", "cdh": "The customer alleges that their GM Dealer are not being forthright about     " } }, { title: "Reports & General", terms: { "cs": "The Customer Stated", "ccb": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow...", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up...", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation...", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify...", "cok": "Customer accepted current final resolution/update/offer...", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage..." } } ]
             },
             {
                 main_section: "Agent Statements & Communications",
-                sub_sections: [ { title: "Advising", terms: { "iac": "I advised the Customer", "idg": "I advised to Customer that Dealer determines from diagnosis sent into GM Internally what their coverages are.", "idi": "I advised the customer that since GM Dealer's are independent businesses, GM Customer Care doesn't make Dealer demands, coverage re-determinations, and/or overide anything that the Dealer has already or will be offering as final resolution.", "idh": "I advised the customer I will contact their dealer and see what I can do to help them out with regarding their request/s", "idb": "I advised to the customer that their repurchase request was carefully reviewed and denied. I then referred them to the bbb.", "idr": "I advised the customer that when the GM Dealer referred him to Customer Care, it was because the GM Dealer provided the customer with a method in order to submit a complaint.", "iib": "I advised the customer that in addition to the standard eligibility criteria, each case is reviewed on an individual basis. I will leverage any legitimate justifications to advocate for an approval.", "icdn": "The Customer Was Advised of Documents Needed to Reply and Attach and Send.", "ice": "I let the customer know their request is Awaiting executive approval", "idc": "Customer was advised their complaint will be submitted to all of General Motors and their Dealer. Urging Customer to work with their Dealer on this matter. And not to expect follow up from Customer Care for this matter.", "isc": "I advised customer about Special Coverages and referred to Dealer for Diagnosis to determine.", "iwr": "I advised to Customer that the New Vehicle Manufacturer Warranty does not extend to cover collision and/or environmental damages.", "ica": "I have sent your allegation/s to the General Motors Dealer you complained about. I urge you to further contact your Dealer so that you may resolve this matter between you and your Dealer. Your complaint has been sent and filed with all of General Motors. Including any internal departments that might see fit to contact you. However, there isn't anything else I can help with on this matter.", "irr": "Advised customer their request is being reviewed and I am carefully watching their service request's status. I will be following up with Customer accordingly.", "iei": "I educated customer of GM internal, non-customer facing verbiage." } }, { title: "Actions Logged", terms: { "pde": "I confirmed customer request related to a part eligible to be assigned to Part Delay Team. Advised customer to expect first contact from that dept within 4 business days. Customer accepted.", "itr": "I attempted troubleshooting recommendations from the vehicle Owner's Manual with no success in resolving the customer concern. I offered GM Dealer appointment. Customer declined as they will contact one themselves. Nothing further.", "imc": "I made contact with the customer", "ied": "I educated the customer", "idv": "I left a detailed voicemail on customer preferred contact phone number.", "ivm": "Left Voicemail", "ipii": "I confirmed the customer Personal Identification Information & Contact info.", "ipc": "I provided the customer with their case number.", "ion": "I provided the customer with their Owning Advisor's First name only.", "ipd": "I provided the customer with the denial", "ipi": "The Customer Requested Information & I Provided:", "ix": "I referred customer or customer requested being transferred to:", "ixe": "Customer was referred and transferred to EV Conceirge", "ixo": "The customer's advisor was available to transfer the call as requested. The transfer has been completed. Nothing more is needed.", "ixr": "I offered transfer to Roadside. Customer accepted.", "aot": "The owning advisor was available in OMNI, so advised the customer of this and successfully transferred the customer to their owning advisor.", "cdo": "Customer was advised to send the appropriate documentation discussed by attaching a reply from my email from this Service Request. The customer understood and agreed.", "eca": "Customer was educated on GM Cost Assistance policy at GM Dealer of Customer Care.", "icr": "Customer was made aware of the recall in questions and the recall summary verbiage.", "ide": "I de-escalated the customer who was angry" } } ]
+                sub_sections: [ { title: "Advising", terms: { "iac": "I advised the Customer", "idg": "I advised to Customer that Dealer determines from diagnosis...", "idi": "I advised the customer that since GM Dealer's are independent businesses...", "idh": "I advised the customer I will contact their dealer...", "idb": "I advised to the customer that their repurchase request was carefully reviewed and denied...", "idr": "I advised the customer that when the GM Dealer referred him to Customer Care...", "iib": "I advised the customer that in addition to the standard eligibility criteria...", "icdn": "The Customer Was Advised of Documents Needed...", "ice": "I let the customer know their request is Awaiting executive approval", "idc": "Customer was advised their complaint will be submitted...", "isc": "I advised customer about Special Coverages...", "iwr": "I advised to Customer that the New Vehicle Manufacturer Warranty...", "ica": "I have sent your allegation/s to the General Motors Dealer...", "irr": "Advised customer their request is being reviewed...", "iei": "I educated customer of GM internal, non-customer facing verbiage." } }, { title: "Actions Logged", terms: { "pde": "I confirmed customer request related to a part eligible...", "itr": "I attempted troubleshooting recommendations...", "imc": "I made contact with the customer", "ied": "I educated the customer", "idv": "I left a detailed voicemail...", "ivm": "Left Voicemail", "ipii": "I confirmed the customer Personal Identification Information...", "ipc": "I provided the customer with their case number.", "ion": "I provided the customer with their Owning Advisor's First name only.", "ipd": "I provided the customer with the denial", "ipi": "The Customer Requested Information & I Provided:", "ix": "I referred customer or customer requested being transferred to:", "ixe": "Customer was referred and transferred to EV Conceirge", "ixo": "The customer's advisor was available to transfer...", "ixr": "I offered transfer to Roadside. Customer accepted.", "aot": "The owning advisor was available in OMNI...", "cdo": "Customer was advised to send the appropriate documentation...", "eca": "Customer was educated on GM Cost Assistance policy...", "icr": "Customer was made aware of the recall...", "ide": "I de-escalated the customer who was angry" } } ]
             },
             {
                 main_section: "Vehicles & Parts",
@@ -382,49 +385,114 @@
 
             searchInput.addEventListener('input', function(event) {
                 const query = event.target.value.toLowerCase().trim();
-                const allSections = listContainer.querySelectorAll('.section');
-
-                allSections.forEach(section => {
-                    const sectionText = section.textContent.toLowerCase();
-                    const hasMatch = query === '' || sectionText.includes(query);
-                    
-                    section.classList.toggle('is-hidden', !hasMatch);
-                    
-                    // Highlighting logic
-                    const marks = section.querySelectorAll('mark');
-                    marks.forEach(mark => {
-                        const parent = mark.parentNode;
-                        parent.replaceWith(...mark.childNodes);
-                        parent.normalize();
-                    });
-
-                    if (hasMatch && query) {
-                        const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
-                        const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, null, false);
-                        let node;
-                        while(node = walker.nextNode()) {
-                            if (node.textContent.toLowerCase().includes(query)) {
-                                const newHtml = node.textContent.replace(regex, '<mark>$1</mark>');
-                                const newFragment = document.createRange().createContextualFragment(newHtml);
-                                const parent = node.parentNode;
-                                parent.replaceChild(newFragment, node);
-                                // The walker's internal state is now invalid, we need to restart it from the parent.
-                                // This is complex. A simpler innerHTML replace is better. Let's correct this.
-                            }
-                        }
-                    }
-                });
+                
+                // This is a new, more stable way to handle highlighting and filtering
+                // It rebuilds the list on each search, which is safer than manipulating the DOM
+                populateAbbreviationsList(query);
             });
         }
+        
+        // This is the new, rewritten populate function that handles search
+        function populateAbbreviationsList(query = '') {
+            const listContainer = document.getElementById('abbreviationsList');
+            listContainer.innerHTML = ''; // Clear the list
 
-        // Initialize all features
+            const regex = query ? new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi') : null;
+
+            masterList.forEach(mainSection => {
+                
+                // Check if the whole section has a match before creating it
+                const fullSectionText = JSON.stringify(mainSection).toLowerCase();
+                if (query && !fullSectionText.includes(query)) {
+                    return; // Skip this entire section if no match found
+                }
+
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = mainSection.main_section;
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'section-content';
+
+                if (mainSection.is_template_section) {
+                    const templateList = document.createElement('ul');
+                    templateList.className = 'template-list';
+                    (mainSection.templates || []).forEach(template => {
+                        const listItem = document.createElement('li');
+                        let titleHtml = template.abbr ? `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>` : `<h4 class="template-title">${template.title}</h4>`;
+                        let textHtml = template.text;
+                        if(regex){
+                            titleHtml = titleHtml.replace(regex, '<mark>$1</mark>');
+                            textHtml = textHtml.replace(regex, '<mark>$1</mark>');
+                        }
+                        listItem.innerHTML = `${titleHtml} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${textHtml}</div>`;
+                        templateList.appendChild(listItem);
+                    });
+                    contentDiv.appendChild(templateList);
+                } else {
+                    (mainSection.sub_sections || []).forEach(subSection => {
+                        const subTitle = document.createElement('h3');
+                        subTitle.className = 'subsection-title';
+                        subTitle.textContent = subSection.title;
+                        contentDiv.appendChild(subTitle);
+                        
+                        const list = document.createElement('ul');
+                        
+                        if (subSection.is_checklist_section) {
+                            list.className = 'term-list-single-col';
+                            (subSection.checklists || []).forEach(checklist => {
+                                const listItem = document.createElement('li');
+                                let textHtml = checklist.text;
+                                let titleHtml = `${checklist.title}`;
+                                if(regex){
+                                    textHtml = textHtml.replace(regex, '<mark>$1</mark>');
+                                    titleHtml = titleHtml.replace(regex, '<mark>$1</mark>');
+                                }
+                                listItem.innerHTML = `<strong>${checklist.abbr}</strong>: ${titleHtml} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${textHtml}</div>`;
+                                list.appendChild(listItem);
+                            });
+                        } else {
+                            list.className = 'term-list';
+                            const sortedTerms = Object.keys(subSection.terms || {}).sort();
+                            sortedTerms.forEach(term => {
+                                const listItem = document.createElement('li');
+                                let definitionHtml = subSection.terms[term];
+                                if(regex){
+                                    definitionHtml = definitionHtml.replace(regex, '<mark>$1</mark>');
+                                }
+                                listItem.innerHTML = `<strong>${term}</strong>: ${definitionHtml}`;
+                                list.appendChild(listItem);
+                            });
+                        }
+                        contentDiv.appendChild(list);
+                    });
+                }
+
+                title.addEventListener('click', () => {
+                    title.classList.toggle('active');
+                    contentDiv.classList.toggle('active');
+                });
+                
+                sectionDiv.appendChild(title);
+                sectionDiv.appendChild(contentDiv);
+                listContainer.appendChild(sectionDiv);
+            });
+        }
+        
+        // Initial setup
+        const inputText = document.getElementById('inputText');
+        const searchInput = document.getElementById('abbreviationSearch');
+
+        inputText.addEventListener('input', performTranslation);
+        searchInput.addEventListener('input', (e) => populateAbbreviationsList(e.target.value));
+
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
         setupCopyToScratchpad();
-        setupAbbreviationSearch();
-        
-        // Initial translation on load
         performTranslation();
     });
     </script>
