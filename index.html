@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Call Logger & Abbreviation Translator</title>
-  <style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call Logger & Abbreviation Translator</title>
+    <style>
         body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; color: #333; }
         .container { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
         .box { flex: 1; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
@@ -160,31 +160,35 @@
         @media (max-width: 600px) { 
             .term-list { column-count: 1; } 
         }
-  </style>
+    </style>
 </head>
 <body>
-  <h1>Call Logger & Abbreviation Translator</h1>
-  <div class="container">
-    <div class="box">
-      <h2>Enter Text Here:</h2>
-      <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
+    <h1>Call Logger & Abbreviation Translator</h1>
+    <div class="container">
+        <div class="box">
+            <h2>Enter Text Here:</h2>
+            <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
+        </div>
+        <div class="box">
+            <h2>Translated Text:</h2>
+            <textarea id="translatedText" readonly></textarea>
+            <button id="copyToScratchpadBtn">Copy to Scratch Pad</button>
+        </div>
+        <div class="box">
+            <h2>Scratch Pad</h2>
+            <textarea id="scratchPad" placeholder="Your notes here..."></textarea>
+        </div>
     </div>
-    <div class="box">
-      <h2>Translated Text:</h2>
-      <textarea id="translatedText" readonly></textarea> <button id="copyToScratchpadBtn">Copy to Scratch Pad</button>
+    <div id="abbreviationsContainer">
+        <div class="abbreviations-header">
+            <h2>Available Abbreviations</h2>
+            <input type="text" id="abbreviationSearch" placeholder="Search All Sections...">
+            <button id="toggleAllBtn">Toggle All</button>
+        </div>
+        <div id="abbreviationsList"></div>
     </div>
-    <div class="box">
-      <h2>Scratch Pad</h2>
-      <textarea id="scratchPad" placeholder="Your notes here..."></textarea>
-    </div>
-  </div>
-  <div id="abbreviationsContainer">
-    <div class="abbreviations-header">
-      <h2>Available Abbreviations</h2><input type="text" id="abbreviationSearch" placeholder="Search All Sections..."> <button id="toggleAllBtn">Toggle All</button>
-    </div>
-    <div id="abbreviationsList"></div>
-  </div>
-  <script>
+
+    <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
             {
@@ -249,15 +253,21 @@
         const lookupAbbreviations = masterList.reduce((acc, mainSection) => {
             if (mainSection.is_template_section) {
                 (mainSection.templates || []).forEach(template => {
-                    if (template.abbr) { acc[template.abbr.toLowerCase()] = template.text; }
+                    if (template.abbr) {
+                        acc[template.abbr.toLowerCase()] = template.text;
+                    }
                 });
             } else {
                 (mainSection.sub_sections || []).forEach(subSection => {
                     if (subSection.is_checklist_section){
-                        (subSection.checklists || []).forEach(checklist => { acc[checklist.abbr.toLowerCase()] = checklist.text; });
+                        (subSection.checklists || []).forEach(checklist => {
+                            acc[checklist.abbr.toLowerCase()] = checklist.text;
+                        });
                     } else {
                         const terms = subSection.terms || {};
-                        for (const term in terms) { acc[term.toLowerCase()] = terms[term]; }
+                        for (const term in terms) {
+                            acc[term.toLowerCase()] = terms[term];
+                        }
                     }
                 });
             }
@@ -275,9 +285,17 @@
             translatedText.value = translatedParts.join('');
         }
 
-        function populateAbbreviationsList() {
-            abbreviationsListDiv.innerHTML = '';
+        function populateAbbreviationsList(query = '') {
+            const listContainer = document.getElementById('abbreviationsList');
+            listContainer.innerHTML = ''; 
+            const safeQuery = query.trim().toLowerCase();
+
             masterList.forEach(mainSection => {
+                const fullSectionText = JSON.stringify(mainSection).toLowerCase();
+                if (safeQuery && !fullSectionText.includes(safeQuery)) {
+                    return; 
+                }
+
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'section';
                 
@@ -294,7 +312,13 @@
                     mainSection.templates.forEach(template => {
                         const listItem = document.createElement('li');
                         let titleHtml = template.abbr ? `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>` : `<h4 class="template-title">${template.title}</h4>`;
-                        listItem.innerHTML = `${titleHtml} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${template.text}</div>`;
+                        let textHtml = template.text;
+                        if(safeQuery){
+                            const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+                            titleHtml = titleHtml.replace(regex, '<mark>$1</mark>');
+                            textHtml = textHtml.replace(regex, '<mark>$1</mark>');
+                        }
+                        listItem.innerHTML = `${titleHtml} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${textHtml}</div>`;
                         templateList.appendChild(listItem);
                     });
                     contentDiv.appendChild(templateList);
@@ -311,7 +335,14 @@
                             list.className = 'term-list-single-col';
                             (subSection.checklists || []).forEach(checklist => {
                                 const listItem = document.createElement('li');
-                                listItem.innerHTML = `<strong>${checklist.abbr}</strong>: ${checklist.title} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${checklist.text}</div>`;
+                                let textHtml = checklist.text;
+                                let titleHtml = `${checklist.title}`;
+                                if(safeQuery){
+                                    const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+                                    textHtml = textHtml.replace(regex, '<mark>$1</mark>');
+                                    titleHtml = titleHtml.replace(regex, '<mark>$1</mark>');
+                                }
+                                listItem.innerHTML = `<strong>${checklist.abbr}</strong>: ${titleHtml} <button class="toggle-def-btn">[Show]</button><div class="collapsible-def">${textHtml}</div>`;
                                 list.appendChild(listItem);
                             });
                         } else {
@@ -319,7 +350,14 @@
                             const sortedTerms = Object.keys(subSection.terms || {}).sort();
                             sortedTerms.forEach(term => {
                                 const listItem = document.createElement('li');
-                                listItem.innerHTML = `<strong>${term}</strong>: ${subSection.terms[term]}`;
+                                let definitionHtml = subSection.terms[term];
+                                let termHtml = term;
+                                if(safeQuery){
+                                     const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+                                    definitionHtml = definitionHtml.replace(regex, '<mark>$1</mark>');
+                                    termHtml = termHtml.replace(regex, '<mark>$1</mark>');
+                                }
+                                listItem.innerHTML = `<strong>${termHtml}</strong>: ${definitionHtml}`;
                                 list.appendChild(listItem);
                             });
                         }
@@ -329,7 +367,7 @@
                 
                 sectionDiv.appendChild(title);
                 sectionDiv.appendChild(contentDiv);
-                abbreviationsListDiv.appendChild(sectionDiv);
+                listContainer.appendChild(sectionDiv);
             });
         }
         
@@ -353,11 +391,11 @@
             if (toggleBtn) {
                 toggleBtn.addEventListener('click', function() {
                     const allTitles = container.querySelectorAll('.section-title');
-                    const allContents = container.querySelectorAll('.section-content');
                     const shouldOpen = allTitles.length > 0 && !allTitles[0].classList.contains('active');
-                    allTitles.forEach((title, index) => {
+                    allTitles.forEach(title => {
+                        const content = title.nextElementSibling;
                         title.classList.toggle('active', shouldOpen);
-                        allContents[index].classList.toggle('active', shouldOpen);
+                        content.classList.toggle('active', shouldOpen);
                     });
                 });
             }
@@ -383,31 +421,22 @@
 
         function setupAbbreviationSearch() {
             const searchInput = document.getElementById('abbreviationSearch');
-            const listContainer = document.getElementById('abbreviationsList');
-
-            searchInput.addEventListener('input', function(event) {
-                const query = event.target.value.toLowerCase().trim();
-                const allSections = listContainer.querySelectorAll('.section');
-
-                allSections.forEach(section => {
-                    const sectionText = section.textContent.toLowerCase();
-                    const hasMatch = query === '' || sectionText.includes(query);
-                    section.style.display = hasMatch ? '' : 'none';
-                });
+            searchInput.addEventListener('input', (e) => {
+                populateAbbreviationsList(e.target.value);
             });
         }
         
-        // --- This is the corrected execution order ---
         const inputText = document.getElementById('inputText');
         
+        // --- CORRECTED SCRIPT EXECUTION ORDER ---
         populateAbbreviationsList();
         setupEventListeners();
         setupCopyToScratchpad();
         setupAbbreviationSearch();
 
         inputText.addEventListener('input', performTranslation);
-        performTranslation(); // Initial call
+        performTranslation(); // Initial translation on load
     });
-  </script>
+    </script>
 </body>
 </html>
