@@ -145,7 +145,10 @@
         .collapsible-def.visible {
             display: block;
         }
-
+mark {
+    background-color: yellow;
+    color: black;
+}
         @media (max-width: 900px) { 
             .container { flex-direction: column; }
             .term-list { column-count: 2; } 
@@ -388,25 +391,52 @@
             }
         }
 
-        function setupAbbreviationSearch() {
-            const searchInput = document.getElementById('abbreviationSearch');
-            const allSections = document.querySelectorAll('.section');
+       function setupAbbreviationSearch() {
+    const searchInput = document.getElementById('abbreviationSearch');
+    const listContainer = document.getElementById('abbreviationsList');
 
-            if (searchInput) {
-                searchInput.addEventListener('input', function(event) {
-                    const query = event.target.value.toLowerCase().trim();
+    // This function will be run on every key press in the search box
+    searchInput.addEventListener('input', function(event) {
+        const query = event.target.value.trim();
 
-                    allSections.forEach(section => {
-                        const sectionText = section.textContent.toLowerCase();
-                        if (sectionText.includes(query)) {
-                            section.classList.remove('is-hidden');
-                        } else {
-                            section.classList.add('is-hidden');
-                        }
-                    });
+        // First, find and remove all previous highlights
+        const marks = listContainer.querySelectorAll('mark');
+        marks.forEach(mark => {
+            const parent = mark.parentNode;
+            parent.replaceWith(...mark.childNodes);
+            parent.normalize(); // Cleans up the text nodes
+        });
+
+        // Now, find and hide/show sections
+        const allSections = listContainer.querySelectorAll('.section');
+        allSections.forEach(section => {
+            const sectionText = section.textContent;
+            const hasMatch = query && sectionText.toLowerCase().includes(query.toLowerCase());
+
+            if (hasMatch) {
+                section.classList.remove('is-hidden');
+                
+                // Highlight the matches within this visible section
+                const regex = new RegExp(`(${query})`, 'gi');
+                const elementsToSearch = section.querySelectorAll('li, .collapsible-def, h4');
+
+                elementsToSearch.forEach(element => {
+                    // Create a temporary copy to avoid breaking the live element's structure
+                    let tempHTML = element.innerHTML;
+                    element.innerHTML = tempHTML.replace(regex, '<mark>$1</mark>');
                 });
+
+            } else {
+                section.classList.add('is-hidden');
             }
-        }
+
+            // If the search box is empty, show everything
+            if (!query) {
+                section.classList.remove('is-hidden');
+            }
+        });
+    });
+}
         
         // --- Call all setup functions ---
         populateAbbreviationsList();
