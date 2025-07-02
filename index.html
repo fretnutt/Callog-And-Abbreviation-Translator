@@ -29,6 +29,9 @@
         #toggleAllBtn:hover, #translateBtn:hover {
             background-color: #0056b3;
         }
+        #translateBtn {
+            margin-top: 10px;
+        }
         
         .section {
             background-color: #fff;
@@ -191,7 +194,7 @@
             },
             {
                 main_section: "Processes",
-                sub_sections: [ { title: "Service & Repair", terms: { "appt": "Appointment", "diag": "Diagnosis.", "dr": "Delayed Repair", "pd": "The Part Delayed is", "rre": "Repeat Repairs/Appointments Failed Remedies" } }, { title: "Case Management", terms: { "bac xfer": "BAC Transfer (caller was transferred from another department)", "calesc": "The customer confirmed they live and repair is in California...", "cdep": "Customer was transferred to the applicable department.", "liveesc": "The customer requested escalation...", "reg": "Advised customer of regional escalation...", "tle": "Manager Escalation Follow-Up...", "utc1": "Unable to Contact 1st Attempt-LVM?...", "utc2": "Unable to Contact 2nd Attempt-LVM?...", "utc3": "Unable to Contact 3rd and Final Attempt-LVM?" } }, { title: "Specific Programs", terms: { "bb": "Repurchase/Buyback", "ctp": "Courtesy Transportation Program", "mrp": "General Motors My Rewards Points Program", "prd": "Post-Repair Discussion...", "reu": "Reunification Program", "rsa": "General Motors Roadside Warranty Assistance", "tre": "Tread Escalation" } } ]
+                sub_sections: [ { title: "Service & Repair", terms: { "appt": "Appointment", "diag": "Diagnosis.", "dr": "Delayed Repair", "pd": "The Part Delayed is", "rre": "Repeat Repairs/Appointments Failed Remedies" } }, { title: "Case Management", terms: { "bac xfer": "BAC Transfer (caller was transferred from another department)", "calesc": "The customer confirmed they live and repair is in California. Advised customer a regional advisor will follow up with them shortly.", "cdep": "Customer was transferred to the applicable department.", "liveesc": "The customer requested escalation to supervisor, manager, or next level authority...", "reg": "Advised customer of regional escalation with Senior Advisor will follow up within 48hrs. Sent to CAC Queue:", "tle": "Manager Escalation Follow-Up Phone Call within 2 business days.", "utc1": "Unable to Contact 1st Attempt-LVM? Sent UTC email to customer.", "utc2": "Unable to Contact 2nd Attempt-LVM? Sent UTC email to customer.", "utc3": "Unable to Contact 3rd and Final Attempt-LVM?" } }, { title: "Specific Programs", terms: { "bb": "Repurchase/Buyback", "ctp": "Courtesy Transportation Program", "mrp": "General Motors My Rewards Points Program", "prd": "Post-Repair Discussion About Potential Compensation/Reimbursement.", "reu": "Reunification Program", "rsa": "General Motors Roadside Warranty Assistance", "tre": "Tread Escalation" } } ]
             },
             {
                 main_section: "Actions",
@@ -358,16 +361,14 @@
                 }
             });
         }
-        
-        // This tool is now manual. Click the button to translate.
-        const translateBtn = document.getElementById('translateBtn');
-        if(translateBtn) {
-            translateBtn.addEventListener('click', performTranslation);
-        }
+
+        // Event listener for the input box to trigger translation automatically
+        inputText.addEventListener('input', performTranslation);
         
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
+        performTranslation(); // Initial translation on load
     });
     </script>
 </body>
