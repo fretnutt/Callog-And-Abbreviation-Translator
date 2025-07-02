@@ -18,7 +18,7 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        #toggleAllBtn {
+        #toggleAllBtn, #translateBtn {
             padding: 8px 12px;
             border: 1px solid #0056b3;
             background-color: #007bff;
@@ -26,8 +26,11 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #toggleAllBtn:hover {
+        #toggleAllBtn:hover, #translateBtn:hover {
             background-color: #0056b3;
+        }
+        #translateBtn {
+            margin-top: 10px;
         }
         
         .section {
@@ -143,6 +146,7 @@
         <div class="box">
             <h2>Enter Text Here:</h2>
             <textarea id="inputText" placeholder="Start typing... for example: cst my veh has an iss with the eng"></textarea>
+            <button id="translateBtn">Translate</button>
         </div>
         <div class="box">
             <h2>Translated Text:</h2>
@@ -162,7 +166,7 @@
         const masterList = [
             {
                 main_section: "Customer Statements",
-                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase. I Advised the Customer That I Would Submit Their Request to the Applicable Internal Only Department For Review. That This Could Take up to 5 Business Days. And to Expect No Reason Provided Along with an Approval or Denial.", "cce": "The customer is expecting compensation", "cdl": "The Customer Wants To Know How We Can Help With Their Delayed Repair", "cdq": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall. I provided the customer with the recall summary and verbiage.", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cud": "Customer Wants an Update", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "cuo": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "cwa": "Customer wants" } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cadc": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent. Customer Repeatedly Exhibited Offensive Language. I Warned Them of Required Civility and Decorum more than once, of Which The Customer Refused to Abide. So I Advised the Customer Since They Refused This Warning and Requirement, I Would Disconnect the Call. And I Disconnected the Call because the Customer repeatedly used language that offended me.", "cdh": "Dealer is not being honest.", "csnr": "Something not right." } }, { title: "Reports & General", terms: { "cst": "The Customer Stated", "cca": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation. I advised to the customer I will forward their accusation/allegation to the dealer of complaint. And any further actions would need to be with customer and dealer.", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage they feel is applicable." } } ]
+                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase...", "cce": "The customer is expecting compensation", "cdl": "The Customer Wants To Know How We Can Help With Their Delayed Repair", "cdq": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall...", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cud": "Customer Wants an Update", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "cuo": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "cwa": "Customer wants" } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cadc": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent...", "cdh": "Dealer is not being honest.", "csnr": "Something not right." } }, { title: "Reports & General", terms: { "cst": "The Customer Stated", "cca": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been down at GM Dealer for ", "dal": "The customer has a GM Dealer Allegation...", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer...", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about Special Coverage..." } } ]
             },
             {
                 main_section: "Vehicles & Parts",
@@ -185,8 +189,8 @@
                         title: "Case Customer Checklists",
                         is_checklist_section: true,
                         checklists: [
-                            { abbr: "bbcl", title: "Buyback Checklist-", text: "Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:" },
-                            { abbr: "incl", title: "Initial Customer-", text: "VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:" }
+                            { abbr: "bcl", title: "Buyback Checklist-", text: "Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:" },
+                            { abbr: "icl", title: "Initial Customer-", text: "VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:" }
                         ]
                     }
                 ]
@@ -222,19 +226,22 @@
         const abbreviationsListDiv = document.getElementById('abbreviationsList');
         
         const lookupAbbreviations = masterList.reduce((acc, mainSection) => {
-            if (mainSection.is_template_section) return acc;
-            (mainSection.sub_sections || []).forEach(subSection => {
-                if (subSection.is_checklist_section){
-                    (subSection.checklists || []).forEach(checklist => {
-                        acc[checklist.abbr.toLowerCase()] = checklist.text;
-                    });
-                } else {
-                    const terms = subSection.terms || {};
-                    for (const term in terms) {
-                        acc[term.toLowerCase()] = terms[term];
+            if (mainSection.is_template_section) {
+                // No abbreviations to add from the Goodwill section
+            } else {
+                (mainSection.sub_sections || []).forEach(subSection => {
+                    if (subSection.is_checklist_section){
+                        (subSection.checklists || []).forEach(checklist => {
+                            acc[checklist.abbr.toLowerCase()] = checklist.text;
+                        });
+                    } else {
+                        const terms = subSection.terms || {};
+                        for (const term in terms) {
+                            acc[term.toLowerCase()] = terms[term];
+                        }
                     }
-                }
-            });
+                });
+            }
             return acc;
         }, {});
 
@@ -340,11 +347,17 @@
             });
         }
 
-        inputText.addEventListener('input', performTranslation);
+        // --- CHANGE: Add event listener for the new Translate button ---
+        const translateBtn = document.getElementById('translateBtn');
+        if(translateBtn) {
+            translateBtn.addEventListener('click', performTranslation);
+        }
+        // --- END CHANGE ---
+
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
-        performTranslation();
+        performTranslation(); // Initial translation on load
     });
     </script>
 </body>
