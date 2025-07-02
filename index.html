@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Call Logger & Abbreviation Translator</title>
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Call Logger & Abbreviation Translator</title>
+  <style>
         body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; color: #333; }
         .container { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
         .box { flex: 1; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); }
@@ -160,35 +160,31 @@
         @media (max-width: 600px) { 
             .term-list { column-count: 1; } 
         }
-    </style>
+  </style>
 </head>
 <body>
-    <h1>Call Logger & Abbreviation Translator</h1>
-    <div class="container">
-        <div class="box">
-            <h2>Enter Text Here:</h2>
-            <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
-        </div>
-        <div class="box">
-            <h2>Translated Text:</h2>
-            <textarea id="translatedText" readonly></textarea>
-            <button id="copyToScratchpadBtn">Copy to Scratch Pad</button>
-        </div>
-        <div class="box">
-            <h2>Scratch Pad</h2>
-            <textarea id="scratchPad" placeholder="Your notes here..."></textarea>
-        </div>
+  <h1>Call Logger & Abbreviation Translator</h1>
+  <div class="container">
+    <div class="box">
+      <h2>Enter Text Here:</h2>
+      <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
     </div>
-    <div id="abbreviationsContainer">
-        <div class="abbreviations-header">
-            <h2>Available Abbreviations</h2>
-            <input type="text" id="abbreviationSearch" placeholder="Search All Sections...">
-            <button id="toggleAllBtn">Toggle All</button>
-        </div>
-        <div id="abbreviationsList"></div>
+    <div class="box">
+      <h2>Translated Text:</h2>
+      <textarea id="translatedText" readonly></textarea> <button id="copyToScratchpadBtn">Copy to Scratch Pad</button>
     </div>
-
-    <script>
+    <div class="box">
+      <h2>Scratch Pad</h2>
+      <textarea id="scratchPad" placeholder="Your notes here..."></textarea>
+    </div>
+  </div>
+  <div id="abbreviationsContainer">
+    <div class="abbreviations-header">
+      <h2>Available Abbreviations</h2><input type="text" id="abbreviationSearch" placeholder="Search All Sections..."> <button id="toggleAllBtn">Toggle All</button>
+    </div>
+    <div id="abbreviationsList"></div>
+  </div>
+  <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
             {
@@ -412,6 +408,6 @@
         inputText.addEventListener('input', performTranslation);
         performTranslation(); // Initial call
     });
-    </script>
+  </script>
 </body>
 </html>
