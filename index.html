@@ -171,7 +171,7 @@
         <div id="abbreviationsList"></div>
     </div>
 
-    <script>
+   <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
             {
@@ -286,9 +286,9 @@
                     templateList.className = 'template-list';
                     mainSection.templates.forEach(template => {
                         const listItem = document.createElement('li');
-                        let titleHtml = template.abbr ? `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>` : `<h4 class="template-title">${template.title}</h4>`;
+                         // Corrected to include the abbreviation and title
                         listItem.innerHTML = `
-                            ${titleHtml}
+                            <span class="template-title"><strong>${template.abbr || ''}</strong>: ${template.title}</span>
                             <button class="toggle-def-btn">[Show]</button>
                             <div class="collapsible-def">${template.text}</div>`;
                         templateList.appendChild(listItem);
@@ -359,7 +359,7 @@
                 }
             });
         }
-
+        
         function setupCopyToScratchpad() {
             const copyBtn = document.getElementById('copyToScratchpadBtn');
             const scratchPad = document.getElementById('scratchPad');
