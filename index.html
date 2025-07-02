@@ -18,7 +18,7 @@
             align-items: center;
             margin-bottom: 10px;
         }
-        #toggleAllBtn {
+        #toggleAllBtn, #copyToScratchpadBtn {
             padding: 8px 12px;
             border: 1px solid #0056b3;
             background-color: #007bff;
@@ -26,8 +26,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #toggleAllBtn:hover {
+        #toggleAllBtn:hover, #copyToScratchpadBtn:hover {
             background-color: #0056b3;
+        }
+        #copyToScratchpadBtn {
+            display: block;
+            margin-top: 10px;
         }
         
         .section {
@@ -69,7 +73,7 @@
             display: block; /* Show content when section is active */
         }
         
-        .subsection-title {
+        .subsection-title, .template-title {
             font-weight: bold;
             color: #333;
             font-size: 1.1em;
@@ -133,8 +137,13 @@
             display: block;
         }
 
-        @media (max-width: 900px) { .term-list { column-count: 2; } }
-        @media (max-width: 600px) { .container { flex-direction: column; } .term-list { column-count: 1; } }
+        @media (max-width: 900px) { 
+            .container { flex-direction: column; }
+            .term-list { column-count: 2; } 
+        }
+        @media (max-width: 600px) { 
+            .term-list { column-count: 1; } 
+        }
     </style>
 </head>
 <body>
@@ -147,6 +156,7 @@
         <div class="box">
             <h2>Translated Text:</h2>
             <textarea id="translatedText" readonly></textarea>
+            <button id="copyToScratchpadBtn">Copy to Scratch Pad</button>
         </div>
         <div class="box">
             <h2>Scratch Pad</h2>
@@ -349,7 +359,7 @@
                 }
             });
         }
-        
+
         function setupCopyToScratchpad() {
             const copyBtn = document.getElementById('copyToScratchpadBtn');
             const scratchPad = document.getElementById('scratchPad');
@@ -367,7 +377,7 @@
                 });
             }
         }
-
+        
         // This tool is back to automatic translation
         inputText.addEventListener('input', performTranslation);
         
