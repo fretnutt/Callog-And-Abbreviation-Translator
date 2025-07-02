@@ -47,9 +47,6 @@
             margin-bottom: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .section.is-hidden {
-            display: none;
-        }
 
         .section-title {
             font-weight: bold;
@@ -82,7 +79,7 @@
             display: block; /* Show content when section is active */
         }
         
-        .subsection-title, .template-title {
+        .subsection-title {
             font-weight: bold;
             color: #333;
             font-size: 1.1em;
@@ -145,10 +142,13 @@
         .collapsible-def.visible {
             display: block;
         }
-mark {
-    background-color: yellow;
-    color: black;
-}
+        mark {
+            background-color: yellow;
+            color: black;
+            padding: 2px;
+            border-radius: 3px;
+        }
+
         @media (max-width: 900px) { 
             .container { flex-direction: column; }
             .term-list { column-count: 2; } 
@@ -163,7 +163,7 @@ mark {
     <div class="container">
         <div class="box">
             <h2>Enter Text Here:</h2>
-            <textarea id="inputText" placeholder="Start typing... for example: cs my veh has an iss with the eng"></textarea>
+            <textarea id="inputText" placeholder="Start typing... for example: cst my veh has an iss with the eng"></textarea>
         </div>
         <div class="box">
             <h2>Translated Text:</h2>
@@ -230,7 +230,7 @@ mark {
             },
             {
                 main_section: "Documents & Identifiers",
-                sub_sections: [ { title: "Case & Vehicle", terms: { "add": "Customer Mailing Address.", "cn": "Case Number:", "cr": "The Customer Resides In", "ct": "Call Type (IBCC/OBCC):", "dn": "Dealer Name:", "mil": "Current Vehicle Mileage:", "o": "Outcome:", "r": "Reason:", "sr": "Service Request", "sym": "Symptoms:", "vin": "Vehicle V.I.N." } }, { title: "Documents & Records", terms: { "bul": "Bulletin", "calllog": "Case Information", "cd": "Call Details", "del": "Delivery Type", "doc": "Documentation/s", "em": "Email", "esi": "Insurance and liability claims (fire and/or medical)", "eta": "Estimated Time of Arrival/Repair", "fi": "Final Invoice", "gl": "GM Guidelines.", "om": "Owner's Manual", "pac": "PAC-Product Allegation (property damage,defect cause collision)", "pal": "Product Allegation", "pdf": "PDF Document", "tsb": "Technical Service Bulletin" } } ]
+                sub_sections: [ { title: "Case & Vehicle", terms: { "add": "Customer Mailing Address.", "cn": "Case Number:", "cr": "The Customer Resides In", "ct": "Call Type (IBCC/OBCC):", "dn": "Dealer Name:", "mil": "Current Vehicle Mileage:", "o": "Outcome:", "r": "Reason:", "srr": "Service Request", "sym": "Symptoms:", "vin": "Vehicle V.I.N." } }, { title: "Documents & Records", terms: { "bul": "Bulletin", "calllog": "Case Information", "cd": "Call Details", "del": "Delivery Type", "doc": "Documentation/s", "em": "Email", "esi": "Insurance and liability claims (fire and/or medical)", "eta": "Estimated Time of Arrival/Repair", "fi": "Final Invoice", "gl": "GM Guidelines.", "om": "Owner's Manual", "pac": "PAC-Product Allegation (property damage,defect cause collision)", "pal": "Product Allegation", "pdf": "PDF Document", "tsb": "Technical Service Bulletin" } } ]
             },
             {
                 main_section: "Places & Departments",
@@ -297,11 +297,11 @@ mark {
                 if (mainSection.is_template_section) {
                     const templateList = document.createElement('ul');
                     templateList.className = 'template-list';
-                    mainSection.templates.forEach(template => {
+                    (mainSection.templates || []).forEach(template => {
                         const listItem = document.createElement('li');
-                         // Corrected to include the abbreviation and title
+                        let titleHtml = template.abbr ? `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>` : `<h4 class="template-title">${template.title}</h4>`;
                         listItem.innerHTML = `
-                            <span class="template-title"><strong>${template.abbr || ''}</strong>: ${template.title}</span>
+                            ${titleHtml}
                             <button class="toggle-def-btn">[Show]</button>
                             <div class="collapsible-def">${template.text}</div>`;
                         templateList.appendChild(listItem);
@@ -391,62 +391,73 @@ mark {
             }
         }
 
-       function setupAbbreviationSearch() {
-    const searchInput = document.getElementById('abbreviationSearch');
-    const listContainer = document.getElementById('abbreviationsList');
+        function setupAbbreviationSearch() {
+            const searchInput = document.getElementById('abbreviationSearch');
+            const listContainer = document.getElementById('abbreviationsList');
 
-    // This function will be run on every key press in the search box
-    searchInput.addEventListener('input', function(event) {
-        const query = event.target.value.trim();
+            searchInput.addEventListener('input', function(event) {
+                const query = event.target.value.trim().toLowerCase();
 
-        // First, find and remove all previous highlights
-        const marks = listContainer.querySelectorAll('mark');
-        marks.forEach(mark => {
-            const parent = mark.parentNode;
-            parent.replaceWith(...mark.childNodes);
-            parent.normalize(); // Cleans up the text nodes
-        });
-
-        // Now, find and hide/show sections
-        const allSections = listContainer.querySelectorAll('.section');
-        allSections.forEach(section => {
-            const sectionText = section.textContent;
-            const hasMatch = query && sectionText.toLowerCase().includes(query.toLowerCase());
-
-            if (hasMatch) {
-                section.classList.remove('is-hidden');
-                
-                // Highlight the matches within this visible section
-                const regex = new RegExp(`(${query})`, 'gi');
-                const elementsToSearch = section.querySelectorAll('li, .collapsible-def, h4');
-
-                elementsToSearch.forEach(element => {
-                    // Create a temporary copy to avoid breaking the live element's structure
-                    let tempHTML = element.innerHTML;
-                    element.innerHTML = tempHTML.replace(regex, '<mark>$1</mark>');
+                // Remove previous highlights
+                const marks = listContainer.querySelectorAll('mark');
+                marks.forEach(mark => {
+                    const parent = mark.parentNode;
+                    parent.replaceWith(...mark.childNodes);
+                    parent.normalize();
                 });
 
-            } else {
-                section.classList.add('is-hidden');
-            }
+                const allSections = listContainer.querySelectorAll('.section');
 
-            // If the search box is empty, show everything
-            if (!query) {
-                section.classList.remove('is-hidden');
-            }
-        });
-    });
-}
+                if (!query) {
+                    allSections.forEach(section => {
+                        section.classList.remove('is-hidden');
+                    });
+                    return;
+                }
+
+                const regex = new RegExp(`(${query.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&')})`, 'gi');
+
+                allSections.forEach(section => {
+                    const sectionText = section.textContent;
+                    let matchFound = false;
+
+                    if (sectionText.toLowerCase().includes(query)) {
+                        matchFound = true;
+                        
+                        const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, null, false);
+                        let node;
+                        const nodesToReplace = [];
+                        while (node = walker.nextNode()) {
+                            if (node.textContent.toLowerCase().includes(query)) {
+                                nodesToReplace.push(node);
+                            }
+                        }
+                        
+                        nodesToReplace.forEach(n => {
+                            const newHtml = n.textContent.replace(regex, '<mark>$1</mark>');
+                            const newFragment = document.createRange().createContextualFragment(newHtml);
+                            n.parentNode.replaceChild(newFragment, n);
+                        });
+                    }
+
+                    if (matchFound) {
+                        section.classList.remove('is-hidden');
+                    } else {
+                        section.classList.add('is-hidden');
+                    }
+                });
+            });
+        }
+
+        // This tool is back to automatic translation
+        inputText.addEventListener('input', performTranslation);
         
-        // --- Call all setup functions ---
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
         setupCopyToScratchpad();
         setupAbbreviationSearch();
-        
-        // Initial translation on load
-        performTranslation();
+        performTranslation(); // Initial translation on load
     });
     </script>
 </body>
