@@ -9,7 +9,24 @@
         .main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .container { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
         .box { flex: 1; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; }
-        textarea { width: 100%; flex-grow: 1; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; resize: vertical; height: 150px; }
+        textarea, .textarea-lookalike {
+            width: 100%;
+            flex-grow: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+            resize: vertical;
+            height: 150px;
+            font-family: sans-serif;
+            line-height: 1.5;
+        }
+        .textarea-lookalike {
+            background-color: #e9ecef;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
         h1, h2 { color: #0056b3; margin-top: 0; }
         .box h2 {
             display: flex;
@@ -170,7 +187,7 @@
         </div>
         <div class="box">
             <h2>Translated Text</h2>
-            <textarea id="translatedText" readonly></textarea>
+            <div id="translatedText" class="textarea-lookalike" contenteditable="false"></div>
         </div>
         <div class="box">
             <h2>Scratch Pad</h2>
@@ -192,7 +209,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
-            {
+             {
                 main_section: "Checklists & Verbiage",
                 is_template_section: true,
                 templates: [
