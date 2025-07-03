@@ -18,7 +18,7 @@
         }
 
         .action-btn {
-            padding: 8px 12px;
+            padding: 6px 12px;
             font-size: 14px;
             cursor: pointer;
             border: 1px solid #0056b3;
@@ -26,9 +26,17 @@
             color: white;
             border-radius: 5px;
             margin-left: 10px;
+            line-height: 1.2;
+            text-align: center;
         }
         .action-btn:hover {
             background-color: #0056b3;
+        }
+        .btn-subtext {
+            font-size: 10px;
+            font-weight: normal;
+            opacity: 0.8;
+            display: block;
         }
 
         #abbreviationsContainer { margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; }
@@ -172,7 +180,10 @@
     <div id="abbreviationsContainer">
         <div class="abbreviations-header">
             <h2>Available Abbreviations</h2>
-            <button id="copyHighlightedBtn" class="action-btn">Copy To Scratch Pad</button>
+            <button id="copyHighlightedBtn" class="action-btn">
+                Copy To Scratch Pad
+                <span class="btn-subtext">(what you highlight)</span>
+            </button>
             <button id="toggleAllBtn" class="action-btn">Toggle All</button>
         </div>
         <div id="abbreviationsList"></div>
@@ -296,8 +307,8 @@
         const complaintAbbreviations = new Set(['cel', 'oht', 'msf', 'knp', 'nbk', 'sbk', 'vbp', 'tsl', 'hsh', 'tfl', 'dbt', 'fsr', 'dml', 'msn', 'pwp', 'tir', 'stp', 'cws', 'ltf', 'wpf']);
         
         const keywordsToHighlight = [...new Set([
-            'Repurchase', 'compensation', 'More', 'documentation', 'Recall', 'information', 'Warranty', 'status', 'Existing', 'Tow', 'replacement', 'update', 'concerned', 'expects', 'feels', 'covered', 'expectations', 'diagnosing', 'Upset', 'wants', 'Accusation', 'alleges', 'Beligerent', 'forthright', 'damages', 'Because', 'disconnected', 'Issue', 'justify', 'nothing', 'follow-up', 'transfer', 'accepted', 'Manager', 'Referred', 'Refused', 'Repeat', 'Roadside', 'Stated', 'Allegation', 'advised', 'approval', 'denied', 'submitted', 'determines', 'contact', 'independent', 'referred', 'educated', 'eligibility', 'reviewed', 'Coverages', 'extend', 'available', 'aware', 'de-escalated', 'voicemail', 'Advisor\'s', 'number', 'denial', 'Information', 'troubleshooting', 'Voicemail', 'transferred', 'Delay', 'Identification', 'Appointment', 'Diagnosis', 'Delayed', 'escalation', 'Buyback', 'Courtesy', 'Rewards', 'Reimbursement', 'Reunification', 'Tread', 'Assisting', 'Follow-Up', 'Googled', 'Confirmed', 'Close', 'post-repair', 'Schedule', 'Accelerate', 'Accomodate', 'Duplicate', 'Diagnosed', 'loaner', 'Failed', 'Programmed', 'Repair', 'Replace', 'Reprogrammed', 'service',
-            'engine', 'oil', 'consumption', 'lifter', 'air', 'bag', 'filter', 'cluster', 'rocker', 'radio', 'rear', 'screen', 'stalling', 'ignition', 'leaks', 'power', 'window', 'faulty', 'noisy', 'squealing', 'grinding', 'spongy', 'vibrations', 'pulsations', 'harsh', 'slipping', 'dead', 'dimming', 'whining', 'malfunctioning', 'cracked', 'failure', 'steering', 'loss', 'tire', 'worn'
+            'Repurchase', 'compensation', 'More', 'documentation', 'Recall', 'information', 'Warranty', 'status', 'Existing', 'Tow', 'replacement', 'update', 'concerned', 'expects', 'feels', 'covered', 'expectations', 'diagnosing', 'Upset', 'wants', 'Accusation', 'alleges', 'Beligerent', 'forthright', 'damages', 'Because', 'disconnected', 'Issue', 'justify', 'nothing', 'follow-up', 'transfer', 'accepted', 'Manager', 'Referred', 'Refused', 'Repeat', 'Roadside', 'Stated', 'Allegation', 'approval', 'denied', 'submitted', 'determines', 'contact', 'independent', 'referred', 'educated', 'eligibility', 'reviewed', 'Coverages', 'extend', 'available', 'aware', 'de-escalated', 'voicemail', 'Advisor\'s', 'number', 'denial', 'Information', 'troubleshooting', 'Voicemail', 'transferred', 'Delay', 'Identification', 'Appointment', 'Diagnosis', 'Delayed', 'escalation', 'Buyback', 'Courtesy', 'Rewards', 'Reimbursement', 'Reunification', 'Tread', 'Assisting', 'Follow-Up', 'Googled', 'Confirmed', 'Close', 'post-repair', 'Schedule', 'Accelerate', 'Accomodate', 'Duplicate', 'Diagnosed', 'loaner', 'Failed', 'Programmed', 'Repair', 'Replace', 'Reprogrammed', 'service',
+             'engine', 'oil', 'consumption', 'lifter', 'air', 'bag', 'filter', 'cluster', 'rocker', 'radio', 'rear', 'screen', 'stalling', 'ignition', 'leaks', 'power', 'window', 'faulty', 'noisy', 'squealing', 'grinding', 'spongy', 'vibrations', 'pulsations', 'harsh', 'slipping', 'dead', 'dimming', 'whining', 'malfunctioning', 'cracked', 'failure', 'steering', 'loss', 'tire', 'worn'
         ])];
         
         const highlightRegex = new RegExp('\\b(' + keywordsToHighlight.join('|') + ')\\b', 'gi');
@@ -369,7 +380,7 @@
                     (mainSection.sub_sections || []).forEach(subSection => {
                         const subTitle = document.createElement('h3');
                         subTitle.className = 'subsection-title';
-                        subTitle.textContent = subSection.title; // Never highlight sub-section titles
+                        subTitle.textContent = subSection.title;
                         contentDiv.appendChild(subTitle);
                         
                         const list = document.createElement('ul');
@@ -378,7 +389,6 @@
                         sortedTerms.forEach(term => {
                             const listItem = document.createElement('li');
                             const termText = subSection.terms[term];
-                            // Use pre-baked highlights for Agent section, otherwise use dynamic highlighting
                             if (isAgentSection) {
                                 listItem.innerHTML = `<strong>${term}</strong>: ${termText}`;
                             } else {
