@@ -352,6 +352,7 @@
                 contentDiv.className = 'section-content';
 
                 const shouldHighlight = sectionsToHighlight.includes(mainSection.main_section);
+                const isAgentSection = mainSection.main_section === "Agent Statements & Communications";
 
                 if (mainSection.is_template_section) {
                     const templateList = document.createElement('ul');
@@ -368,7 +369,7 @@
                     (mainSection.sub_sections || []).forEach(subSection => {
                         const subTitle = document.createElement('h3');
                         subTitle.className = 'subsection-title';
-                        subTitle.innerHTML = shouldHighlight ? highlightTextInString(subSection.title) : subSection.title;
+                        subTitle.textContent = subSection.title; // Never highlight sub-section titles
                         contentDiv.appendChild(subTitle);
                         
                         const list = document.createElement('ul');
@@ -377,7 +378,12 @@
                         sortedTerms.forEach(term => {
                             const listItem = document.createElement('li');
                             const termText = subSection.terms[term];
-                            listItem.innerHTML = `<strong>${term}</strong>: ${shouldHighlight ? highlightTextInString(termText) : termText}`;
+                            // Use pre-baked highlights for Agent section, otherwise use dynamic highlighting
+                            if (isAgentSection) {
+                                listItem.innerHTML = `<strong>${term}</strong>: ${termText}`;
+                            } else {
+                                listItem.innerHTML = `<strong>${term}</strong>: ${shouldHighlight ? highlightTextInString(termText) : termText}`;
+                            }
                             list.appendChild(listItem);
                         });
                         contentDiv.appendChild(list);
