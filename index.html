@@ -184,7 +184,6 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // --- Using your trusted data list to prevent errors ---
         const masterList = [
              {
                 main_section: "Checklists & Verbiage",
@@ -213,7 +212,17 @@
             },
             {
                 main_section: "Vehicles & Parts",
-                sub_sections: [ { title: "Models", terms: { "aca": "Acadia", "ax": "Trax", "bui": "Buick", "cad": "Cadillac", "cace": "Cadillac Celestiq", "cac4": "Cadillac CT4", "caee": "Cadillac Escalade ESV", "caei": "Cadillac Escalade IQL", "caly": "Cadillac Lyriq", "can": "Canyon", "cax4": "Cadillac XT4", "cax5": "Cadillac XT5", "cax6": "Cadillac XT6", "chev": "Chevrolet", "enc": "Buick Enclave", "equ": "Equinox", "esc": "Escalade", "mal": "Chevrolet Malibu", "sie": "Sierra", "silv": "Silverado", "subu": "Suburban", "ter": "Terrain", "tra": "Traverse", "yuk": "Yukon" } }, { title: "Major Components & Systems", terms: { "ac": "Air Conditioning", "dic": "Driver Information Cluster (speedometer,etc)", "elec": "Electrical System Failures", "eng": "Engine", "hvac": "Heating & Cooling", "ign": "Ignition System", "ivi": "In-Vehicle Infotainment Display (front display above console)", "rbc": "Rear Back-Up Camera/Display", "sftw": "Software", "tran": "Transmission" } }, { title: "Engine & Drivetrain Parts", terms: { "alt": "Alternator", "ams": "Camshaft Position Sensor", "bo": "Burning Oil.", "brg": "Engine Bearings (Main/Rod)", "blk": "Cylinder Block", "cam": "Camshaft", "cat": "Catalytic Converter", "coi": "Ignition Coils", "con": "Connecting Rods", "cps": "Crankshaft Position Sensor", "crk": "Crankshaft", "cyl": "Cylinder Head(s)", "def": "Diesel Def", "die": "Diesel", "dur": "Duramax", "engf": "Engine Failure Repairs", "fpm": "Fuel Pump", "fpr": "Fuel Pressure Regulator", "hdg": "Head Gaskets", "acv": "Idle Air Control (Valve)", "icm": "Ignition Control Module", "inj": "Fuel Injectors", "lft": "Lifters", "maf": "Mass Airflow Sensor", "o2s": "Oxygen (O2) Sensors", "oil": "Engine Oil and Oil Filter", "pis": "Pistons and Piston Rings", "prd": "Pushrods", "pv": "Purge Valve", "spk": "Spark Plugs", "thb": "Throttle Body", "tmb": "Timing Chain/Belt and Components", "tmc": "Timing Chain/Components", "vb": "Valve Body", "vlv": "Valve Lifter Oil Manifold with Solenoid", "wpm": "Water Pump and Cooling System Components" } }, { title: "General Parts & Issues", terms: { "ab": "Air-Bag", "afs": "Air Filter", "cel": "Check Engine Light", "clus": "Instrument Cluster Malfunctions", "flt": "Fuel Filter", "fp": "Fuel Pump Failures", "goobi": "Google Built-In", "hea": "Heating/issue", "lif": "Lifter Issues", "oc": "Oil Consumption Issues", "pc": "Part/s of concern", "prof": "Display Profile", "pta": "Part is tank.", "pwst": "Power Steering Loss", "rad": "Vehicle Radio", "rka": "Rocker Arms", "rsd": "Rear Screen Display", "sta": "Stalling & Misfiring", "swc": "Ignition Switch", "veh": "vehicle" } } ]
+                sub_sections: [ 
+                    { title: "Models", terms: { "aca": "Acadia", "ax": "Trax", "bui": "Buick", "cad": "Cadillac", "cace": "Cadillac Celestiq", "cac4": "Cadillac CT4", "caee": "Cadillac Escalade ESV", "caei": "Cadillac Escalade IQL", "caly": "Cadillac Lyriq", "can": "Canyon", "cax4": "Cadillac XT4", "cax5": "Cadillac XT5", "cax6": "Cadillac XT6", "chev": "Chevrolet", "enc": "Buick Enclave", "equ": "Equinox", "esc": "Escalade", "mal": "Chevrolet Malibu", "sie": "Sierra", "silv": "Silverado", "subu": "Suburban", "ter": "Terrain", "tra": "Traverse", "yuk": "Yukon" } }, 
+                    { title: "Major Components & Systems", terms: { "ac": "Air Conditioning", "dic": "Driver Information Cluster (speedometer,etc)", "elec": "Electrical System Failures", "eng": "Engine", "hvac": "Heating & Cooling", "ign": "Ignition System", "ivi": "In-Vehicle Infotainment Display (front display above console)", "rbc": "Rear Back-Up Camera/Display", "sftw": "Software", "tran": "Transmission" } }, 
+                    { title: "Engine & Drivetrain Parts", terms: { "alt": "Alternator", "ams": "Camshaft Position Sensor", "bo": "Burning Oil.", "brg": "Engine Bearings (Main/Rod)", "blk": "Cylinder Block", "cam": "Camshaft", "cat": "Catalytic Converter", "coi": "Ignition Coils", "con": "Connecting Rods", "cps": "Crankshaft Position Sensor", "crk": "Crankshaft", "cyl": "Cylinder Head(s)", "def": "Diesel Def", "die": "Diesel", "dur": "Duramax", "engf": "Engine Failure Repairs", "fpm": "Fuel Pump", "fpr": "Fuel Pressure Regulator", "hdg": "Head Gaskets", "acv": "Idle Air Control (Valve)", "icm": "Ignition Control Module", "inj": "Fuel Injectors", "lft": "Lifters", "maf": "Mass Airflow Sensor", "o2s": "Oxygen (O2) Sensors", "oil": "Engine Oil and Oil Filter", "pis": "Pistons and Piston Rings", "prd": "Pushrods", "pv": "Purge Valve", "spk": "Spark Plugs", "thb": "Throttle Body", "tmb": "Timing Chain/Belt and Components", "tmc": "Timing Chain/Components", "vb": "Valve Body", "vlv": "Valve Lifter Oil Manifold with Solenoid", "wpm": "Water Pump and Cooling System Components" } }, 
+                    { title: "General Parts & Issues", terms: { "ab": "Air-Bag", "afs": "Air Filter", "clus": "Instrument Cluster Malfunctions", "flt": "Fuel Filter", "fp": "Fuel Pump Failures", "goobi": "Google Built-In", "hea": "Heating/issue", "lif": "Lifter Issues", "oc": "Oil Consumption Issues", "pc": "Part/s of concern", "prof": "Display Profile", "pta": "Part is tank.", "pwst": "Power Steering Loss", "rad": "Vehicle Radio", "rka": "Rocker Arms", "rsd": "Rear Screen Display", "sta": "Stalling & Misfiring", "swc": "Ignition Switch", "veh": "vehicle" } },
+                    { title: "Engine Problems (Complaints)", terms: { "cel": "Check Engine Light: A frequent issue that can signal anything from a loose gas cap to a sensor malfunction.", "ovrheat": "Overheating: Can be caused by low coolant, leaks, or a faulty thermostat.", "misfire": "Misfires or Sputtering: Often a result of bad spark plugs or damaged wires.", "knockping": "Knocking/Pinging Sounds: This may be due to using the wrong fuel, low oil, or loose engine parts." } },
+                    { title: "Braking Issues (Complaints)", terms: { "noisybrk": "Noisy Brakes: Squealing or grinding noises often indicate that the brake pads are worn.", "spongybrk": "Spongy or Soft Pedal: This could mean there is air in the brake lines or a leak in the hydraulic system.", "vibrapulse": "Vibrations/Pulsations: Often caused by warped rotors." } },
+                    { title: "Transmission Problems (Complaints)", terms: { "transslip": "Slipping: The engine revs without a corresponding increase in speed or the car loses power when shifting.", "harshshift": "Harsh or Delayed Shifting: Can be a result of low transmission fluid.", "tfl": "Transmission Fluid Leaks: May be a sign of worn seals or gaskets." } },
+                    { title: "Electrical System (Complaints)", terms: { "deadbat": "Dead Battery: Frequently caused by leaving lights on or an old battery.", "faultystart": "Faulty Starter Motor: Prevents the engine from starting.", "dimlight": "Dimming Lights or Whining Noise: This can indicate a failing alternator.", "malfsens": "Malfunctioning Sensors: Can cause inaccurate readings and performance problems.", "pwrwinprob": "Power Window Problems: A common issue where windows do not operate correctly." } },
+                    { title: "Other Common Vehicle Issues", terms: { "tirecon": "Tire Concerns: This includes flat tires and uneven wear, which could signal alignment or inflation problems.", "steerprob": "Steering Problems: Issues such as difficulty turning or the car pulling to one side.", "crackedws": "Cracked Windshield: This can be a safety hazard.", "lightfail": "Headlights/Taillights: Failure of these lights reduces visibility.", "wiperfail": "Windshield Wipers: Worn wipers can decrease visibility in bad weather." } }
+                ]
             },
             {
                 main_section: "Concepts & Coverages",
@@ -238,6 +247,15 @@
             {
                 main_section: "People & Roles",
                 sub_sections: [ { title: "Dealer Roles", terms: { "ds": "Dealer Sales Manager", "dms": "Dealer Service Manager.", "dlrsa": "GM Sales at Dealer", "sd": "GM Dealer Service Director.", "tech": "Service Technician" } }, { title: "Corporate & Field", terms: { "cem": "Customer Experience Manager", "fse": "Field Service Engineer (Dealer Invite Only)", "rfl": "Regional Field Liason" } }, { title: "General", terms: { "cx": "Customer", "mfr": "manufacturer", "oa": "Owning Advisor" } } ]
+            },
+            {
+                main_section: "Sales & Service Complaints",
+                sub_sections: [
+                    { title: "Auto Repair Issues", terms: { "imrep": "Improper Repairs: The most common cause of dissatisfaction with a repair shop is the problem not being fixed correctly.", "hiprice": "High Prices: This is another frequent complaint, especially with dealerships.", "unexdel": "Unexpected Delays: Customers are often frustrated when repairs take longer than expected.", "retvis": "Return Visits: A repair that fails and requires another visit to the shop is a common issue.", "unnecser": "Unnecessary Services: Customers are concerned about being sold unnecessary parts or services.", "poorcs": "Poor Customer Service: Being treated poorly by staff is a frequent complaint.", "exest": "Exceeding the Estimate: Unexpected costs are a major source of frustration.", "lacktrans": "Lack of Transparency: Customers feel ignored or misled due to inconsistent communication." } },
+                    { title: "Deceptive Practices", terms: { "bsp": "Bait-and-Switch Pricing: The advertised price is not the price that is honored.", "unexfee": "Unexpected Fees: Customers are charged for products or services that have little value.", "decepadv": "Deceptive Advertising: Misleading claims are made about the vehicle or its price." } },
+                    { title: "New Vehicle Quality Issues", terms: { "decqual": "Declining Quality: An increase in problems has been reported with basic items like door handles and cupholders.", "ivisoftiss": "Infotainment and Software Issues: Problems with wireless charging and advanced driver assistance systems (ADAS) are common." } },
+                    { title: "Used Car Sales Complaints", terms: { "odomfraud": "Odometer Fraud: This involves selling a vehicle with a rolled-back odometer.", "lemonveh": "Lemon Vehicles: A customer might purchase a car that has pre-existing, unresolved issues.", "asissale": "\"As Is\" Sales: Buyers may have no recourse when problems appear after the purchase." } }
+                ]
             }
         ];
 
@@ -373,20 +391,17 @@
             });
         }
         
-        // --- NEW FUNCTION for the copy button ---
         function setupCopyToScratchpad() {
             const copyBtn = document.getElementById('copyToScratchPadBtn');
             if (copyBtn) {
                 copyBtn.addEventListener('click', function() {
                     const textToCopy = translatedText.value;
                     if (textToCopy) {
-                        // Append to scratchpad with a separator if it's not empty
                         if (scratchPad.value.length > 0) {
                             scratchPad.value += '\n\n' + textToCopy;
                         } else {
                             scratchPad.value = textToCopy;
                         }
-                        // Scroll to the bottom of the scratchpad
                         scratchPad.scrollTop = scratchPad.scrollHeight;
                     }
                 });
@@ -395,11 +410,10 @@
 
         inputText.addEventListener('input', performTranslation);
         
-        // --- Initialize all functions ---
         populateAbbreviationsList();
         setupToggleAllButton();
         setupCollapsibleDefinitions();
-        setupCopyToScratchpad(); // <-- Call the new function
+        setupCopyToScratchpad();
         performTranslation(); 
     });
     </script>
