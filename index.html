@@ -9,6 +9,7 @@
         .main-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .container { display: flex; gap: 20px; width: 100%; margin-bottom: 20px; }
         .box { flex: 1; background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); display: flex; flex-direction: column; }
+        
         textarea, .textarea-lookalike {
             width: 100%;
             flex-grow: 1;
@@ -27,6 +28,7 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
+
         h1, h2 { color: #0056b3; margin-top: 0; }
         .box h2 {
             display: flex;
@@ -187,7 +189,7 @@
         </div>
         <div class="box">
             <h2>Translated Text</h2>
-            <div id="translatedText" class="textarea-lookalike" contenteditable="false"></div>
+            <div id="translatedText" class="textarea-lookalike"></div>
         </div>
         <div class="box">
             <h2>Scratch Pad</h2>
@@ -209,7 +211,7 @@
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const masterList = [
-             {
+            {
                 main_section: "Checklists & Verbiage",
                 is_template_section: true,
                 templates: [
@@ -337,12 +339,13 @@
                 }
                 return part;
             });
-            translatedText.value = translatedParts.join('');
+            translatedText.innerHTML = translatedParts.join('');
         }
 
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
             const sectionsToHighlight = ["Customer Statements", "Processes", "Actions", "Vehicles & Parts", "Sales & Service Complaints"];
+            const manuallyHighlightedSections = ["Agent Statements & Communications", "Customer Statements"];
 
             masterList.forEach(mainSection => {
                 const sectionDiv = document.createElement('div');
@@ -356,7 +359,6 @@
                 contentDiv.className = 'section-content';
 
                 const shouldHighlight = sectionsToHighlight.includes(mainSection.main_section);
-                const isAgentSection = mainSection.main_section === "Agent Statements & Communications";
 
                 if (mainSection.is_template_section) {
                     const templateList = document.createElement('ul');
@@ -382,7 +384,7 @@
                         sortedTerms.forEach(term => {
                             const listItem = document.createElement('li');
                             const termText = subSection.terms[term];
-                            if (isAgentSection) {
+                            if (manuallyHighlightedSections.includes(mainSection.main_section)) {
                                 listItem.innerHTML = `<strong>${term}</strong>: ${termText}`;
                             } else {
                                 listItem.innerHTML = `<strong>${term}</strong>: ${shouldHighlight ? highlightTextInString(termText) : termText}`;
