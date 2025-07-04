@@ -189,7 +189,7 @@
     <div class="container">
         <div class="box">
             <h2>Enter Text Here:</h2>
-            <textarea id="inputText" placeholder="Start typing... for example: tc wa wr"></textarea>
+            <textarea id="inputText" placeholder="Start typing... for example: i av nnu"></textarea>
         </div>
         <div class="box">
             <h2>Translated Text</h2>
@@ -226,6 +226,7 @@
                     {
                         title: "Subjects",
                         components: [
+                            { abbr: "i", text: "I" },
                             { abbr: "tc", text: "The customer" },
                             { abbr: "td", text: "Their dealer" },
                         ]
@@ -353,39 +354,34 @@
         // --- REBUILT AND SIMPLIFIED TRANSLATION FUNCTION ---
         function performTranslation() {
             const text = inputText.value;
-            const words = text.split(/(\s+)/); // Split by space, keeping spaces
+            const words = text.split(/(\s+)/);
             let finalHtml = '';
             let i = 0;
 
             while (i < words.length) {
                 let consumed = 0;
 
+                // Create lookahead variables; ?.toLowerCase() handles cases where a word is undefined
+                const p1 = words[i]?.toLowerCase();
+                const p2 = words[i + 2]?.toLowerCase();
+                const p3 = words[i + 4]?.toLowerCase();
+
                 // Look for a 3-part phrase
-                if (i + 4 < words.length) {
-                    const p1 = words[i]?.toLowerCase();
-                    const p2 = words[i+2]?.toLowerCase();
-                    const p3 = words[i+4]?.toLowerCase();
-                    if (subjectMap.has(p1) && verbMap.has(p2) && !verbMap.get(p2).is_complete && objectMap.has(p3)) {
-                        const subject = subjectMap.get(p1);
-                        const verb = verbMap.get(p2);
-                        const object = objectMap.get(p3);
-                        let sentence = `${subject.text} ${verb.text} ${object.text}`;
-                        finalHtml += capitalizeFirstLetter(sentence);
-                        consumed = 5;
-                    }
+                if (subjectMap.has(p1) && verbMap.has(p2) && !verbMap.get(p2).is_complete && objectMap.has(p3)) {
+                    const subject = subjectMap.get(p1);
+                    const verb = verbMap.get(p2);
+                    const object = objectMap.get(p3);
+                    let sentence = `${subject.text} ${verb.text} ${object.text}`;
+                    finalHtml += capitalizeFirstLetter(sentence);
+                    consumed = 5; // p1, space, p2, space, p3
                 }
-                
                 // If no 3-part, look for a 2-part phrase
-                if (consumed === 0 && i + 2 < words.length) {
-                    const p1 = words[i]?.toLowerCase();
-                    const p2 = words[i+2]?.toLowerCase();
-                    if (subjectMap.has(p1) && verbMap.has(p2) && verbMap.get(p2).is_complete) {
-                        const subject = subjectMap.get(p1);
-                        const verb = verbMap.get(p2);
-                        let sentence = `${subject.text} ${verb.text}`;
-                        finalHtml += capitalizeFirstLetter(sentence);
-                        consumed = 3;
-                    }
+                else if (subjectMap.has(p1) && verbMap.has(p2) && verbMap.get(p2).is_complete) {
+                    const subject = subjectMap.get(p1);
+                    const verb = verbMap.get(p2);
+                    let sentence = `${subject.text} ${verb.text}`;
+                    finalHtml += capitalizeFirstLetter(sentence);
+                    consumed = 3; // p1, space, p2
                 }
 
                 if (consumed > 0) {
