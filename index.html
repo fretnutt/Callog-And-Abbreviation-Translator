@@ -228,7 +228,6 @@
                         components: [
                             { abbr: "tc", text: "The customer" },
                             { abbr: "td", text: "Their dealer" },
-                            { abbr: "ia", text: "I" },
                         ]
                     },
                     {
@@ -360,45 +359,53 @@
 
         function performTranslation() {
             const text = inputText.value;
-            const parts = text.split(/([ \n\t]+)/);
+            const parts = text.split(/([ \n\t]+)/); 
             let translatedParts = [];
-            
-            for (let i = 0; i < parts.length; i++) {
+            let i = 0;
+
+            while (i < parts.length) {
                 const p1 = parts[i];
                 if (!p1 || p1.trim() === '') {
                     translatedParts.push(p1);
+                    i++;
                     continue;
                 }
 
+                let consumed = false;
                 const subject = subjectMap.get(p1.toLowerCase());
                 if (subject) {
                     const { part: p2, index: i2 } = getNextPart(i, parts);
-                    const verb = p2 ? verbMap.get(p2.toLowerCase()) : null;
-                    
-                    if (verb) {
-                        if (verb.is_complete) {
-                            let sentence = `${subject.text} ${verb.text}`;
-                            translatedParts.push(capitalizeFirstLetter(sentence));
-                            i = i2;
-                            continue;
-                        }
-
-                        const { part: p3, index: i3 } = getNextPart(i2, parts);
-                        const object = p3 ? objectMap.get(p3.toLowerCase()) : null;
-
-                        if (object) {
-                            let sentence = `${subject.text} ${verb.text} ${object.text}`;
-                            translatedParts.push(capitalizeFirstLetter(sentence));
-                            i = i3;
-                            continue;
+                    if (p2) {
+                        const verb = verbMap.get(p2.toLowerCase());
+                        if (verb) {
+                            if (verb.is_complete) {
+                                let sentence = `${subject.text} ${verb.text}`;
+                                translatedParts.push(capitalizeFirstLetter(sentence));
+                                i = i2 + 1;
+                                consumed = true;
+                            } else {
+                                const { part: p3, index: i3 } = getNextPart(i2, parts);
+                                if (p3) {
+                                    const object = objectMap.get(p3.toLowerCase());
+                                    if (object) {
+                                        let sentence = `${subject.text} ${verb.text} ${object.text}`;
+                                        translatedParts.push(capitalizeFirstLetter(sentence));
+                                        i = i3 + 1;
+                                        consumed = true;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
 
-                if (regularLookup.has(p1.toLowerCase())) {
-                    translatedParts.push(regularLookup.get(p1.toLowerCase()));
-                } else {
-                    translatedParts.push(p1);
+                if (!consumed) {
+                    if (regularLookup.has(p1.toLowerCase())) {
+                        translatedParts.push(regularLookup.get(p1.toLowerCase()));
+                    } else {
+                        translatedParts.push(p1);
+                    }
+                    i++;
                 }
             }
             translatedText.innerHTML = translatedParts.join('');
@@ -423,7 +430,7 @@
                         contentDiv.appendChild(subTitle);
                         
                         const list = document.createElement('ul');
-                        list.className = 'term-list';
+                        list.className = 'term-list-single-col';
                         (subSection.components || []).forEach(item => {
                             const listItem = document.createElement('li');
                             listItem.innerHTML = `<strong>${item.abbr}</strong>: ${item.text}`;
