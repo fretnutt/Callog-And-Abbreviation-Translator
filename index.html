@@ -357,61 +357,64 @@
             return { part: null, index: -1 };
         }
 
-        // --- FIXED TRANSLATION FUNCTION ---
+        // --- REBUILT TRANSLATION FUNCTION ---
         function performTranslation() {
             const text = inputText.value;
-            const parts = text.split(/([ \n\t]+)/); 
-            let finalOutput = [];
+            const words = text.split(/(\s+)/); // Split by space, keeping spaces
+            let translatedWords = [];
             let i = 0;
 
-            while (i < parts.length) {
-                const currentPart = parts[i];
-                const lowerPart = currentPart.toLowerCase();
-
-                if (!currentPart || currentPart.trim() === '') {
-                    finalOutput.push(currentPart);
+            while (i < words.length) {
+                const currentWord = words[i];
+                if (currentWord.trim() === '') {
+                    translatedWords.push(currentWord);
                     i++;
                     continue;
                 }
 
-                // Attempt to parse a 2 or 3 part phrase
-                const subject = subjectMap.get(lowerPart);
+                const lowerWord = currentWord.toLowerCase();
+
+                // Check for single-word translation first
+                if (regularLookup.has(lowerWord)) {
+                    translatedWords.push(regularLookup.get(lowerWord));
+                    i++;
+                    continue;
+                }
+                
+                // Check for a phrase component
+                const subject = subjectMap.get(lowerWord);
                 if (subject) {
-                    const nextVerb = getNextPart(i, parts);
-                    if (nextVerb.part && verbMap.has(nextVerb.part.toLowerCase())) {
-                        const verb = verbMap.get(nextVerb.part.toLowerCase());
-                        
+                    const { part: p2, index: i2 } = getNextPart(i, words);
+                    if (p2 && verbMap.has(p2.toLowerCase())) {
+                        const verb = verbMap.get(p2.toLowerCase());
+
                         // Handle 2-part phrases (Subject + complete Verb)
                         if (verb.is_complete) {
                             let sentence = `${subject.text} ${verb.text}`;
-                            finalOutput.push(capitalizeFirstLetter(sentence));
-                            i = nextVerb.index + 1;
+                            translatedWords.push(capitalizeFirstLetter(sentence));
+                            i = i2 + 1;
                             continue;
                         }
                         
                         // Attempt to find a 3rd part (Object)
-                        const nextObject = getNextPart(nextVerb.index, parts);
-                        if (nextObject.part && objectMap.has(nextObject.part.toLowerCase())) {
-                            const object = objectMap.get(nextObject.part.toLowerCase());
+                        const { part: p3, index: i3 } = getNextPart(i2, words);
+                        if (p3 && objectMap.has(p3.toLowerCase())) {
+                            const object = objectMap.get(p3.toLowerCase());
                             let sentence = `${subject.text} ${verb.text} ${object.text}`;
-                            finalOutput.push(capitalizeFirstLetter(sentence));
-                            i = nextObject.index + 1;
+                            translatedWords.push(capitalizeFirstLetter(sentence));
+                            i = i3 + 1;
                             continue;
                         }
                     }
                 }
 
-                // Fallback to single-word lookup if no phrase was built
-                if (regularLookup.has(lowerPart)) {
-                    finalOutput.push(regularLookup.get(lowerPart));
-                } else {
-                    finalOutput.push(currentPart);
-                }
+                // If no translation found, push the original word
+                translatedWords.push(currentWord);
                 i++;
             }
-            translatedText.innerHTML = finalOutput.join('');
-        }
 
+            translatedText.innerHTML = translatedWords.join('');
+        }
 
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
