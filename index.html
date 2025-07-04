@@ -222,24 +222,80 @@
         const masterList = [
             {
                 main_section: "Composable Phrases",
-                is_composable: true, 
-                starters: [
-                    { abbr: "cst", text: "The customer stated" },
-                    { abbr: "cwa", text: "The customer wants" },
-                    { abbr: "crq", text: "The customer is requesting" },
-                    { abbr: "cfl", text: "The customer feels" },
-                    { abbr: "iav", text: "I advised the customer" },
-                    { abbr: "ied", text: "I educated the customer on" },
-                    { abbr: "inf", text: "I informed the customer that" }
-                ],
-                endings: [
-                    { abbr: "rei", text: "reimbursement." },
-                    { abbr: "dar", text: "dealer assistance with the repair." },
-                    { abbr: "eta", text: "an ETA for the delayed part." },
-                    { abbr: "upd", text: "an update on their case." },
-                    { abbr: "oaw", text: "their owning advisor is working on the request." },
-                    { abbr: "ctp", text: "the Courtesy Transportation Program guidelines." },
-                    { abbr: "nnu", text: "there is no new update from the dealership at this time." }
+                sub_sections: [
+                    {
+                        title: "Customer Actions",
+                        starters: [
+                            { abbr: "cal", text: "The customer alleges" },
+                            { abbr: "ccb", text: "The customer called because" },
+                            { abbr: "cfl", text: "The customer feels" },
+                            { abbr: "cis", text: "The customer's issue is" },
+                            { abbr: "crq", text: "The customer is requesting" },
+                            { abbr: "crs", text: "The customer called about their repair" },
+                            { abbr: "csa", text: "The customer called about their existing service request with" },
+                            { abbr: "csc", text: "The customer called about" },
+                            { abbr: "cst", text: "The customer stated" },
+                            { abbr: "cup", text: "The customer is upset that" },
+                            { abbr: "cwa", text: "The customer wants" },
+                        ],
+                        endings: [
+                            { abbr: "bbr", text: "a buyback review." },
+                            { abbr: "cmp", text: "compensation." },
+                            { abbr: "cov", text: "their issue should be covered." },
+                            { abbr: "dam", text: "the dealer caused further damages." },
+                            { abbr: "ddn", text: "their dealer is not diagnosing fast enough." },
+                            { abbr: "doc", text: "if we received their documentation." },
+                            { abbr: "oae", text: "their Owning Advisor is not meeting communication expectations." },
+                            { abbr: "rpl", text: "a replacement vehicle." },
+                            { abbr: "rei", text: "reimbursement." },
+                            { abbr: "rec", text: "more information about a recall." },
+                            { abbr: "sc",  text: "a special coverage they feel is applicable." },
+                            { abbr: "sts", text: "status." },
+                            { abbr: "upd", text: "an update." },
+                            { abbr: "oas", text: "their owning advisor." },
+                            { abbr: "win", text: "warranty information." },
+                        ]
+                    },
+                    {
+                        title: "Agent Actions",
+                        starters: [
+                            { abbr: "iav", text: "I advised the customer" },
+                            { abbr: "icf", text: "I confirmed" },
+                            { abbr: "ied", text: "I educated the customer on" },
+                            { abbr: "inf", text: "I informed the customer that" },
+                            { abbr: "ins", text: "I advised the customer that since GM Dealers are independent, I cannot" },
+                            { abbr: "itr", text: "I attempted troubleshooting via the Owner's Manual, but" },
+                            { abbr: "irv", text: "I advised the customer their request is being reviewed and" },
+                            { abbr: "isb", text: "I advised the customer that their repurchase request was denied and" },
+                            { abbr: "pdt", text: "I assigned the case to the Parts Delay Team and advised the customer" },
+                            { abbr: "sen", text: "I have sent the customer's allegation to the dealer and" },
+                        ],
+                        endings: [
+                            { abbr: "cbr", text: "I would submit their buyback request for internal review." },
+                            { abbr: "ctp", text: "the Courtesy Transportation Program guidelines." },
+                            { abbr: "dem", text: "override dealer decisions or demand resolution." },
+                            { abbr: "exe", text: "to expect first contact within 4 business days." },
+                            { abbr: "fol", text: "I will follow up accordingly." },
+                            { abbr: "fwu", text: "urged them to work with the dealer for resolution." },
+                            { abbr: "nrs", text: "the issue was not resolved." },
+                            { abbr: "oaw", text: "their owning advisor is working on the request." },
+                            { abbr: "ppi", text: "their personal contact information." },
+                            { abbr: "ref", text: "referred them to the BBB." },
+                            { abbr: "dcd", text: "the dealer determines final coverage based on diagnosis." },
+                        ]
+                    },
+                    {
+                        title: "Dealer Actions",
+                        starters: [
+                            { abbr: "ddx", text: "The dealer diagnosed the issue as requiring" },
+                            { abbr: "drf", text: "The dealer referred the customer to" },
+                        ],
+                        endings: [
+                            { abbr: "cac", text: "the Customer Assistance Center." },
+                            { abbr: "rxt", text: "a transmission replacement." },
+                            { abbr: "eng", text: "an engine repair." },
+                        ]
+                    }
                 ]
             },
             {
@@ -249,20 +305,15 @@
                     { abbr: "bcl", title: "Buyback Checklist", text: "Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:" },
                     { abbr: "icl", title: "Initial Customer Intake", text: "VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:" },
                     { abbr: "bbd", title: "Buyback Denial Verbiage", text: "Your request was carefully reviewed, and General Motors is declining your request for a repurchase.\nIf you would like more information, the BBB AUTO LINE website provides each state’s specific lemon law guidelines and the requirements to meet eligibility. Their website is: www.bbbautoline.org. In addition, your Owner’s Manual and Warranty booklet provides an overview on how to utilize the BBB AUTO LINE dispute process." },
-                    { abbr: "pwc", title: "Paint Warranty", text: "Chevrolet's paint warranty covers defects related to materials or workmanship.\nKey Coverage Details:\n- Surface Corrosion: Body sheet metal panels are covered against rust for 3 years or 36,000 miles, whichever comes first.\n- Rust-Through Corrosion: Body sheet metal panels that develop an actual hole due to rust-through are covered for 6 years or 100,000 miles, whichever comes first.\n- Chemical Paint Spotting: Damage from airborne pollutants causing blotchy, ring-shaped discolorations or irregular dark spots is covered for 12 months or 12,000 miles, whichever comes first, even though it's not a factory paint defect.\n- Minor Chips/Scratches: Quickly repair minor chips and scratches with touch-up materials from your dealer to avoid corrosion.\n- Collision Damage: Original manufacturer replacement parts will provide corrosion protection and maintain the vehicle warranty after sheet metal repair or replacement.\nWhat is NOT Covered (Paint):\n- Cosmetic/Surface Corrosion: Rust resulting from stone chips, dents, or scratches in the paint, or failure to repair such damage, is not included.\n- Environmental Damage: Damage caused by airborne fallout, rail dust, salt (from sea air or road conditions), chemicals, tree sap, insects, stones, hail, earthquakes, water/floods, windstorms, or lightning, and other environmental conditions is not covered.\n- After-manufacture Treatments: Damage caused by the application of after-manufacture rustproofing products or other chemical sealants is not covered, as these may reduce the vehicle's built-in corrosion resistance." },
+                    { abbr: "pwc", title: "Paint Warranty", text: "Chevrolet's paint warranty covers defects related to materials or workmanship.\nKey Coverage Details:\n- Surface Corrosion: Body sheet metal panels are covered against rust for 3 years or 36,000 miles, whichever comes first.\n- Rust-Through Corrosion: Body sheet metal panels that develop an actual hole due to rust-through are covered for 6 years or 100,000 miles, whichever comes first.\n- Chemical Paint Spotting: Damage from airborne pollutants causing blotchy, ring-shaped discolorations or irregular dark spots is covered for 12 months or 12,000 miles, whichever comes first, even though it's not a factory paint defect.\n- Minor Chips/Scratches: Quickly repair minor chips and scratches with touch-up materials from your dealer to avoid corrosion.\n- Collision Damage: Original manufacturer replacement parts will provide corrosion protection and maintain the vehicle warranty after sheet metal repair or replacement." },
                     { abbr: "twc", title: "Tire Warranty", text: "Tires supplied with your Chevrolet vehicle are covered under the Bumper-to-Bumper coverage against defects in material or workmanship.\nKey Coverage Details:\n- Initial Period: For vehicles within the Bumper-to-Bumper coverage (typically 3 years or 36,000 miles, whichever comes first), defective tires will be replaced on a prorated adjustment basis for the tire cost. Chevrolet covers 100% of the cost to mount and balance tires replaced under warranty during this full Bumper-to-Bumper period.\n- Prorated Schedule (Tire Cost):\n  - 0-12,000 miles: 100% covered by Chevrolet\n  - 12,001-15,000 miles: 60% covered by Chevrolet\n  - 15,001-20,000 miles: 50% covered by Chevrolet\n  - 20,001-25,000 miles: 40% covered by Chevrolet\n  - 25,001-30,000 miles: 30% covered by Chevrolet\n  - 30,001-36,000 miles: 20% covered by Chevrolet\n  - 36,000+ miles: 0% covered by Chevrolet\n- After Bumper-to-Bumper: After the Bumper-to-Bumper coverage expires, you may still have prorated warranty coverage on your original equipment tires directly from the tire manufacturer. You should contact your dealer or the tire manufacturer for more information." },
                     { abbr: "req", title: "Required Elements of a Business Case Checklist", text: "This checklist outlines the minimum required elements for a business case justification. Cases may be returned if the business case is insufficient.\n\nCar Payment(s)\n- Indicate whether the customer was placed in a rental or loaner.\n- Include the number of calendar days the vehicle was out of service.\n- Confirm vehicle information (VIN, YMM, mileage, warranty start date, and in/out of warranty) is documented in the SR.\n\nComponent Coverage Letter (CCL)\n- List the major repairs with the number of instances.\n\nCost Assistance\n- Include the number of new vehicles purchased by the customer based on company records." },
                     { abbr: "ggo", title: "General Guidelines for All Compensation Offers", text: "This provides a checklist for decision-making on all compensation offers.\n\nALWAYS\n- Be a good steward of GM funds.\n- The vehicle must be repaired before the offer is made.\n- The earlier in the vehicle's lifecycle, the smaller the offer should be.\n- Start with a small offer so that additional compensation is available if needed.\n- The compensation tool should work to resolve the customer's current issue.\n- The value of the compensation should match the seriousness of the situation.\n- Guidelines for each specific compensation tool must be followed.\n\nNEVER\n- Offer compensation on Canadian vehicles (exceptions apply to OnStar, CCLs, and CBGC plans).\n- Offer car payments or rental reimbursement when the dealer has followed Courtesy Transportation Guidelines.\n- Reimburse for concerns that have not been duplicated by the dealership." },
                     { abbr: "crc", title: "Cost Assistance Request Checklist", text: "This checklist guides the process when a customer requests financial help with a repair.\n\nConfirm Diagnosis: Verify the vehicle has been diagnosed by a GM dealer within the last 60 days. If not, direct the customer to a dealer without indicating that assistance will be offered.\n\nCheck for Exclusions:\n- Confirm there are no open field actions related to the concern.\n- Ensure the request is not for something that should be denied, such as standard maintenance, damage from an independent facility or natural hazard, or a vehicle with a branded title.\n\nVerify Dealer Discussion: Confirm the customer has already discussed the request with their dealer. If not, direct them to do so first." },
                 ]
             },
-            // The rest of the original masterList data follows...
             {
-                main_section: "Customer Statements",
-                sub_sections: [ { title: "Requests & Desires", terms: { "cbb": "The Customer Requested a Repurchase. I Advised the Customer That I Would Submit Their Request to the Applicable Internal Only Department For Review. That This Could Take up to 5 Business Days. And to Expect No Reason Provided Along with an Approval or Denial.", "cec": "The customer is expecting compensation", "crd": "Customer wants to know if we received their sent documentation.", "cmc": "The Customer Expects More Compensation", "cre": "Customer wants to know more about a Recall. I provided the customer with the recall summary and verbiage.", "cri": "Customer called requesting information", "crr": "The Customer Would Like Warranty Rental Reimbursement", "crs": "Customer Called about their repair status.", "csa": "Customer Called About Their Existing Service Request With Their Owning Advisor", "ctw": "The Customer Would LIke Tow Reimbursement", "cwr": "The Customer wants a replacement vehicle and I referred customer to the dealer.", "cwu": "The customer called on their case and would like an update.", "crwi": "The customer called to <mark>request WARRANTY information</mark>. O: I <mark>provided the customer with their warranty information request</mark> and <mark>guided them to- https://experience.gm.com/ownercenter/recalls</mark>. Nothing further requested." } }, { title: "State & Feelings", terms: { "ccc": "The customer stated they were concerned.", "cex": "The customer expects or is expecting", "cf": "The customer feels.", "cfc": "The customer feels that their issue should be covered", "coe": "Customer Upset that their Owning Advisor is not meeting the customer's communications expectations", "csd": "Customer upset that their Dealer Is not diagnosing fast enough.", "cup": "Customer is Upset", "cw": "The Customer wants..." } }, { title: "Allegations & Complaints", terms: { "cac": "Accusation/Accuses", "cdm": "Customer alleges GM Dealer caused further damages requiring further repairs.", "cal": "The customer alleges", "cbe": "The Customer Was Beligerent. Customer Repeatedly Exhibited Offensive Language. I Warned Them of Required Civility and Decorum more than once, of Which The Customer Refused to Abide. So I Advised the Customer Since They Refused This Warning and Requirement, I Would Disconnect the Call. And I Disconnected the Call because the Customer repeatedly used language that offended me.", "cdh": "The customer alleges that their GM Dealer are not being forthright about" } }, { title: "Reports & General", terms: { "cs": "The Customer Stated", "ccb": "The Customer Called Because", "cpt": "Customer states he previously requeststed Manager follow that has not happened", "crt": "Customer said Roadside towed to a GM Dealer.", "coa": "The customer advised that his Owning Advisor is not following up per his expectations or claims as promised.", "cod": "Customer mentioned issues requiring transfer to", "crb": "The Customer States They Were Referred By", "crp": "Repeat Repairs/Multiple Appointments", "dad": "Customer states vehicle is/has been <mark>down at GM Dealer for</mark> ", "dal": "The customer has a GM Dealer Allegation. I advised to the customer I will forward their accusation/allegation to the dealer of complaint. And any further actions would need to be with customer and dealer.", "cis": "The Customer's Issue is", "cju": "The customer attempted to justify why they feel their request should be approved.", "cok": "Customer accepted current final resolution/update/offer and had no other questions or concerns. Assistance Provided.", "cdc": "The customer intentionally disconnected our call.", "cnf": "Customer requested nothing further", "crf": "Customer Refused Resolution", "csc": "Customer called about <mark>Special</mark> Coverage they feel is applicable." } } ]
-            },
-            {
-                main_section: "Sales & Service Complaints",
+                main_section: "Common Complaints",
                 sub_sections: [ { title: "Auto Repair Issues", terms: { "irp": "Improper Repairs: The most common cause of dissatisfaction with a repair shop is the problem not being fixed correctly.", "hpr": "High Prices: This is another frequent complaint, especially with dealerships.", "udl": "Unexpected Delays: Customers are often frustrated when repairs take longer than expected.", "rvs": "Return Visits: A repair that fails and requires another visit to the shop is a common issue.", "uns": "Unnecessary Services: Customers are concerned about being sold unnecessary parts or services.", "pcs": "Poor Customer Service: Being treated poorly by staff is a frequent complaint.", "ees": "Exceeding the Estimate: Unexpected costs are a major source of frustration.", "ltr": "Lack of Transparency: Customers feel ignored or misled due to inconsistent communication." } }, { title: "Deceptive Practices", terms: { "bsp": "Bait-and-Switch Pricing: The advertised price is not the price that is honored.", "uef": "Unexpected Fees: Customers are charged for products or services that have little value.", "dca": "Deceptive Advertising: Misleading claims are made about the vehicle or its price." } }, { title: "New Vehicle Quality Issues", terms: { "dql": "Declining Quality: An increase in problems has been reported with basic items like door handles and cupholders.", "isi": "Infotainment and Software Issues: Problems with wireless charging and advanced driver assistance systems (ADAS) are common." } }, { title: "Used Car Sales Complaints", terms: { "odf": "Odometer Fraud: This involves selling a vehicle with a rolled-back odometer.", "lmv": "Lemon Vehicles: A customer might purchase a car that has pre-existing, unresolved issues.", "ais": "\"As Is\" Sales: Buyers may have no recourse when problems appear after the purchase." } } ]
             },
             {
@@ -273,11 +324,46 @@
                     { title: "Braking Issues (Complaints)", terms: { "nbk": "Noisy Brakes: Squealing or grinding noises often indicate that the brake pads are worn.", "sbk": "Spongy or Soft Pedal: This could mean there is air in the brake lines or a leak in the hydraulic system.", "vbp": "Vibrations/Pulsations: Often caused by warped rotors." } },
                     { title: "Transmission Problems (Complaints)", terms: { "tsl": "Slipping: The engine revs without a corresponding increase in speed or the car loses power when shifting.", "hsh": "Harsh or Delayed Shifting: Can be a result of low transmission fluid.", "tfl": "Transmission Fluid Leaks: May be a sign of worn seals or gaskets." } },
                     { title: "Electrical System (Complaints)", terms: { "dbt": "Dead Battery: Frequently caused by leaving lights on or an old battery.", "fsr": "Faulty Starter Motor: Prevents the engine from starting.", "dml": "Dimming Lights or Whining Noise: This can indicate a failing alternator.", "msn": "Malfunctioning Sensors: Can cause inaccurate readings and performance problems.", "pwp": "Power Window Problems: A common issue where windows do not operate correctly." } },
-                    { title: "Other Common Vehicle Issues", terms: { "tir": "Tire Concerns: This includes flat tires and uneven wear, which could signal alignment or inflation problems.", "stp": "Steering Problems: Issues such as difficulty turning or the car pulling to one side.", "cws": "Cracked Windshield: This can be a safety hazard.", "ltf": "Headlights/Taillights: Failure of these lights reduces visibility.", "wpf": "Windshield Wipers: Worn wipers can decrease visibility in bad weather." } },
                     { title: "Chevrolet Models", terms: { "bev": "Bolt EV", "blz": "Blazer", "bze": "Blazer EV", "cmr": "Camaro", "col": "Colorado", "crv": "Corvette", "crz": "Cruze", "equ": "Equinox", "eqv": "Equinox EV", "exp": "Express", "imp": "Impala", "mal": "Malibu", "s15": "Silverado 1500", "s2h": "Silverado 2500HD", "s3h": "Silverado 3500HD", "sev": "Silverado EV", "snc": "Sonic", "spk": "Spark", "ss": "SS", "sub": "Suburban", "tah": "Tahoe", "trl": "Trailblazer", "tra": "Traverse", "ax": "Trax", "vlt": "Volt" } },
+                    { title: "Buick Models", terms: { "csc": "Cascada", "enr": "Encore", "egx": "Encore GX", "enc": "Enclave", "env": "Envision", "evs": "Envista", "lcx": "LaCrosse", "rgl": "Regal", "vrn": "Verano" } },
+                    { title: "Cadillac Models", terms: { "ats": "ATS", "atv": "ATS-V", "ceq": "Celestiq", "ct4": "CT4", "ct5": "CT5", "c5v": "CT5-V", "ct6": "CT6", "c6v": "CT6-V", "cts": "CTS", "ctv": "CTS-V", "elr": "ELR", "esc": "Escalade", "esv": "Escalade ESV", "iql": "Escalade IQL", "lyq": "Lyriq", "opt": "Optiq", "srx": "SRX", "vis": "Vistiq", "xts": "XTS", "xt4": "XT4", "xt5": "XT5", "xt6": "XT6" } },
+                    { title: "GMC Models", terms: { "aca": "Acadia", "can": "Canyon", "hep": "Hummer EV Pickup", "hes": "Hummer EV SUV", "sav": "Savana", "sie": "Sierra", "g15": "Sierra 1500", "g2h": "Sierra 2500HD", "g3h": "Sierra 3500HD", "gev": "Sierra EV", "ter": "Terrain", "yuk": "Yukon", "yxl": "Yukon XL" } },
+                    { title: "Major Components & Systems", terms: { "ac": "Air Conditioning", "dic": "Driver Information Cluster (speedometer,etc)", "elec": "Electrical System Failures", "eng": "Engine", "hvac": "Heating & Cooling", "ign": "Ignition System", "ivi": "In-Vehicle Infotainment Display", "rbc": "Rear Back-Up Camera/Display", "sft": "Software", "tran": "Transmission" } },  
+                    { title: "Engine & Drivetrain Parts", terms: { "alt": "Alternator", "ams": "Camshaft Position Sensor", "bo": "Burning Oil.", "brg": "Engine Bearings (Main/Rod)", "blk": "Cylinder Block", "cam": "Camshaft", "cat": "Catalytic Converter", "coi": "Ignition Coils", "con": "Connecting Rods", "cps": "Crankshaft Position Sensor", "crk": "Crankshaft", "cyl": "Cylinder Head(s)", "def": "Diesel Def", "die": "Diesel", "dur": "Duramax", "enf": "Engine Failure Repairs", "fpm": "Fuel Pump", "fpr": "Fuel Pressure Regulator", "hdg": "Head Gaskets", "acv": "Idle Air Control (Valve)", "icm": "Ignition Control Module", "inj": "Fuel Injectors", "lft": "Lifters", "maf": "Mass Airflow Sensor", "o2s": "Oxygen (O2) Sensors", "oil": "Engine Oil and Oil Filter", "pis": "Pistons and Piston Rings", "prd": "Pushrods", "pv": "Purge Valve", "spk": "Spark Plugs", "thb": "Throttle Body", "tmb": "Timing Chain/Belt and Components", "tmc": "Timing Chain/Components", "vb": "Valve Body", "vlv": "Valve Lifter Oil Manifold with Solenoid", "wpm": "Water Pump and Cooling System Components" } }
+                ]
+            },
+            {
+                main_section: "Concepts & Coverages",
+                sub_sections: [ { title: "Formal", terms: { "btb": "Bumper To Bumper Coverage", "ca": "GM Cost Assistance", "cfl": "Catastrophic Failure", "ccl": "Extra Component Coverage Goodwill", "cct": "Onstar Connections", "con": "Concern/s/ed", "cpo": "Certified Pre-Owned Vehicle", "exw": "Extended Vehicle Warranty from an Independent Provider.", "fle": "Envolve/Fleet", "oop": "Out of Pocket Customer Pay", "pwt": "Powertrain Coverage", "rec": "recall", "rei": "Reimbursement", "sc": "Special Coverage", "vpr": "Vehicle Payment Reimbursement", "ti": "Trip Interruption" } }, { title: "General", terms: { "com": "Compensation", "iss": "issue", "lob": "Line of Business.", "ons": "Onstar", "cpl": "Complaint", "prs": "Process" } } ]
+            },
+            {
+                main_section: "Processes",
+                sub_sections: [ { title: "Service & Repair", terms: { "app": "Appointment", "diag": "Diagnosis.", "dr": "Delayed Repair", "pd": "Part Delay", "rre": "Repeat Repairs/Appointments Failed Remedies" } }, { title: "Case Management", terms: { "ixf": "Inbound call from other department Transfer...", "cae": "The customer confirmed they reside in California...", "cxd": "Customer was transferred to the applicable department.", "int": "Internal: I was not able to find anything I could assist...", "les": "The customer requested escalation to supervisor...", "reg": "Advised customer of regional escalation...", "tle": "Manager Escalation Follow-Up Phone Call...", "u1": "Unable to Contact 1st Attempt-LVM?...", "u2": "Unable to Contact 2nd Attempt-LVM?...", "u3": "Unable to Contact 3rd and Final Attempt-LVM?" } }, { title: "Specific Programs", terms: { "bb": "Repurchase/Buyback", "ctp": "Courtesy Transportation Program", "mrp": "General Motors My Rewards Points Program", "prc": "Post-Repair Discussion About Potential Compensation...", "reu": "Reunification Program", "rsa": "General Motors Roadside Warranty Assistance", "tre": "Tread Escalation" } } ]
+            },
+            {
+                main_section: "Actions",
+                sub_sections: [ { title: "Agent Actions", terms: { "ass": "Assisting", "fu": "Follow-Up", "goo": "Googled and found forums alleging known issues", "ic": "Confirmed", "mtc": "Move To Close Case", "pr": "Customer will call back post-repair", "rfi": "Request For Information", "sch": "Schedule", "roc": "Since the customer requested further assistance from their owning advisor and the case was closed prior. I have reopned this case per customer request." } }, { title: "Dealer/System Actions", terms: { "acc": "Accelerate", "aco": "Accomodate/tion", "cnd": "Could Not Duplicate", "dd": "The Dealer Diagnosed", "drf": "The Dealer Referred The Customer", "dln": "Dealer did not provide a loaner", "dly": "Dealer did provide a loaner", "fai": "Failed", "pro": "Dealer Programmed", "rep": "Repair/s", "rpl": "Replace/ment", "rpr": "Dealer Reprogrammed", "ser": "service", "ts": "Troubleshoot/ing" } } ]
+            },
+            {
+                main_section: "Documents & Identifiers",
+                sub_sections: [ { title: "Case & Vehicle", terms: { "add": "Customer Mailing Address.", "cn": "Case Number:", "cr": "The Customer Resides In", "ct": "Call Type (IBCC/OBCC):", "dn": "Dealer Name:", "mil": "Current Vehicle Mileage:", "o": "Outcome:", "r": "Reason:", "sr": "Service Request", "sym": "Symptoms:", "vin": "Vehicle V.I.N." } }, { title: "Documents & Records", terms: { "bul": "Bulletin", "clg": "Case Information", "cd": "Call Details", "del": "Delivery Type", "doc": "Documentation/s", "em": "Email", "esi": "Insurance and liability claims (fire and/or medical)", "eta": "Estimated Time of Arrival/Repair", "fi": "Final Invoice", "gl": "GM Guidelines.", "om": "Owner's Manual", "pac": "PAC-Product Allegation (property damage,defect cause collision)", "pal": "Product Allegation", "pdf": "PDF Document", "tsb": "Technical Service Bulletin" } } ]
+            },
+            {
+                main_section: "Places & Departments",
+                sub_sections: [ { title: "GM & Dealer", terms: { "bac": "GM Dealer/BAC", "bu": "Business Unit.", "cac": "GM Customer Assistance Center", "ccd": "Cadillac Customer Care Team", "div": "GM Divisional Office", "dlr": "GM Dealer", "dpt": "Department", "gmf": "GM FInancial", "pdt": "Part Delay Team", "tac": "Technical Assistance Center (Dealer invite only)" } }, { title: "External & Other", terms: { "ind": "Independent Dealer/Supplier/Auto Mechanic", "bbb": "Better Business Bureau verbiage" } } ]
+            },
+            {
+                main_section: "People & Roles",
+                sub_sections: [ { title: "Dealer Roles", terms: { "ds": "Dealer Sales Manager", "dms": "Dealer Service Manager.", "dsa": "GM Sales at Dealer", "sd": "GM Dealer Service Director.", "tech": "Service Technician" } }, { title: "Corporate & Field", terms: { "cem": "Customer Experience Manager", "fse": "Field Service Engineer (Dealer Invite Only)", "rfl": "Regional Field Liason" } }, { title: "General", terms: { "cx": "Customer", "mfr": "manufacturer", "oa": "Owning Advisor" } } ]
+            },
+            {
+                main_section: "Leverage",
+                sub_sections: [
+                    { title: "Non-GM Websites", terms: { "nht": "NHTSA.gov (Recalls): <a href='https://www.nhtsa.gov/recalls' target='_blank'>www.nhtsa.gov/recalls</a>", "cfx": "CARFAX.com: <a href='https://www.carfax.com' target='_blank'>www.carfax.com</a>", "ach": "AutoCheck.com: <a href='https://www.autocheck.com' target='_blank'>www.autocheck.com</a>", "nmv": "NMVTIS Approved Providers: <a href='https://vehiclehistory.bja.ojp.gov' target='_blank'>vehiclehistory.bja.ojp.gov</a>", "ytb": "YouTube.com (for DIY videos): <a href='https://www.youtube.com' target='_blank'>www.youtube.com</a>", "mdf": "Model-Specific Forums: (e.g., search for 'Chevy Equinox forum')", "rdt": "Reddit (r/MechanicAdvice, etc.): <a href='https://www.reddit.com' target='_blank'>www.reddit.com</a>", "ald": "ALLDATA DIY: <a href='https://www.alldata.com/diy-us/en' target='_blank'>www.alldata.com/diy-us/en</a>" } },
+                    { title: "GM Websites", terms: { "gcu": "GM.com Contact Us: <a href='https://www.gm.com/contact-us' target='_blank'>www.gm.com/contact-us</a>", "csv": "Chevrolet Vehicle Support: <a href='https://www.chevrolet.com/support/vehicle' target='_blank'>www.chevrolet.com/support/vehicle</a>", "ons": "OnStar.com: <a href='https://www.onstar.com' target='_blank'>www.onstar.com</a>" } },
+                    { title: "Important Phone Numbers", terms: { "gml": "General Motors (Lemon Law): 1-866-636-2273", "cas": "Chevrolet Customer Assistance: 1-800-222-1020", "bca": "Buick Customer Assistance: 1-800-521-7300", "gfe": "GM Financial Customer Experience: 1-800-284-2271", "gmr": "GM Rewards: 1-844-764-2665", "ocs": "OnStar Customer Service: 1-888-466-7827", "tty": "TTY/TDD Relay Service: 711" } }
                 ]
             }
-            // ... and so on for all original sections
         ];
 
         const inputText = document.getElementById('inputText');
@@ -285,15 +371,16 @@
         const scratchPad = document.getElementById('scratchPad');
         const abbreviationsListDiv = document.getElementById('abbreviationsList');
         
-        // --- SETUP ALL LOOKUP MAPS ---
         const starterLookup = new Map();
         const endingLookup = new Map();
         const regularLookup = new Map();
 
         masterList.forEach(section => {
-            if (section.is_composable) {
-                section.starters.forEach(item => starterLookup.set(item.abbr, item.text));
-                section.endings.forEach(item => endingLookup.set(item.abbr, item.text));
+            if (section.sub_sections && section.main_section === "Composable Phrases") {
+                 section.sub_sections.forEach(sub => {
+                    (sub.starters || []).forEach(item => starterLookup.set(item.abbr, item.text));
+                    (sub.endings || []).forEach(item => endingLookup.set(item.abbr, item.text));
+                 });
             } else if (section.is_template_section) {
                 (section.templates || []).forEach(template => {
                     if (template.abbr) regularLookup.set(template.abbr.toLowerCase(), template.text);
@@ -307,7 +394,6 @@
             }
         });
 
-        // --- NEW TRANSLATION FUNCTION ---
         function performTranslation() {
             const text = inputText.value;
             const parts = text.split(/([ \n\t.,;!?()]+)/);
@@ -318,18 +404,11 @@
                 const lowerPart = currentPart.toLowerCase();
 
                 if (starterLookup.has(lowerPart)) {
-                    // Look ahead for an ending
                     let nextAbbrPart = null;
-                    let nextDelimiter = "";
                     let j = i + 1;
                     while(j < parts.length) {
-                        // Skip delimiters to find the next potential abbreviation
-                        if (parts[j].trim() !== '') {
+                        if (parts[j] && parts[j].trim() !== '') {
                             nextAbbrPart = parts[j];
-                            // Capture the delimiter that was right before it, if any
-                            if (j > i + 1) {
-                                nextDelimiter = parts[j-1];
-                            }
                             break;
                         }
                         j++;
@@ -339,12 +418,11 @@
                         const starterText = starterLookup.get(lowerPart);
                         const endingText = endingLookup.get(nextAbbrPart.toLowerCase());
                         translatedParts.push(starterText + " " + endingText);
-                        i = j; // Jump the index forward past the consumed ending part
+                        i = j; 
                         continue;
                     }
                 }
                 
-                // Fallback to regular lookup if not a valid composable pair
                 if (regularLookup.has(lowerPart)) {
                     translatedParts.push(regularLookup.get(lowerPart));
                 } else {
@@ -354,7 +432,6 @@
             translatedText.innerHTML = translatedParts.join('');
         }
 
-        // --- UPDATED FUNCTION TO DISPLAY THE LISTS ---
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
 
@@ -369,38 +446,36 @@
                 const contentDiv = document.createElement('div');
                 contentDiv.className = 'section-content';
 
-                if (mainSection.is_composable) {
-                    // Handle new composable section
-                    const startersTitle = document.createElement('h3');
-                    startersTitle.className = 'subsection-title';
-                    startersTitle.textContent = 'Sentence Starters';
-                    contentDiv.appendChild(startersTitle);
-                    
-                    const startersList = document.createElement('ul');
-                    startersList.className = 'term-list-single-col';
-                    mainSection.starters.forEach(item => {
-                        const listItem = document.createElement('li');
-                        listItem.innerHTML = `<strong>${item.abbr}</strong>: ${item.text}`;
-                        startersList.appendChild(listItem);
+                if (mainSection.main_section === "Composable Phrases") {
+                    (mainSection.sub_sections || []).forEach(subSection => {
+                        const subTitle = document.createElement('h3');
+                        subTitle.className = 'subsection-title';
+                        subTitle.textContent = subSection.title;
+                        contentDiv.appendChild(subTitle);
+                        
+                        if(subSection.starters) {
+                            const startersList = document.createElement('ul');
+                            startersList.className = 'term-list';
+                             subSection.starters.forEach(item => {
+                                const listItem = document.createElement('li');
+                                listItem.innerHTML = `<strong>${item.abbr}</strong>: ${item.text}`;
+                                startersList.appendChild(listItem);
+                            });
+                            contentDiv.appendChild(startersList);
+                        }
+
+                        if(subSection.endings) {
+                             const endingsList = document.createElement('ul');
+                            endingsList.className = 'term-list';
+                             subSection.endings.forEach(item => {
+                                const listItem = document.createElement('li');
+                                listItem.innerHTML = `<strong>${item.abbr}</strong>: ${item.text}`;
+                                endingsList.appendChild(listItem);
+                            });
+                            contentDiv.appendChild(endingsList);
+                        }
                     });
-                    contentDiv.appendChild(startersList);
-
-                    const endingsTitle = document.createElement('h3');
-                    endingsTitle.className = 'subsection-title';
-                    endingsTitle.textContent = 'Sentence Endings';
-                    contentDiv.appendChild(endingsTitle);
-
-                    const endingsList = document.createElement('ul');
-                    endingsList.className = 'term-list-single-col';
-                    mainSection.endings.forEach(item => {
-                        const listItem = document.createElement('li');
-                        listItem.innerHTML = `<strong>${item.abbr}</strong>: ${item.text}`;
-                        endingsList.appendChild(listItem);
-                    });
-                    contentDiv.appendChild(endingsList);
-
                 } else if (mainSection.is_template_section) {
-                    // Handle original template sections
                     const templateList = document.createElement('ul');
                     templateList.className = 'template-list';
                     mainSection.templates.forEach(template => {
@@ -412,7 +487,6 @@
                     });
                     contentDiv.appendChild(templateList);
                 } else {
-                    // Handle original sub-sections
                     (mainSection.sub_sections || []).forEach(subSection => {
                         const subTitle = document.createElement('h3');
                         subTitle.className = 'subsection-title';
@@ -443,7 +517,6 @@
             });
         }
         
-        // --- UNCHANGED HELPER FUNCTIONS ---
         function setupToggleAllButton() {
             const toggleBtn = document.getElementById('toggleAllBtn');
              if (toggleBtn) {
@@ -508,7 +581,6 @@
             }
         }
 
-        // --- INITIALIZE ALL FUNCTIONS ---
         inputText.addEventListener('input', performTranslation);
         
         populateAbbreviationsList();
