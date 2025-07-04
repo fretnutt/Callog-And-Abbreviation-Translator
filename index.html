@@ -189,7 +189,7 @@
     <div class="container">
         <div class="box">
             <h2>Enter Text Here:</h2>
-            <textarea id="inputText" placeholder="Start typing... for example: i av nnu"></textarea>
+            <textarea id="inputText" placeholder="Start typing... for example: tc rq ntr"></textarea>
         </div>
         <div class="box">
             <h2>Translated Text</h2>
@@ -232,13 +232,13 @@
                         ]
                     },
                     {
-                        title: "Verbs",
+                        title: "Verbs & Actions",
                         components: [
                             { abbr: "st", text: "states" },
                             { abbr: "wa", text: "wants" },
                             { abbr: "fe", text: "feels" },
                             { abbr: "al", text: "alleges" },
-                            { abbr: "rq", text: "is requesting" },
+                            { abbr: "rq", text: "require/d/s/ing" },
                             { abbr: "up", text: "is upset that" },
                             { abbr: "cb", text: "called because" },
                             { abbr: "cs", text: "called about" },
@@ -255,8 +255,8 @@
                         components: [
                             { abbr: "wr", text: "warranty rental reimbursement." },
                             { abbr: "sbc", text: "their repair should be covered." },
-                            { abbr: "ntr", text: "requiring a transmission replacement." },
-                            { abbr: "mrr", text: "requiring major repairs." },
+                            { abbr: "ntr", text: "a transmission replacement." },
+                            { abbr: "mrr", text: "major repairs." },
                             { abbr: "bbr", text: "a buyback review." },
                             { abbr: "cmp", text: "compensation." },
                             { abbr: "dam", text: "the dealer caused further damages." },
@@ -329,10 +329,12 @@
             return string.charAt(0).toUpperCase() + string.slice(1);
         }
 
+        // --- SETUP ALL LOOKUP MAPS ---
         masterList.forEach(section => {
             if (section.main_section === "Phrase Components") {
                  section.sub_sections.forEach(sub => {
                     (sub.components || []).forEach(item => {
+                        // Use the sub-section title to determine which map to populate
                         if(sub.title.includes("Subjects")) subjectMap.set(item.abbr, item);
                         if(sub.title.includes("Verbs")) verbMap.set(item.abbr, item);
                         if(sub.title.includes("Objects")) objectMap.set(item.abbr, item);
@@ -351,49 +353,49 @@
             }
         });
 
-        // --- REBUILT AND SIMPLIFIED TRANSLATION FUNCTION ---
+        // --- FINAL, WORKING TRANSLATION FUNCTION ---
         function performTranslation() {
             const text = inputText.value;
-            const words = text.split(/(\s+)/);
+            const words = text.split(/(\s+)/); // Split by space, keeping spaces as delimiters
             let finalHtml = '';
             let i = 0;
 
             while (i < words.length) {
-                let consumed = 0;
+                let consumedCount = 0;
 
-                // Create lookahead variables; ?.toLowerCase() handles cases where a word is undefined
                 const p1 = words[i]?.toLowerCase();
-                const p2 = words[i + 2]?.toLowerCase();
-                const p3 = words[i + 4]?.toLowerCase();
+                const p2 = (i + 2 < words.length) ? words[i + 2]?.toLowerCase() : null;
+                const p3 = (i + 4 < words.length) ? words[i + 4]?.toLowerCase() : null;
 
-                // Look for a 3-part phrase
-                if (subjectMap.has(p1) && verbMap.has(p2) && !verbMap.get(p2).is_complete && objectMap.has(p3)) {
+                // Attempt to match a 3-part phrase
+                if (p1 && p2 && p3 && subjectMap.has(p1) && verbMap.has(p2) && !verbMap.get(p2).is_complete && objectMap.has(p3)) {
                     const subject = subjectMap.get(p1);
                     const verb = verbMap.get(p2);
                     const object = objectMap.get(p3);
                     let sentence = `${subject.text} ${verb.text} ${object.text}`;
                     finalHtml += capitalizeFirstLetter(sentence);
-                    consumed = 5; // p1, space, p2, space, p3
+                    consumedCount = 5; // p1, space, p2, space, p3
                 }
-                // If no 3-part, look for a 2-part phrase
-                else if (subjectMap.has(p1) && verbMap.has(p2) && verbMap.get(p2).is_complete) {
+                // Attempt to match a 2-part phrase
+                else if (p1 && p2 && subjectMap.has(p1) && verbMap.has(p2) && verbMap.get(p2).is_complete) {
                     const subject = subjectMap.get(p1);
                     const verb = verbMap.get(p2);
                     let sentence = `${subject.text} ${verb.text}`;
                     finalHtml += capitalizeFirstLetter(sentence);
-                    consumed = 3; // p1, space, p2
+                    consumedCount = 3; // p1, space, p2
                 }
-
-                if (consumed > 0) {
-                    i += consumed;
+                
+                // If a phrase was built, advance the index
+                if (consumedCount > 0) {
+                    i += consumedCount;
                 } else {
-                    // Fallback to single word lookup
+                    // Otherwise, handle the single word
                     const word = words[i];
                     const lowerWord = word.toLowerCase();
                     if (regularLookup.has(lowerWord)) {
                         finalHtml += regularLookup.get(lowerWord);
                     } else {
-                        finalHtml += word;
+                        finalHtml += word; // Add the word itself if no translation found
                     }
                     i++;
                 }
@@ -401,7 +403,7 @@
             translatedText.innerHTML = finalHtml;
         }
 
-
+        // --- UI AND HELPER FUNCTIONS (UNCHANGED) ---
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
             masterList.forEach(mainSection => {
@@ -526,6 +528,7 @@
             }
         }
 
+        // --- Initialize all functions ---
         inputText.addEventListener('input', performTranslation);
         populateAbbreviationsList();
         setupToggleAllButton();
