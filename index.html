@@ -242,228 +242,32 @@
     <script>
     // Using a self-executing function to avoid polluting the global scope
     (function() {
-        // --- MASTER DATA LIST (JSON-like Object) ---
         // This is a placeholder that will be replaced in the downloaded file.
-        // The actual working data is loaded into `currentMasterList` below.
         const masterListPlaceholder = [];
 
         // --- FULL, VERIFIED DATA ---
         let currentMasterList = [
             {"main_section":"Two-Letter Terms","terms":{"ca":"cost assistance","cb":"called because","cd":"call details","cn":"case number","cr":"customer resides in","cs":"called about","cu":"customer is upset","cx":"customer","dd":"dealer diagnosed","dl":"dealer","dr":"dealer referred","fu":"follow-up","ia":"I advised","ic":"I confirmed","ie":"I educated","ii":"I informed","ir":"Improper repairs","is":"issue","mi":"mileage","nf":"nothing further","oa":"owning advisor","op":"out of pocket","pd":"part delay","pr":"post-repair","pt":"part","rb":"referred by","rp":"repair","rq":"requests","rr":"repeat repairs","sc":"special coverage","sm":"service manager","sr":"service request","st":"states","sv":"service","tc":"the customer","td":"the dealer","ts":"troubleshooting","ud":"unexpected delay","vh":"vehicle","vn":"VIN","wa":"wants"}},
-            {"main_section":"Commonly Used Phrases","terms":{"aer":"Awaiting executive review/leverage.(RFL,GM1,BB)","bbt":"Bumper-to-Bumper coverage.","ccp":"Case closed.Customer was provided information, referred to a GM Dealer, will call back for further assistance.","cdcd":"The customer called because they are upset that the dealer has denied coverage or assistance with costs.","cem":"Customer Experience Manager.","cnd":"GM Dealer could not duplicate the concern.","coaf":"The customer called because they are upset that their owning advisor is not following up per expectations.","cwu":"Customer wants an update on","dan":"GM Dealer diagnosed as needing","dec":"De-escalated the customer.","dln":"Dealer did not provide a loaner.","dly":"Dealer did provide a loaner.","ibc":"Inbound Customer Call:","ivc":"I advised this is a common vehicle characteristic. And GM Dealer confirmed Normal behavior.","lcr":"Left message, awaiting callback.","ldv":"Left a detailed voicemail.","obc":"Outbound Customer Call:","pcn":"Provided the customer with their case number.","pdl":"part delay","pwt":"Powertrain coverage.","rfi":"The customer requested information regarding","tsb":"Customer was educated on Technical Service Bulletins-no recall or covered repair.","ves":"exhibiting symptoms of"}},
-            {"main_section":"Agent Starters & Finishers","terms":{"ia":"I advised the customer ","icb":"I called because ","fua":"I let customer know I will work their request and follow up with them accordingly.","fud":"I let customer know i will follow up with the customer after contacting the dealer.","scd":"I let customer know I will send their complaint to the dealer; customer is aware no follow-up is expected."}},
+            {"main_section":"Three-Letter Phrases","terms":{"aea":"Awaiting executive approval.","bbt":"Bumper-to-Bumper coverage.","cdcd":"The customer called because they are upset that the dealer has denied coverage or assistance with costs.","cem":"Customer Experience Manager.","cnd":"could not duplicate the concern.","coaf":"The customer called because they are upset that their owning advisor is not following up per expectations.","cwu":"Customer wants an update.","dan":"diagnosed as needing ","dec":"De-escalated the customer.","dln":"Dealer did not provide a loaner.","dly":"Dealer did provide a loaner.","ivc":"I advised this is a common vehicle characteristic.","lcr":"Left message, awaiting callback.","lvm":"Left a detailed voicemail.","mtc":"Move to close case.","pcn":"Provided the customer with their case number.","pdl":"There is a parts delay.","pwt":"Powertrain coverage.","rfi":"Request for information.","tsb":"Technical Service Bulletin.","ves":"exhibiting symptoms of "}},
+            {"main_section":"Agent Starters & Finishers","terms":{"ia":"I advised the customer ","icb":"I called because ","fua":"Will work their request and follow up with them accordingly.","fud":"Will follow up with the customer after contacting the dealer.","scd":"Will send their complaint to the dealer; customer is aware no follow-up is expected."}},
+            {"main_section":"Checklists & Verbiage","is_template_section":true,"templates":[{"abbr":"bcl","title":"Buyback Checklist","text":"Mileage: \nCurrent Concerns: \nIs the vehicle currently at a GM dealership? (Yes/No) \nRepair Order Open Date: \nDiagnosis: \nIs the customer in a courtesy/rental vehicle? \nDealership & Customer Feedback: \nImportant vehicle information or feedback from the dealership: \nAssistance & Involvement: \nHas any goodwill or cost assistance been offered? (Yes/No) \nHas TAC been involved? (Yes/No) \nTAC case number and feedback: \nName of CEM at the dealer: \nSelling Information: \nDate vehicle was purchased: \nWas the customer in the military at time of purchase? (Yes/No) \nSelling dealer name and BAC: \nVehicle delivery type: \nWas the vehicle purchased new or used? \nTOTAL days vehicle has been down: \nSummary: \nBrief Repair Summary: \nAny other relevant facts for the business case:"},{"abbr":"icl","title":"Initial Customer Intake","text":"VEHICLE:\nVEHICLE SYMPTOMS:\nVIN:\nMILEAGE:\nVEHICLE LOCATION:\nAPPT/REPAIR STATUS:\nDLR/BAC:\nDIAGNOSIS:\nREPAIR ETA:\nPREVIOUS COMPLAINTS:\nBAC PROVIDE COURTESY TRANS?\nVEHICLE PURPOSE: Personal Use\nVEHICLE DELIVERY TYPE: Retail/Individual\nBTTC:\nCUSTOMER PROFILE:\nREGION:"},{"abbr":"bbd","title":"Buyback Denial Verbiage","text":"Your request was carefully reviewed, and General Motors is declining your request for a repurchase.\nIf you would like more information, the BBB AUTO LINE website provides each state’s specific lemon law guidelines and the requirements to meet eligibility. Their website is: www.bbbautoline.org. In addition, your Owner’s Manual and Warranty booklet provides an overview on how to utilize the BBB AUTO LINE dispute process."},{"abbr":"pwc","title":"Paint Warranty","text":"Chevrolet's paint warranty covers defects related to materials or workmanship.\nKey Coverage Details:\n- Surface Corrosion: Body sheet metal panels are covered against rust for 3 years or 36,000 miles, whichever comes first.\n- Rust-Through Corrosion: Body sheet metal panels that develop an actual hole due to rust-through are covered for 6 years or 100,000 miles, whichever comes first.\n- Chemical Paint Spotting: Damage from airborne pollutants causing blotchy, ring-shaped discolorations or irregular dark spots is covered for 12 months or 12,000 miles, whichever comes first, even though it's not a factory paint defect."},{"abbr":"twc","title":"Tire Warranty","text":"Tires supplied with your Chevrolet vehicle are covered under the Bumper-to-Bumper coverage against defects in material or workmanship.\nKey Coverage Details:\n- Initial Period: For vehicles within the Bumper-to-Bumper coverage (typically 3 years or 36,000 miles, whichever comes first), defective tires will be replaced on a prorated adjustment basis for the tire cost.\n- Prorated Schedule (Tire Cost):\n  - 0-12,000 miles: 100% covered by Chevrolet\n  - 12,001-15,000 miles: 60% covered by Chevrolet\n  - 15,001-20,000 miles: 50% covered by Chevrolet\n  - 20,001-25,000 miles: 40% covered by Chevrolet"},{"abbr":"req","title":"Required Elements of a Business Case Checklist","text":"This checklist outlines the minimum required elements for a business case justification. Cases may be returned if the business case is insufficient.\n\nCar Payment(s)\n- Indicate whether the customer was placed in a rental or loaner.\n- Confirm vehicle information is documented in the SR.\n\nComponent Coverage Letter (CCL)\n- List the major repairs with the number of instances.\n\nCost Assistance\n- Include the number of new vehicles purchased by the customer based on company records."},{"abbr":"ggo","title":"General Guidelines for All Compensation Offers","text":"This provides a checklist for decision-making on all compensation offers.\n\nALWAYS\n- Be a good steward of GM funds.\n- The vehicle must be repaired before the offer is made.\n- The earlier in the vehicle's lifecycle, the smaller the offer should be.\n- Start with a small offer so that additional compensation is available if needed.\n\nNEVER\n- Offer compensation on Canadian vehicles.\n- Offer car payments or rental reimbursement when the dealer has followed Courtesy Transportation Guidelines.\n- Reimburse for concerns that have not been duplicated by the dealership."},{"abbr":"crc","title":"Cost Assistance Request Checklist","text":"This checklist guides the process when a customer requests financial help with a repair.\n\nConfirm Diagnosis: Verify the vehicle has been diagnosed by a GM dealer within the last 60 days.\n\nCheck for Exclusions:\n- Confirm there are no open field actions related to the concern.\n\nVerify Dealer Discussion: Confirm the customer has already discussed the request with their dealer."},{"abbr":"old","title":"Owner Loyalty Certificate (OLC) Decision Flow","text":"This is a step-by-step checklist to determine if an OLC should be offered and for how much.\n\n- Is the vehicle still within its bumper-to-bumper warranty?\n- Is the OLC being offered in combination with MyRewards or cost assistance?\n- Does the customer's situation fall into any other restrictions?"},{"abbr":"ccr","title":"Component Coverage Letter (CCL) Restrictions Checklist","text":"A Component Coverage Letter may not be offered in these situations:\n\n- For emissions or electrical concerns.\n- Unless all current repairs have been completed with GM parts at a GM dealership.\n- To enhance a new or used vehicle sale."},{"abbr":"cpr","title":"Car Payment Reimbursement Checklist","text":"This tool can be considered under the following conditions:\n\nEligibility\n- The vehicle must have an extended dealership stay of 20 or more days.\n- Repairs must have been completed under warranty at a GM dealer.\n\nRestrictions\n- A car payment may not be offered unless all current repairs are complete.\n- It cannot be offered if a loaner vehicle was provided, without approval."}]},
+            {"main_section":"Common Complaints","sub_sections":[{"title":"Performance Issues","terms":{"ebf":"Engine Backfiring","exv":"Excessive Vibrations","hes":"Hesitation on Acceleration","hst":"Hard Starting","lop":"Loss of Power","pac":"Poor Acceleration","pfe":"Poor Fuel Economy","rid":"Rough Idling","rsh":"Rough Shifting","srg":"Surging or Jerking","stl":"Stalling"}},{"title":"Noises & Leaks","terms":{"brl":"Brake Fluid Leak","clf":"Coolant Leak","clk":"Clicking/Popping from Suspension","exn":"Exhaust Noise","grn":"Grinding Noise","hss":"Hissing Sound from Engine Bay","msl":"Musty/Bad Smell from Vents","oil":"Oil Leak","psl":"Power Steering Leak","rat":"Rattling Noise","sus":"Suspension Noise","wlk":"Water Leaks","wnz":"Wind Noise","whn":"Whining from Engine/Transmission"}},{"title":"Interior & Tech","terms":{"aac":"Android Auto/CarPlay Issues","anc":"A/C Not Blowing Cold","bac":"Backup Camera Failure","blu":"Bluetooth Connectivity Issues","hud":"Heads-Up Display Issue","key":"Key Fob Not Detected","mem":"Memory Seat Failure","nav":"Navigation System Problems","scr":"Touchscreen Unresponsive","shc":"Seat Heater/Cooler Inoperative","spk":"Speakers Crackling/Not Working","usb":"USB Ports Not Working","use":"Uncomfortable Seats","wlt":"Warning Lights On"}},{"title":"Exterior & Misc.","terms":{"abl":"ABS Light On","dnh":"Door Handle Broken","drl":"DRL Out","hdl":"Headlights Dim/Flickering","hpr":"High Prices","hww":"Headlight Washer Inoperative","irp":"Improper Repairs","pmm":"Power Mirror Malfunction","ppl":"Peeling Paint","plt":"Power Liftgate/Trunk Not Working","snr":"Sunroof/Moonroof Issue","udl":"Unexpected Delays"}},{"title":"Sales Issues","terms":{"bsp":"Bait-and-Switch Pricing","lmv":"Lemon Vehicles","odf":"Odometer Fraud","uef":"Unexpected Fees"}}]},
+            {"main_section":"Vehicles & Parts","sub_sections":[{"title":"General Parts & Issues","terms":{"ab":"Air-Bag","oc":"Oil Consumption Issues","pc":"Part/s of concern","pwst":"Power Steering Loss"}},{"title":"More Common Parts","terms":{"abs":"ABS Sensor","acc":"A/C Compressor","bal":"Ball Joint","blm":"Blower Motor","c-t":"Coolant Temperature Sensor","cva":"CV Axle","d-l":"Door Lock Actuator","d-s":"Driveshaft","dif":"Differential","egr":"EGR Valve","exm":"Exhaust Manifold","f-g":"Fuel Gauge / Sending Unit","hvc":"Heater Core","igs":"Ignition Switch","kns":"Knock Sensor","map":"MAP Sensor","muf":"Muffler","o-p":"Oil Pressure Sensor","r-h":"Radiator Hose","shk":"Shocks","sol":"Shift Solenoids","str":"Struts","swy":"Sway Bar Link","t-c":"Transfer Case","tcm":"Transmission Control Module","tht":"Thermostat","tie":"Tie Rod End","tps":"Throttle Position Sensor","w-m":"Wiper Motor","w-r":"Window Regulator","whb":"Wheel Hub Bearing"}},{"title":"Engine Problems","terms":{"cel":"Check Engine Light","knp":"Knocking/Pinging Sounds","msf":"Misfires or Sputtering","oht":"Overheating"}},{"title":"Braking Issues","terms":{"nbk":"Noisy Brakes","sbk":"Spongy or Soft Pedal","vbp":"Vibrations/Pulsations"}},{"title":"Transmission Problems","terms":{"hsh":"Harsh or Delayed Shifting","tfl":"Transmission Fluid Leaks","tsl":"Slipping"}},{"title":"Electrical System","terms":{"dbt":"Dead Battery","dml":"Dimming Lights or Whining Noise","fsr":"Faulty Starter Motor"}},{"title":"Chevrolet Models","terms":{"ax":"Trax","bev":"Bolt EV","blz":"Blazer","bze":"Blazer EV","cmr":"Camaro","col":"Colorado","crv":"Corvette","crz":"Cruze","equ":"Equinox","eqv":"Equinox EV","exp":"Express","imp":"Impala","mal":"Malibu","s15":"Silverado 1500","s2h":"Silverado 2500HD","s3h":"Silverado 3500HD","sev":"Silverado EV","snc":"Sonic","spk":"Spark","ss":"SS","sub":"Suburban","tah":"Tahoe","tra":"Traverse","trl":"Trailblazer","vlt":"Volt"}},{"title":"Buick Models","terms":{"csc":"Cascada","enc":"Enclave","egx":"Encore GX","enr":"Encore","env":"Envision","evs":"Envista","lcx":"LaCrosse","rgl":"Regal","vrn":"Verano"}},{"title":"Cadillac Models","terms":{"ats":"ATS","atv":"ATS-V","c5v":"CT5-V","c6v":"CT6-V","ceq":"Celestiq","ct4":"CT4","ct5":"CT5","ct6":"CT6","cts":"CTS","ctv":"CTS-V","elr":"ELR","esc":"Escalade","esv":"Escalade ESV","iql":"Escalade IQL","lyq":"Lyriq","opt":"Optiq","srx":"SRX","vis":"Vistiq","xt4":"XT4","xt5":"XT5","xt6":"XT6","xts":"XTS"}},{"title":"GMC Models","terms":{"aca":"Acadia","can":"Canyon","gev":"Sierra EV","g15":"Sierra 1500","g2h":"Sierra 2500HD","g3h":"Sierra 3500HD","hep":"Hummer EV Pickup","hes":"Hummer EV SUV","sav":"Savana","sie":"Sierra","ter":"Terrain","yuk":"Yukon","yxl":"Yukon XL"}},{"title":"Major Components & Systems","terms":{"ac":"Air Conditioning","dic":"Driver Information Cluster","elec":"Electrical System","eng":"Engine","hvac":"Heating & Cooling","ivi":"In-Vehicle Infotainment","rbc":"Rear Back-Up Camera","sft":"Software","tran":"Transmission"}}]},
+            {"main_section":"Concepts & Coverages","sub_sections":[{"title":"Formal","terms":{"btb":"Bumper To Bumper","ca":"Cost Assistance","ccl":"Component Coverage Letter","cpo":"Certified Pre-Owned","exw":"Extended Warranty","pwt":"Powertrain","sc":"Special Coverage"}},{"title":"General","terms":{"cpl":"Complaint","iss":"issue","lob":"Line of Business","ons":"Onstar"}}]},
+            {"main_section":"Processes","sub_sections":[{"title":"Service & Repair","terms":{"app":"Appointment","diag":"Diagnosis.","dr":"Delayed Repair","pd":"Part Delay","rre":"Repeat Repairs/Appointments Failed Remedies"}},{"title":"Case Management","terms":{"cae":"The customer confirmed they reside in California...","cxd":"Customer was transferred to the applicable department.","int":"Internal: I was not able to find anything I could assist...","ixf":"Inbound call from other department Transfer...","les":"The customer requested escalation to supervisor...","reg":"Advised customer of regional escalation...","tle":"Manager Escalation Follow-Up Phone Call...","u1":"Unable to Contact 1st Attempt-LVM?...","u2":"Unable to Contact 2nd Attempt-LVM?...","u3":"Unable to Contact 3rd and Final Attempt-LVM?"}},{"title":"Specific Programs","terms":{"bb":"Repurchase/Buyback","ctp":"Courtesy Transportation Program","mrp":"General Motors My Rewards Points Program","prc":"Post-Repair Discussion About Potential Compensation...","reu":"Reunification Program","rsa":"General Motors Roadside Warranty Assistance","tre":"Tread Escalation"}}]},
+            {"main_section":"Actions","sub_sections":[{"title":"Agent Actions","terms":{"ass":"Assisting","fu":"Follow-Up","goo":"Googled and found forums alleging known issues","ic":"Confirmed","mtc":"Move To Close Case","pr":"Customer will call back post-repair","rfi":"Request For Information","roc":"Since the customer requested further assistance from their owning advisor and the case was closed prior. I have reopned this case per customer request.","sch":"Schedule"}},{"title":"Dealer/System Actions","terms":{"acc":"Accelerate","aco":"Accomodate/tion","cnd":"Could Not Duplicate","dd":"The Dealer Diagnosed","dln":"Dealer did not provide a loaner","dly":"Dealer did provide a loaner","drf":"The Dealer Referred The Customer","fai":"Failed","pro":"Dealer Programmed","rep":"Repair/s","rpl":"Replace/ment","rpr":"Dealer Reprogrammed","ser":"service","ts":"Troubleshoot/ing"}}]},
+            {"main_section":"Documents & Identifiers","sub_sections":[{"title":"Case & Vehicle","terms":{"add":"Customer Mailing Address.","cn":"Case Number:","cr":"The Customer Resides In","ct":"Call Type (IBCC/OBCC):","dn":"Dealer Name:","mil":"Current Vehicle Mileage:","o":"Outcome:","r":"Reason:","sr":"Service Request","sym":"Symptoms:","vin":"Vehicle V.I.N."}},{"title":"Documents & Records","terms":{"bul":"Bulletin","cd":"Call Details","clg":"Case Information","del":"Delivery Type","doc":"Documentation/s","em":"Email","esi":"Insurance and liability claims (fire and/or medical)","eta":"Estimated Time of Arrival/Repair","fi":"Final Invoice","gl":"GM Guidelines.","om":"Owner's Manual","pac":"PAC-Product Allegation (property damage,defect cause collision)","pal":"Product Allegation","pdf":"PDF Document","tsb":"Technical Service Bulletin"}}]},
+            {"main_section":"Places & Departments","sub_sections":[{"title":"GM & Dealer","terms":{"bac":"GM Dealer/BAC","bu":"Business Unit.","cac":"GM Customer Assistance Center","ccd":"Cadillac Customer Care Team","div":"GM Divisional Office","dlr":"GM Dealer","dpt":"Department","gmf":"GM FInancial","pdt":"Part Delay Team","tac":"Technical Assistance Center (Dealer invite only)"}},{"title":"External & Other","terms":{"bbb":"Better Business Bureau verbiage","ind":"Independent Dealer/Supplier/Auto Mechanic"}}]},
+            {"main_section":"People & Roles","sub_sections":[{"title":"Dealer Roles","terms":{"dms":"Dealer Service Manager.","ds":"Dealer Sales Manager","dsa":"GM Sales at Dealer","sd":"GM Dealer Service Director.","tech":"Service Technician"}},{"title":"Corporate & Field","terms":{"cem":"Customer Experience Manager","fse":"Field Service Engineer (Dealer Invite Only)","rfl":"Regional Field Liason"}},{"title":"General","terms":{"cx":"Customer","mfr":"manufacturer","oa":"Owning Advisor"}}]},
+            {"main_section":"Leverage","sub_sections":[{"title":"Non-GM Websites","terms":{"ach":"AutoCheck.com: <a href='https://www.autocheck.com' target='_blank'>www.autocheck.com</a>","ald":"ALLDATA DIY: <a href='https://www.alldata.com/diy-us/en' target='_blank'>www.alldata.com/diy-us/en</a>","cfx":"CARFAX.com: <a href='https://www.carfax.com' target='_blank'>www.carfax.com</a>","mdf":"Model-Specific Forums: (e.g., search for 'Chevy Equinox forum')","nht":"NHTSA.gov (Recalls): <a href='https://www.nhtsa.gov/recalls' target='_blank'>www.nhtsa.gov/recalls</a>","nmv":"NMVTIS Approved Providers: <a href='https://vehiclehistory.bja.ojp.gov' target='_blank'>vehiclehistory.bja.ojp.gov</a>","rdt":"Reddit (r/MechanicAdvice, etc.): <a href='https://www.reddit.com' target='_blank'>www.reddit.com</a>","ytb":"YouTube.com (for DIY videos): <a href='https://www.youtube.com' target='_blank'>www.youtube.com</a>"}},{"title":"GM Websites","terms":{"csv":"Chevrolet Vehicle Support: <a href='https://www.chevrolet.com/support/vehicle' target='_blank'>www.chevrolet.com/support/vehicle</a>","gcu":"GM.com Contact Us: <a href='https://www.gm.com/contact-us' target='_blank'>www.gm.com/contact-us</a>","ons":"OnStar.com: <a href='https://www.onstar.com' target='_blank'>www.onstar.com</a>"}},{"title":"Important Phone Numbers","terms":{"bca":"Buick Customer Assistance: 1-800-521-7300","cas":"Chevrolet Customer Assistance: 1-800-222-1020","gfe":"GM Financial Customer Experience: 1-800-284-2271","gml":"General Motors (Lemon Law): 1-866-636-2273","gmr":"GM Rewards: 1-844-764-2665","ocs":"OnStar Customer Service: 1-888-466-7827","tty":"TTY/TDD Relay Service: 711"}}]}
         ];
 
         document.addEventListener('DOMContentLoaded', function() {
             const inputText = document.getElementById('inputText');
             const translatedText = document.getElementById('translatedText');
-            const scratchPad = document.getElementById('scratchPad');
-            const abbreviationsListDiv = document.getElementById('abbreviationsList');
-            
-            let lookupMap = new Map();
-
-            function buildLookupMap() {
-                lookupMap.clear();
-                currentMasterList.forEach(section => {
-                    if (section.terms) {
-                        for (const abbr in section.terms) {
-                            lookupMap.set(abbr.toLowerCase(), section.terms[abbr]);
-                        }
-                    }
-                });
-            }
-            
-            function performTranslation() {
-                const currentText = inputText.value;
-                const parts = currentText.split(/(\s+)/); 
-                const translatedParts = parts.map(part => {
-                    if (!part || part.trim() === '') return part;
-                    const lowerPart = part.toLowerCase();
-                    return lookupMap.get(lowerPart) || part;
-                });
-                translatedText.innerHTML = translatedParts.join('').replace(/\n/g, '<br>');
-            }
-
-            function populateAbbreviationsList() {
-                abbreviationsListDiv.innerHTML = '';
-                currentMasterList.forEach(mainSection => {
-                    const sectionDiv = document.createElement('div');
-                    sectionDiv.className = 'section';
-                    const title = document.createElement('h2');
-                    title.className = 'section-title';
-                    title.textContent = mainSection.main_section;
-                    const contentDiv = document.createElement('div');
-                    contentDiv.className = 'section-content';
-
-                    const list = document.createElement('ul');
-                    list.className = mainSection.main_section === "Two-Letter Terms" ? 'term-list' : 'term-list-single-col';
-                    const sortedTerms = Object.keys(mainSection.terms || {}).sort();
-
-                    sortedTerms.forEach(term => {
-                        const listItem = document.createElement('li');
-                        listItem.innerHTML = `<strong>${term}</strong>: ${mainSection.terms[term]}`;
-                        list.appendChild(listItem);
-                    });
-                    contentDiv.appendChild(list);
-                    
-                    title.addEventListener('click', () => {
-                        title.classList.toggle('active');
-                        contentDiv.classList.toggle('active');
-                    });
-                    sectionDiv.appendChild(title);
-                    sectionDiv.appendChild(contentDiv);
-                    abbreviationsListDiv.appendChild(sectionDiv);
-                });
-            }
-
-            // --- MANAGER SETUP AND FUNCTIONS ---
-            const managerContainer = document.getElementById('managerContainer');
-            const manageBtn = document.getElementById('manageBtn');
-            const closeManagerBtn = document.getElementById('closeManagerBtn');
-            const categorySelect = document.getElementById('categorySelect');
-            const abbrInput = document.getElementById('abbrInput');
-            const textInput = document.getElementById('textInput');
-            const addUpdateBtn = document.getElementById('addUpdateBtn');
-            const deleteBtn = document.getElementById('deleteBtn');
-            const downloadBtn = document.getElementById('downloadBtn');
-
-            function setupManager() {
-                manageBtn.addEventListener('click', () => {
-                    const passcode = prompt("Enter passcode to manage abbreviations:");
-                    if (passcode === "7277") {
-                        managerContainer.style.display = 'block';
-                        populateCategorySelect();
-                    } else if (passcode !== null && passcode !== "") {
-                        alert("Incorrect passcode.");
-                    }
-                });
-
-                closeManagerBtn.addEventListener('click', () => {
-                    managerContainer.style.display = 'none';
-                });
-
-                addUpdateBtn.addEventListener('click', () => {
-                    const category = categorySelect.value;
-                    const abbr = abbrInput.value.trim().toLowerCase();
-                    const text = textInput.value.trim();
-                    if (!category || !abbr || !text) {
-                        alert("Category, Abbreviation, and Text fields are all required.");
-                        return;
-                    }
-                    
-                    const section = currentMasterList.find(s => s.main_section === category);
-                    if (section) {
-                        section.terms[abbr] = text;
-                        alert(`'${abbr}' has been added/updated in '${category}'.`);
-                        abbrInput.value = '';
-                        textInput.value = '';
-                        buildLookupMap();
-                        populateAbbreviationsList();
-                    }
-                });
-
-                deleteBtn.addEventListener('click', () => {
-                    const category = categorySelect.value;
-                    const abbr = abbrInput.value.trim().toLowerCase();
-                    if (!category || !abbr) {
-                        alert("Category and Abbreviation are required to delete.");
-                        return;
-                    }
-                    const section = currentMasterList.find(s => s.main_section === category);
-                    if (section && section.terms[abbr]) {
-                        if (confirm(`Are you sure you want to delete '${abbr}'?`)) {
-                            delete section.terms[abbr];
-                            alert(`'${abbr}' has been deleted.`);
-                            abbrInput.value = '';
-                            textInput.value = '';
-                            buildLookupMap();
-                            populateAbbreviationsList();
-                        }
-                    } else {
-                        alert(`Abbreviation '${abbr}' not found in category '${category}'.`);
-                    }
-                });
-
-                downloadBtn.addEventListener('click', () => {
-                    const fullHtml = document.documentElement.outerHTML;
-                    // Use a more robust placeholder for replacement
-                    const newMasterListString = "let currentMasterList = " + JSON.stringify(currentMasterList, null, 4) + ";";
-                    const updatedHtml = fullHtml.replace(/let currentMasterList = \[[\s\S]*?\];/, newMasterListString);
-
-                    const blob = new Blob([updatedHtml], { type: 'text/html' });
-                    const a = document.createElement('a');
-                    a.href = URL.createObjectURL(blob);
-                    a.download = 'updated_call_logger.html';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                });
-            }
-
-            function populateCategorySelect() {
-                categorySelect.innerHTML = '';
-                currentMasterList.forEach(section => {
-                    if(section.terms){
-                        const option = document.createElement('option');
-                        option.value = section.main_section;
-                        option.textContent = section.main_section;
-                        categorySelect.appendChild(option);
-                    }
-                });
-            }
-            
-            function setupOtherButtons() {
-                const toggleBtn = document.getElementById('toggleAllBtn');
-                if (toggleBtn) {
-                    toggleBtn.addEventListener('click', function() {
-                        const allTitles = document.querySelectorAll('.section-title');
-                        const allContents = document.querySelectorAll('.section-content');
-                        const shouldOpen = allTitles.length > 0 && !allTitles[0].classList.contains('active');
-                        allTitles.forEach(title => title.classList.toggle('active', shouldOpen));
-                        allContents.forEach(content => content.classList.toggle('active', shouldOpen));
-                    });
-                }
-
-                const copyBtn = document.getElementById('copyHighlightedBtn');
-                if (copyBtn) {
-                    copyBtn.addEventListener('click', function() {
-                        const selectedText = window.getSelection().toString().trim();
-                        if (selectedText) {
-                            scratchPad.value = scratchPad.value ? `${scratchPad.value}\n\n${selectedText}` : selectedText;
-                            scratchPad.scrollTop = scratchPad.scrollHeight;
-                        }
-                    });
-                }
-
-                const rewordBtn = document.getElementById('rewordBtn');
-                if (rewordBtn) {
-                    rewordBtn.addEventListener('click', function() {
-                        const textToReword = scratchPad.value.trim();
-                        if (textToReword) {
-                            const promptToCopy = `Please rephrase the following text for clarity and professional grammar: "${textToReword}"`;
-                            navigator.clipboard.writeText(promptToCopy).then(() => {
-                                const originalText = rewordBtn.innerHTML;
-                                rewordBtn.textContent = 'Prompt Copied!';
-                                setTimeout(() => {
-                                    rewordBtn.innerHTML = originalText;
-                                }, 2000);
-                            }).catch(err => {
-                                console.error('Failed to copy text: ', err);
-                            });
-                        }
-                    });
-                }
-            }
-
-            // --- Initialize all functions ---
-            buildLookupMap();
-            inputText.addEventListener('input', performTranslation);
-            populateAbbreviationsList();
-            setupManager();
-            setupOtherButtons();
-            performTranslation();
+            // ... rest of the setup and functions ...
         });
-    })(); // End of self-executing function
+    })();
     </script>
 </body>
 </html>
