@@ -321,6 +321,8 @@
         const verbMap = new Map();
         const objectMap = new Map();
         const regularLookup = new Map();
+        
+        const phraseComps = [];
 
         function capitalizeFirstLetter(string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -348,73 +350,61 @@
             }
         });
 
-        function getNextPart(startIndex, parts) {
-            for (let i = startIndex + 1; i < parts.length; i++) {
-                if (parts[i] && parts[i].trim() !== '') {
-                    return { part: parts[i], index: i };
-                }
-            }
-            return { part: null, index: -1 };
-        }
-
-        // --- REBUILT TRANSLATION FUNCTION ---
+        // --- REBUILT AND SIMPLIFIED TRANSLATION FUNCTION ---
         function performTranslation() {
             const text = inputText.value;
             const words = text.split(/(\s+)/); // Split by space, keeping spaces
-            let translatedWords = [];
+            let finalHtml = '';
             let i = 0;
 
             while (i < words.length) {
-                const currentWord = words[i];
-                if (currentWord.trim() === '') {
-                    translatedWords.push(currentWord);
-                    i++;
-                    continue;
-                }
+                let consumed = 0;
 
-                const lowerWord = currentWord.toLowerCase();
-
-                // Check for single-word translation first
-                if (regularLookup.has(lowerWord)) {
-                    translatedWords.push(regularLookup.get(lowerWord));
-                    i++;
-                    continue;
+                // Look for a 3-part phrase
+                if (i + 4 < words.length) {
+                    const p1 = words[i]?.toLowerCase();
+                    const p2 = words[i+2]?.toLowerCase();
+                    const p3 = words[i+4]?.toLowerCase();
+                    if (subjectMap.has(p1) && verbMap.has(p2) && !verbMap.get(p2).is_complete && objectMap.has(p3)) {
+                        const subject = subjectMap.get(p1);
+                        const verb = verbMap.get(p2);
+                        const object = objectMap.get(p3);
+                        let sentence = `${subject.text} ${verb.text} ${object.text}`;
+                        finalHtml += capitalizeFirstLetter(sentence);
+                        consumed = 5;
+                    }
                 }
                 
-                // Check for a phrase component
-                const subject = subjectMap.get(lowerWord);
-                if (subject) {
-                    const { part: p2, index: i2 } = getNextPart(i, words);
-                    if (p2 && verbMap.has(p2.toLowerCase())) {
-                        const verb = verbMap.get(p2.toLowerCase());
-
-                        // Handle 2-part phrases (Subject + complete Verb)
-                        if (verb.is_complete) {
-                            let sentence = `${subject.text} ${verb.text}`;
-                            translatedWords.push(capitalizeFirstLetter(sentence));
-                            i = i2 + 1;
-                            continue;
-                        }
-                        
-                        // Attempt to find a 3rd part (Object)
-                        const { part: p3, index: i3 } = getNextPart(i2, words);
-                        if (p3 && objectMap.has(p3.toLowerCase())) {
-                            const object = objectMap.get(p3.toLowerCase());
-                            let sentence = `${subject.text} ${verb.text} ${object.text}`;
-                            translatedWords.push(capitalizeFirstLetter(sentence));
-                            i = i3 + 1;
-                            continue;
-                        }
+                // If no 3-part, look for a 2-part phrase
+                if (consumed === 0 && i + 2 < words.length) {
+                    const p1 = words[i]?.toLowerCase();
+                    const p2 = words[i+2]?.toLowerCase();
+                    if (subjectMap.has(p1) && verbMap.has(p2) && verbMap.get(p2).is_complete) {
+                        const subject = subjectMap.get(p1);
+                        const verb = verbMap.get(p2);
+                        let sentence = `${subject.text} ${verb.text}`;
+                        finalHtml += capitalizeFirstLetter(sentence);
+                        consumed = 3;
                     }
                 }
 
-                // If no translation found, push the original word
-                translatedWords.push(currentWord);
-                i++;
+                if (consumed > 0) {
+                    i += consumed;
+                } else {
+                    // Fallback to single word lookup
+                    const word = words[i];
+                    const lowerWord = word.toLowerCase();
+                    if (regularLookup.has(lowerWord)) {
+                        finalHtml += regularLookup.get(lowerWord);
+                    } else {
+                        finalHtml += word;
+                    }
+                    i++;
+                }
             }
-
-            translatedText.innerHTML = translatedWords.join('');
+            translatedText.innerHTML = finalHtml;
         }
+
 
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
