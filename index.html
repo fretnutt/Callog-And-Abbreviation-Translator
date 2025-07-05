@@ -233,40 +233,53 @@
         const abbreviationsListDiv = document.getElementById('abbreviationsList');
         
         const lookupMap = new Map();
-
-        function buildLookupMap() {
-            lookupMap.clear();
-            masterList.forEach(section => {
-                const prefix = section.prefix || "";
-                if (section.terms) {
-                    for (const abbr in section.terms) {
-                        lookupMap.set(abbr.toLowerCase(), { text: section.terms[abbr], prefix: prefix });
-                    }
-                } else if (section.is_template_section) {
-                    (section.templates || []).forEach(template => {
-                        if (template.abbr) lookupMap.set(template.abbr.toLowerCase(), { text: template.text, prefix: "" });
-                    });
-                } else if (section.sub_sections) {
-                    (section.sub_sections || []).forEach(subSection => {
-                        for (const abbr in subSection.terms) {
-                            lookupMap.set(abbr.toLowerCase(), { text: subSection.terms[abbr], prefix: "" });
-                        }
-                    });
+function buildLookupMap() {
+    lookupMap.clear();
+    masterList.forEach(section => {
+        const prefix = section.prefix || ""; // Get the prefix, or an empty string if none
+        if (section.terms) {
+            for (const abbr in section.terms) {
+                lookupMap.set(abbr.toLowerCase(), { text: section.terms[abbr], prefix: prefix });
+            }
+        } else if (section.is_template_section) {
+            (section.templates || []).forEach(template => {
+                if (template.abbr) lookupMap.set(template.abbr.toLowerCase(), { text: template.text, prefix: "" });
+            });
+        } else if (section.sub_sections) {
+            (section.sub_sections || []).forEach(subSection => {
+                for (const abbr in subSection.terms) {
+                    lookupMap.set(abbr.toLowerCase(), { text: subSection.terms[abbr], prefix: "" });
                 }
             });
         }
-        
-        function performTranslation() {
+    });
+}
+
+function performTranslation() {
     const currentText = inputText.value;
-    // Split by any whitespace (spaces, tabs, newlines), but keep them in the array
     const parts = currentText.split(/(\s+|\n)/);
 
-    // Build the translated text part-by-part
     const translatedParts = parts.map((part, index) => {
-        // If the part is just whitespace, or empty, return it as is.
-        if (!part || part.trim() === '') {
-            return part;
+        if (!part || part.trim() === '') return part;
+        const lowerPart = part.toLowerCase();
+        const entry = lookupMap.get(lowerPart);
+        
+        if (entry) {
+            let fullText = entry.prefix + entry.text;
+            // Capitalize if it's the very first word of the text.
+            if (index === 0) {
+                return fullText.charAt(0).toUpperCase() + fullText.slice(1);
+            }
+            return fullText;
         }
+        return part;
+    });
+
+    translatedText.innerHTML = translatedParts.join('').replace(/\n/g, '<br>');
+}
+       
+        
+       
         
         const lowerPart = part.toLowerCase();
         const entry = lookupMap.get(lowerPart); // Check the master dictionary
