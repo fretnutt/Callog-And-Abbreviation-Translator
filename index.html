@@ -264,68 +264,56 @@
             translatedText.innerHTML = translatedParts.join('').replace(/\n/g, '<br>');
         }
 
-       function populateAbbreviationsList() {
-    abbreviationsListDiv.innerHTML = '';
-    masterList.forEach(mainSection => {
-        const sectionDiv = document.createElement('div');
-        sectionDiv.className = 'section';
-        const title = document.createElement('h2');
-        title.className = 'section-title';
-        title.textContent = mainSection.main_section;
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'section-content';
+        function populateAbbreviationsList() {
+            abbreviationsListDiv.innerHTML = '';
+            masterList.forEach(mainSection => {
+                const sectionDiv = document.createElement('div');
+                sectionDiv.className = 'section';
+                const title = document.createElement('h2');
+                title.className = 'section-title';
+                title.textContent = mainSection.main_section;
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'section-content';
 
-        if (mainSection.is_template_section) {
-            const templateList = document.createElement('ul');
-            templateList.className = 'template-list';
-            mainSection.templates.sort((a,b) => a.abbr.localeCompare(b.abbr)).forEach(template => {
-                const listItem = document.createElement('li');
-                let titleHtml = `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>`;
-                let definitionHtml = `<div class="collapsible-def">${template.text}</div>`;
-                listItem.innerHTML = `${titleHtml} <button class="toggle-def-btn">[Show]</button> ${definitionHtml}`;
-                templateList.appendChild(listItem);
-            });
-            contentDiv.appendChild(templateList);
-        } else if (mainSection.sub_sections) {
-            (mainSection.sub_sections || []).forEach(subSection => {
-                const subTitle = document.createElement('h3');
-                subTitle.className = 'subsection-title';
-                subTitle.textContent = subSection.title;
-                contentDiv.appendChild(subTitle);
-                const list = document.createElement('ul');
-                list.className = 'term-list';
-                const sortedTerms = Object.keys(subSection.terms || {}).sort();
-                sortedTerms.forEach(term => {
-                    const listItem = document.createElement('li');
-                    listItem.innerHTML = `<strong>${term}</strong>: ${subSection.terms[term]}`;
-                    list.appendChild(listItem);
-                });
-                contentDiv.appendChild(list);
-            });
-        } else if (mainSection.terms) {
-             const list = document.createElement('ul');
-            // Use single column for our special prefix sections, multi-column for General Terms
-            list.className = mainSection.prefix ? 'term-list-single-col' : 'term-list';
-            const sortedTerms = Object.keys(mainSection.terms || {}).sort();
-            sortedTerms.forEach(term => {
-                const listItem = document.createElement('li');
-                // This is the changed line: It no longer adds the prefix to the display text.
-                const text = mainSection.terms[term];
-                listItem.innerHTML = `<strong>${term}</strong>: ${text}`;
-                list.appendChild(listItem);
-            });
-            contentDiv.appendChild(list);
-        }
-
-        title.addEventListener('click', () => {
-            title.classList.toggle('active');
-            contentDiv.classList.toggle('active');
-        });
-        sectionDiv.appendChild(title);
-        sectionDiv.appendChild(contentDiv);
-        abbreviationsListDiv.appendChild(sectionDiv);
-    });
-}
+                if (mainSection.is_template_section) {
+                    const templateList = document.createElement('ul');
+                    templateList.className = 'template-list';
+                    mainSection.templates.sort((a,b) => a.abbr.localeCompare(b.abbr)).forEach(template => {
+                        const listItem = document.createElement('li');
+                        let titleHtml = `<strong>${template.abbr}</strong>: <span class="template-title">${template.title}</span>`;
+                        let definitionHtml = `<div class="collapsible-def">${template.text}</div>`;
+                        listItem.innerHTML = `${titleHtml} <button class="toggle-def-btn">[Show]</button> ${definitionHtml}`;
+                        templateList.appendChild(listItem);
+                    });
+                    contentDiv.appendChild(templateList);
+                } else if (mainSection.sub_sections) {
+                    (mainSection.sub_sections || []).forEach(subSection => {
+                        const subTitle = document.createElement('h3');
+                        subTitle.className = 'subsection-title';
+                        subTitle.textContent = subSection.title;
+                        contentDiv.appendChild(subTitle);
+                        const list = document.createElement('ul');
+                        list.className = 'term-list';
+                        const sortedTerms = Object.keys(subSection.terms || {}).sort();
+                        sortedTerms.forEach(term => {
+                            const listItem = document.createElement('li');
+                            listItem.innerHTML = `<strong>${term}</strong>: ${subSection.terms[term]}`;
+                            list.appendChild(listItem);
+                        });
+                        contentDiv.appendChild(list);
+                    });
+                } else if (mainSection.terms) {
+                     const list = document.createElement('ul');
+                    list.className = mainSection.main_section === "General Terms" ? 'term-list' : 'term-list-single-col';
+                    const sortedTerms = Object.keys(mainSection.terms || {}).sort();
+                    sortedTerms.forEach(term => {
+                        const listItem = document.createElement('li');
+                        const text = mainSection.prefix ? mainSection.prefix + mainSection.terms[term] : mainSection.terms[term];
+                        listItem.innerHTML = `<strong>${term}</strong>: ${text}`;
+                        list.appendChild(listItem);
+                    });
+                    contentDiv.appendChild(list);
+                }
 
                 title.addEventListener('click', () => {
                     title.classList.toggle('active');
