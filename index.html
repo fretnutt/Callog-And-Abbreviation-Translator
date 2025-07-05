@@ -243,31 +243,36 @@
         }
         
         function performTranslation() {
-            const currentText = inputText.value;
-            const parts = currentText.split(/(\s+|\n)/);
+    const currentText = inputText.value;
+    // Split by any whitespace (spaces, tabs, newlines), but keep them in the array
+    const parts = currentText.split(/(\s+|\n)/);
 
-            const translatedParts = parts.map((part, index) => {
-                if (!part || part.trim() === '') return part;
-                const lowerPart = part.toLowerCase();
-                const entry = lookupMap.get(lowerPart);
-                
-                if (entry) {
-                    let fullText = entry.prefix + entry.text;
-                    // Capitalize if it's the very first word of the text.
-                    if (index === 0) {
-                        return capitalizeFirstLetter(fullText);
-                    }
-                    return fullText;
-                }
-                return part;
-            });
+    // Build the translated text part-by-part
+    const translatedParts = parts.map((part, index) => {
+        // If the part is just whitespace, or empty, return it as is.
+        if (!part || part.trim() === '') {
+            return part;
+        }
+        
+        const lowerPart = part.toLowerCase();
+        const entry = lookupMap.get(lowerPart); // Check the master dictionary
 
-            translatedText.innerHTML = translatedParts.join('').replace(/\n/g, '<br>');
+        // If a match is found, use its text and prefix.
+        if (entry) {
+            // Only capitalize if it's the very first part of the text
+            if (index === 0) {
+                return (entry.prefix + entry.text).charAt(0).toUpperCase() + (entry.prefix + entry.text).slice(1);
+            }
+            return entry.prefix + entry.text;
         }
 
-        function capitalizeFirstLetter(string) {
-            return string.charAt(0).toUpperCase() + string.slice(1);
-        }
+        // If no match is found, return the original part.
+        return part;
+    });
+
+    // Join all the parts back together and display them.
+    translatedText.innerHTML = translatedParts.join('').replace(/\n/g, '<br>');
+}
 
         function populateAbbreviationsList() {
             abbreviationsListDiv.innerHTML = '';
